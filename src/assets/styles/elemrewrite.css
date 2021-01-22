@@ -1,0 +1,10 @@
+/* 重写的elem ui  的样式 */
+/* 按钮样式 */
+.sdmpbut >>> .el-button {
+    width: 50% !important;
+  }
+/* input 样式 */
+.sdpminput >>> input.el-input__inner{
+    width: 500px !important;
+    height: 32px !important;
+}

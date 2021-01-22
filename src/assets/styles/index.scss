@@ -1,0 +1,50 @@
+$appColor:#333;
+#app{
+  color:$appColor;
+}
+
+.clear{
+  clear: both;
+}
+
+body{
+  margin: 0;
+  padding: 0;
+}
+
+a{
+  text-decoration: none;
+  color: #333;
+}
+
+.page_body {
+  padding-top: 88px;
+}
+
+ul li{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* 判断iphoneX 将 footer 的 padding-bottom 填充到最底部 */
+@supports (bottom: env(safe-area-inset-bottom)) {
+  .page_body {
+    padding-bottom: constant(safe-area-inset-bottom) !important; //88px
+    padding-bottom: env(safe-area-inset-bottom) !important; //88px
+  }
+  .footerButtom {
+    bottom: constant(safe-area-inset-bottom) !important; //88px
+    bottom: env(safe-area-inset-bottom) !important; //88px
+  }
+  .footerButtom::after {
+    content: ' ';
+    width: 100%;
+    height: constant(safe-area-inset-bottom) !important;
+    height: env(safe-area-inset-bottom) !important; //88px
+    background: #fff;
+    position: fixed;
+    left: 0;
+    bottom: 0 !important;
+  }
+}

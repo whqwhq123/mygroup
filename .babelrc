@@ -1,0 +1,22 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "corejs": "3",
+        "useBuiltIns": "usage"
+      }
+      
+    ]
+  ],
+
+  "plugins": ["@babel/plugin-transform-runtime","babel-plugin-transform-vue-jsx"],
+  "env": {
+      "test": {
+          "presets": ["env", "stage-2"],
+          "plugins": ["babel-plugin-transform-vue-jsx","istanbul"]
+      }
+  }
+
+
+}
