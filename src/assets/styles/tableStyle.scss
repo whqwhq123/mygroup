@@ -1,0 +1,43 @@
+// 参考文档  https://www.jianshu.com/p/4ff9a5397427
+
+
+/deep/.el-table th{
+    height: 40px;
+    line-height: 40px;
+    background: #F5F6FA;
+    font-size: 13px;
+    font-weight: bold;
+    color: #A3A6B4;
+    padding: 0;
+    font-family: 'Source Han Sans CN'
+}
+
+/deep/.el-table td,
+/deep/.el-table th.is-leaf {
+    border-bottom:  1px solid #F5F6FA !important;
+}
+
+
+/deep/.el-table tr{
+   height: 50px;
+    font-size: 14px;
+    font-family: Source Han Sans CN;
+    font-weight: 400;
+    line-height: 51px;
+    color: rgba($color: #4D4F5C, $alpha: 0.7);
+}
+
+/deep/.el-button--text {
+    color: #008DF8;
+    font-size: 14px;
+}
+
+/deep/.el-table--border td, 
+/deep/.el-table--border th, 
+/deep/.el-table__body-wrapper .el-table--border.is-scrolling-left ~ .el-table__fixed {
+    border-right: none;
+}
+
+/deep/.el-table tr td:last-child{
+    border-right:  1px solid #F5F6FA !important;
+}

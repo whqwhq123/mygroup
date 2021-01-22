@@ -55,15 +55,15 @@ export default {
 
 
     .mainContent {
-      width: calc(100% - 260px);
-      min-height: 100%;
+      width: calc(100% - 13.5%);
+      // min-height: 100%;
       background-color: #F0F0F7;
       position: fixed;
-      left: 260px;
+      left: 13.5%;
       top: 70px;
       right: 0;
       bottom: 0;
-      padding: 20px 20px 0 20px;
+      padding: 20px;
       overflow-y: auto;
       box-sizing: border-box;
 
@@ -76,7 +76,7 @@ export default {
       .appMain {
         width: 100%;
         margin-top: 20px;
-        min-height: calc(100% - 142px);
+        min-height: calc(100% - 182px);
         position: relative;
         overflow-y: auto;
         overflow-x: hidden;

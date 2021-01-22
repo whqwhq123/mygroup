@@ -44,7 +44,7 @@ export const asyncRoutes = [{
   name: 'basicConfig',
   meta: {
     title: '基础配置',
-    icon: 'documentation'
+    icon: 'enterprise'
   },
   children: [
     {
@@ -84,7 +84,8 @@ export const asyncRoutes = [{
       component: () => import('@/views/basicConfig/channel'),
       name: 'channel',
       meta: {
-        title: '渠道管理'
+        title: '渠道管理',
+        icon: 'enterprise'
       }
     },
     {
@@ -122,7 +123,7 @@ export const asyncRoutes = [{
       name: 'originalClue',
       meta: {
         title: '原始线索',
-        icon: 'originalClue'
+        icon: 'enterprise'
       }
     }
   ]

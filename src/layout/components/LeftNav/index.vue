@@ -60,7 +60,8 @@ export default {
 $bgColor: #43425d;
 
 .navMenu {
-  width: 260px;
+  // width: 260px;
+  width: 13.5%;
   min-height: 100%;
   background: $bgColor;
   position: fixed;

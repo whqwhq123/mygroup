@@ -3,28 +3,41 @@
     <div class="filter-container">
       <el-input
         v-model="listQuery.channelName"
-        placeholder="输入一级渠道名称"
+        placeholder="输入二级渠道名称"
         class="filter-item-input"
         clearable
         @keyup.enter.native="handleFilter"
       />
+      <el-select
+        v-model="listQuery.tagId"
+        class="filter-item-input"
+        filterable
+        clearable
+        placeholder="选择一级渠道"
+      >
+        <el-option
+          v-for="(item, index) in tagsList"
+          :key="index"
+          :label="item.tagName"
+          :value="item.tagId"
+        />
+      </el-select>
       <el-button
         v-waves
         class="filter-item-btn"
         type="primary"
         @click="handleFilter"
-        >搜索</el-button
-      >
+        >搜索</el-button>
     </div>
 
     <div class="filter-tab">
-        <el-radio-group v-model="tabPosition" style="margin-bottom: 30px;">
-            <el-radio-button label="all">全部</el-radio-button>
-            <el-radio-button label="inForce">生效中</el-radio-button>
-            <el-radio-button label="deactivated">已停用</el-radio-button>
-        </el-radio-group>
+      <el-radio-group v-model="tabPosition" style="margin-bottom: 30px">
+        <el-radio-button label="all">全部</el-radio-button>
+        <el-radio-button label="inForce">生效中</el-radio-button>
+        <el-radio-button label="deactivated">已停用</el-radio-button>
+      </el-radio-group>
         <el-button class="expBtn" type="text"><svg-icon icon-class="export_icon" />导出列表</el-button>
-        <el-button class="expBtn" type="text"><svg-icon icon-class="add_icon" />新增渠道</el-button>
+      <el-button class="expBtn" type="text"><svg-icon icon-class="add_icon" />新增渠道</el-button>
     </div>
 
     <el-table
@@ -34,9 +47,32 @@
       fit
       highlight-current-row
       height="550"
-      
-      style="width: 100%;"
+      style="width: 100%"
     >
+      <el-table-column
+        label="二级渠道ID"
+        min-width="80px"
+        prop="tagname"
+        align="center"
+      />
+      <el-table-column
+        label="一级渠道"
+        min-width="100px"
+        prop="nickname"
+        align="center"
+      />
+      <el-table-column
+        label="二级渠道"
+        min-width="80px"
+        prop="tagname"
+        align="center"
+      />
+      <el-table-column
+        label="一级渠道"
+        min-width="100px"
+        prop="nickname"
+        align="center"
+      />
       <el-table-column
         label="一级渠道ID"
         min-width="80px"
@@ -55,6 +91,25 @@
         prop="phone"
         align="center"
       />
+      <el-table-column label="清洗属性" width="200" align="center">
+        <template slot-scope="scope">
+          <el-select
+                v-model="scope.row.tagId"
+                class="filter-item-input"
+                filterable
+                clearable
+                placeholder="清洗"
+                style="width:128px;height:32px"
+            >
+                <el-option
+                v-for="(item, index) in tagsList"
+                :key="index"
+                :label="item.tagName"
+                :value="item.tagId"
+                />
+            </el-select>
+        </template>
+      </el-table-column>
       <el-table-column label="状态" align="center">
         <template v-if="scope.row.stateStr" slot-scope="scope">
             <span v-if="scope.row.stateStr == '生效中'" style="color:#00C456">{{ scope.row.stateStr }}</span>
@@ -95,9 +150,21 @@
       class="dialogStyle"
     >
       <el-form ref="ruleForm" :model="editForm" :rules="editFormRules" label-width="130px">
+        <el-form-item label="二级渠道ID：">AOEXOEJROEJR</el-form-item>
+        <el-form-item label="二级渠道名称：" required>
+          <el-input class="item-input" v-model="editForm.name" autocomplete="off" placeholder="请输入二级渠道名称"/>
+        </el-form-item>
         <el-form-item label="一级渠道ID：">AOEXOEJROEJR</el-form-item>
         <el-form-item label="一级渠道名称：" required>
-          <el-input class="item-input" v-model="editForm.name" autocomplete="off" placeholder="请输入一级渠道名称"/>
+            <el-select v-model="value" filterable placeholder="请选择">
+                <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+                </el-option>
+            </el-select>
+          <!-- <el-input class="item-input" v-model="editForm.name" autocomplete="off" placeholder="请输入一级渠道名称"/> -->
         </el-form-item>
         <el-form-item label="备注：">
           <el-input type="textarea" class="item-input" v-model="editForm.name" autocomplete="off" placeholder=""/>
@@ -114,12 +181,12 @@
 <script>
 import Pagination from "@/components/Pagination";
 export default {
-  name: "primaryChannel",
+  name: "secondaryChannel",
   props: {
-    // className: {
-    //   type: String,
-    //   default: ""
-    // }
+    className: {
+      type: String,
+      default: "",
+    },
   },
   data() {
     return {
@@ -128,8 +195,32 @@ export default {
         pageNum: 1,
         pageSize: 10,
       },
+      tagsList: [
+        {
+          tagName: "线索一",
+          tagId: "1",
+        },
+        {
+          tagName: "线索二",
+          tagId: "2",
+        },
+        {
+          tagName: "线索三",
+          tagId: "3",
+        },
+      ],
       tabPosition: "all",
-      getList: [{nickname: '嘻嘻嘻哈哈'},{},{}],
+      getList: [
+        {
+          nickname: "嘻嘻嘻哈哈",
+          stateStr: "生效中",
+        },
+        {
+          nickname: "嘻嘻嘻哈哈",
+          stateStr: "已停用",
+        },
+        {},
+      ],
       total: 20,
       dialogFormVisible: false,
       editForm: {}
@@ -137,7 +228,7 @@ export default {
   },
   computed: {},
   components: {
-    Pagination
+    Pagination,
   },
   methods: {
     toEdit(row) {
@@ -148,7 +239,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/filterTabStyle.scss';
-@import '@/assets/styles/tableStyle.scss';
+@import "@/assets/styles/filterTabStyle.scss";
+@import "@/assets/styles/tableStyle.scss";
 @import '@/assets/styles/popStyle.scss';
 </style>

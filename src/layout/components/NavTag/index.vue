@@ -138,8 +138,7 @@ export default {
 .selected_tag {
   position: relative;
   min-height: 52px;
-  background: #fff;
-  opacity: 0.6;
+  background-color: rgba($color: #fff, $alpha: 0.6);
   display: flex;
   align-items: center;
   overflow-x: hidden;

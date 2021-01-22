@@ -90,11 +90,30 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .pagination-container {
   background: #fff;
-  padding: 32px 16px;
+  padding: 30px 16px;
+  text-align: center;
 }
+
+/deep/.el-pagination.is-background .btn-next, 
+/deep/.el-pagination.is-background .btn-prev, 
+/deep/.el-pagination.is-background .el-pager li {
+  background-color: #fff !important;
+  border: 1px solid #D7DAE2 !important;
+  color: #43425D !important;
+}
+
+/deep/.el-pagination.is-background .el-pager li:not(.disabled):hover {
+    color: #43425D;
+}
+
+/deep/.el-pagination.is-background .el-pager li:not(.disabled).active {
+  background-color: #43425D !important;
+  color: #fff !important;
+}
+
 .pagination-container.hidden {
   display: none;
 }
