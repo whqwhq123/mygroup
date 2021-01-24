@@ -34,7 +34,6 @@
       fit
       highlight-current-row
       height="550"
-      
       style="width: 100%;"
     >
       <el-table-column
