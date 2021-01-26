@@ -19,6 +19,18 @@ export function getBrandList(data) {
   })
 }
 
+//添加品牌列表
+export function getNoAddCarMakeTree(data){
+  return request({
+    url:'http://10.20.0.164:4091/label/carMake/getNoAddCarMakeTree',
+    method: 'post',
+    headers:{
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    data: qs.stringify(data)
+  })
+}
+
 // 获取购买力
 // export function getPurchasingPower(data) {
 //   return request({

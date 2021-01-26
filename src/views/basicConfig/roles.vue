@@ -1,11 +1,11 @@
 <template>
   <div class="roles">
     <el-row>
-      <el-col :span="6" class="colleft">
-        <el-row type="flex" class="row-bg leftTit" justify="space-between">
-          <el-col :span="8"
-            ><div class="leftTit_text roles_titsty">角色管理</div></el-col
-          >
+      <el-col :span="5" class="colleft">
+        <el-row type="flex"  class="row-bg leftTit" justify="space-between">
+          <el-col :span="8">
+            <div class="leftTit_text roles_titsty">角色管理</div>
+          </el-col>
         </el-row>
         <el-tree :data="treedata" @node-click="nodeclickFun">
           <div
@@ -18,10 +18,11 @@
             slot-scope="{ node, data }"
           >
             <div class="node_titleft">
-              <i :class="[data.icon, 'treeicon']"></i>
+              <i   :class="[data.icon, 'treeicon']"></i>
               <span>{{ node.label }}</span>
             </div>
             <div class="node_titright">
+              
               <el-button
                 type="text"
                 size="mini"
@@ -32,6 +33,14 @@
                 +添加
               </el-button>
               <div v-if="data.type == 2">
+                <el-button
+                  type="text"
+                  size="mini"
+                  icon="el-icon-edit-outline"
+                  :style="data.type != 1 ? 'color: #929496;' : ''"
+                  @click.stop="() => outline(node, data)"
+                >
+                </el-button>
                 <el-button
                   type="text"
                   size="mini"
@@ -46,29 +55,112 @@
         </el-tree>
       </el-col>
       <!-- rolesPowerCom   有数据 -->
-
-      <el-col v-if="false" :span="18" class="colright">
-        <!-- 角色信息配置 -->
+      <el-col v-if="isdata" :span="19" class="colright">
+        <!-- 角色信息配置 修改编辑 -->
+        <template v-if="isedit">
         <el-row>
-          <el-row class="row-bg rightTit" style="border-right: none">
-            <el-col
-              ><div class="roles_titsty" style="padding-left: 22px">
-                角色信息配置
-              </div></el-col
-            >
+          <el-row  class="row-bg rightTit" style="border-right: none">
+            <el-col :span='4'>
+              <div class="roles_titsty" style="padding-left: 22px">
+                添加/修改角色
+              </div>
+            </el-col>
+            <el-col :span='20' style="display: flex;justify-content: flex-end;">
+              <div class="roles_titsty" style="padding-left: 22px">
+                取消
+              </div>
+              <div class="roles_titsty" style="padding-left: 22px">
+                保存
+              </div>
+            </el-col>
+        </el-row>
+        </el-row>
+        <el-row >
+          <el-row class="rolenews">
+            <el-row class="rolenews_box">
+              <i class="el-icon-s-custom" style="font-size: 40px;color: #A5A4BF;"></i>
+            </el-row>
+            <el-row class="rolenews_box">
+              <span class="rolenews_tit">角色名称:</span>
+              <el-input v-model="rolesInput.rolname"  style="width:440px" placeholder="请输入内容"></el-input>
+            </el-row>
+            <el-row class="rolenews_box">
+              <span class="rolenews_tit">角色类型:</span>
+              <el-input v-model="rolesInput.roltype"  style="width:440px" placeholder="请输入角色类型"></el-input>
+            </el-row>
+            <el-row class="rolenews_box">
+              <span class="rolenews_tit">角色描述:</span>
+              <el-input type="textarea" :rows="2" v-model="rolesInput.roldesc"  resize="none" style="width:440px" placeholder="请输入描述"></el-input>
+            </el-row>
+            <el-row class="rolenews_box">
+              <span class="rolenews_tit">是否停用:</span>
+              <el-switch
+                v-model="isroles"
+                :active-text="isroles?'启用':'停用'"
+                active-color="#13ce66"
+                inactive-color="#dcdfe6"
+                style="height: 32px;"
+              >
+              </el-switch>
+            </el-row>
           </el-row>
         </el-row>
+        </template>
+        <!-- 角色信息配置 -->
+        <template v-else>
         <el-row>
-          <el-row class="rolenews"> </el-row>
+          <el-row  class="row-bg rightTit" style="border-right: none">
+            <el-col :span='4'>
+              <div class="roles_titsty" style="padding-left: 22px">
+                角色信息配置
+              </div>
+            </el-col>
         </el-row>
+        </el-row>
+        <el-row>
+          <el-row class="rolenews">
+            <el-row class="rolenews_box">
+              <i class="el-icon-s-custom" style="font-size: 40px;color: #A5A4BF;"></i>
+              
+            </el-row>
+            <el-row class="rolenews_box">
+              <span class="rolenews_tit">角色名称:</span>
+              <span>财务总监</span>
+
+            </el-row>
+            <el-row class="rolenews_box">
+              <span class="rolenews_tit">角色类型:</span>
+             <span>集团角色</span>
+            </el-row>
+            <el-row class="rolenews_box">
+              <span class="rolenews_tit">角色描述:</span>
+              <span>对产品的全生命周期负责</span>
+             
+            </el-row>
+            <el-row class="rolenews_box">
+              <span class="rolenews_tit">是否停用:</span>
+              <el-switch
+                v-model="isroles"
+                disabled
+                :active-text="isroles?'启用':'停用'"
+                active-color="#13ce66"
+                inactive-color="#dcdfe6"
+                style="height: 32px;"
+              >
+              </el-switch>
+            </el-row>
+          </el-row>
+        </el-row>
+        </template>
+
         <!-- 角色权限 -->
         <el-row>
           <el-row class="row-bg rightTit" style="border-right: none">
-            <el-col
-              ><div class="roles_titsty" style="padding-left: 22px">
+            <el-col>
+              <div class="roles_titsty" style="padding-left: 22px">
                 角色权限
-              </div></el-col
-            >
+              </div>
+            </el-col>
           </el-row>
         </el-row>
         <!-- 角色权限组件 -->
@@ -82,20 +174,19 @@
           <el-radio-button label="2">线索中心</el-radio-button>
           <el-radio-button label="3">商品中心</el-radio-button>
         </el-radio-group>
-        <roles-power-com v-if="radio == 1"></roles-power-com>
+        <roles-power-com v-if="radio == 1" :isedit="isedit"></roles-power-com>
       </el-col>
-      <!-- 无数据 -->
-      <el-col :span="18" class="colright">
+        <!-- 无数据 -->
+      <el-col v-else :span="19" class="colright">
         <!-- 角色信息配置 -->
         <el-row>
           <el-row class="row-bg rightTit" style="border-right: none">
-            <el-col
-              ><div class="roles_titsty" style="padding-left: 22px">
+            <el-col>
+              <div class="roles_titsty" style="padding-left: 22px">
                 角色信息配置
-              </div></el-col
-            >
+              </div>
+            </el-col>
           </el-row>
-
           <img
             style="
               width: 453px;
@@ -116,8 +207,6 @@
 import rolesPowerCom from "./components/rolesPowerCom";
 export default {
   data() {
-
-
     return {
     treedata:  [
       {
@@ -191,6 +280,18 @@ export default {
     checkboxData:{
       rolescherun:[],
     },
+    //输入框数据绑定
+    rolesInput:{
+      rolname:'',
+      roltype:'',
+      roldesc:''
+    },
+    //编辑
+    isedit:false,
+    //有无数据
+    isdata:false,
+    //是否启用
+    isroles:true,
     cheboxonedata:["添加","修改","删除","停用/启用"],
     dialogSubData: {
       subbrandTit: '',
@@ -212,12 +313,12 @@ export default {
     //左边树形结构选中
     nodeclickFun(e){
       if(e.type==1) return
-        console.log(e);
+      console.log(e);
+      this.isdata=true
+      this.isedit=false
     },
     //添加品牌 子品牌 品牌
     append(node, data) {
-
-      
         console.log(node, data,"添加");
             this.dialogSubData.subbrandTit=data.label
 
@@ -240,6 +341,11 @@ export default {
       // const children = parent.data.children || parent.data;
       // const index = children.findIndex((d) => d.id === data.id);
       // children.splice(index, 1);
+    },
+    //修改基本信息 控制页面效果
+    outline(node, data){
+      this.isedit=true
+      console.log("修改编辑");
     },
     //基础配置 线索中心  商品中心
     radioFun(e){
@@ -278,7 +384,12 @@ export default {
   color: #3b86ff;
   background-color: #fff;
 }
-
+/deep/.el-switch__label.is-active{
+  color: #43425D  ;
+}
+/deep/.el-switch.is-disabled{
+  opacity: 1;
+}
 .rowPid {
   padding-left: 11px;
   margin-top: 11px;
@@ -344,6 +455,7 @@ export default {
   border-left: none;
   border-top: none;
   height: 936px;
+  overflow: hidden;
 }
 .treeicon {
   margin-right: 6px;
@@ -357,8 +469,24 @@ export default {
   width: 50% !important;
 }
 .rolenews {
-  height: 251px;
+  height: 282px;
   background: #f5f6fa;
   margin: 10px 22px;
+  padding: 16px;
+  .rolenews_box{
+    display: flex;
+    min-height: 32px;
+    line-height: 32px;
+    margin-bottom: 14px;
+  }
+  .rolenews_tit{
+    width: 70px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #43425D;
+
+  }
+
+  
 }
 </style>

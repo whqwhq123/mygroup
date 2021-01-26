@@ -4,73 +4,88 @@
       title="添加品牌"
       :visible.sync="isbrand"
       append-to-body
-      width="30%"
+      width="35%"
       :before-close="isbrandFun"
     >
       <div class="addbrand">
         <el-row style="height: 100%">
+          <!-- 搜索 -->
           <el-col :span="13" class="addbrand_left">
-            <div class="addbrand_leftsele" @click="addbrandleftseleFun">
-              <span>请选择父品牌/子品牌</span>
-              <i
-                :class="
-                  addbrandleftsele ? 'el-icon-arrow-up' : 'el-icon-arrow-down'
-                "
-              ></i>
-            </div>
-            <el-row
-              v-if="addbrandleftsele"
-              addbrand_leftbox
-              style="
-                height: 307px !important;
-                overflow: hidden !important;
-                background: #fff !important;
-              "
-            >
+            <el-input placeholder="搜索父品牌/子品牌" @change="addbrandleftseleFun" v-model="selbrandinpu">
+              <el-button slot="append" icon="el-icon-search" @change="addbrandleftseleFun"></el-button>
+            </el-input>
+            <!-- 多选 -->  
+            <el-row class="addbrand_leftbox">
+              <template>
+              <el-col :span="2">
+                <el-scrollbar class="scrollber"> 
+                  <el-row  v-for="(item,index) in listzm" :key="item" ref="sel" :class="selatv==index?'sellettersty atv':'sellettersty'">
+                    <span   @click="selletterstyFun(item,index)">{{item}}</span>
+                  </el-row>
+                </el-scrollbar>
+              </el-col>
               <el-col :span="12">
-                <div class="itemscroll innerbox">
+
+                 <el-scrollbar class="scrollber">             
                   <el-checkbox-group
                     v-model="checkedListdata"
-                    @change="handlecheckedListdataChange"
                   >
                     <el-checkbox
-                      v-for="(item, index) in listdata"
-                      :label="item"
-                      :key="item.id"
-                      @change="handlecheckedListdata($event, item, index)"
-                      >{{ item.label
-                      }}<span
+                      v-for="(itemone, index) in listone"
+                      :label="itemone"              
+                      :key="itemone.makeId"
+                      style="margin-bottom: 7px;"
+                      @change="handlecheckedListdata($event,itemone, index)"
+                      >
+                        {{ itemone.makeName}}
+                        <i
+                        class="el-icon-arrow-right"
                         :style="
                           oneindex == index && onechecked
-                            ? 'margin-left: 25px;display: inherit;'
-                            : 'margin-left: 25px;display: none;'
+                            ? 'margin-left: 18px;display: inherit;'
+                            : 'margin-left: 18px;display: none;'
                         "
-                        >></span
-                      ></el-checkbox
-                    >
+                        ></i>
+                    </el-checkbox>
                   </el-checkbox-group>
-                </div>
+                  <!-- <div v-for="(itemone, index) in listone" :key="itemone.makeId">
+                    <label for="n">
+                       <input  @change="handlecheckedListdata($event,itemone, index)" ref="ischecd" type="checkbox" name="n">
+                       <span @click="clickonecheck($event,itemone, index)">{{ itemone.makeName}}</span>
+                    </label>
+
+                  </div> -->
+
+
+
+
+
+                 </el-scrollbar>
               </el-col>
-              <el-col :span="12">
+              <el-col :span="10">
                 <!-- childrenList -->
-                <div class="itemscroll innerbox">
+                 <el-scrollbar class="scrollber">
                   <el-checkbox-group
                     v-model="checkedchildrenList"
-                    @change="handlecheckedchildrenListChange"
+                    v-if="istowched"
                   >
                     <el-checkbox
-                      v-for="item in childrenList.children"
-                      :label="item"
-                      :key="item.id"
-                      @change="handlecheckedchildrenList($event, item)"
-                      >{{ item.label }}</el-checkbox
+                      v-for="(itemtow,index) in listtow.carGroupList"
+                      :label="itemtow"
+                      :key="itemtow.groupId"
+                      @change="handlecheckedchildrenList($event,itemtow,index)"
                     >
+                    {{ itemtow.groupName }}
+                    </el-checkbox>
                   </el-checkbox-group>
-                </div>
+                 </el-scrollbar>
               </el-col>
+              </template>
             </el-row>
           </el-col>
+          <!-- 树结构 -->
           <el-col :span="11" class="addbrand_right">
+             <el-scrollbar class="scrollber" style="height: 377px;">
             <el-tree
               :data="treeListdata"
               node-key="id"
@@ -78,7 +93,7 @@
               :expand-on-click-node="false"
             >
               <span class="custom-tree-node" slot-scope="{ node, data }">
-                <span>{{ node.label }}</span>
+                <span>{{ data.makeName }}</span>
                 <span>
                   <el-button
                     type="text"
@@ -90,6 +105,7 @@
                 </span>
               </span>
             </el-tree>
+            </el-scrollbar>
           </el-col>
         </el-row>
       </div>
@@ -109,6 +125,7 @@
 </template>
 
 <script>
+import { getNoAddCarMakeTree } from "api/index.js";
 export default {
   props: {
     isbrand: {
@@ -120,75 +137,19 @@ export default {
     return {
         checkedListdata:[],//一级目录选中的数组
         checkedchildrenList:[],//二级目录选中的数组
-        treeListdata:[],//树结构的数据
+        // treeListdata:[],//树结构的数据
         childrenList:[],//二级目录数据初始化
         onechecked:false,//一级目录是否选中
         oneindex:-1,//一级目录的下标
         sundata:'',//添加自定义子品牌
         isbrand: false,//是否显示车型品牌对话框
-        addbrandleftsele:false,//是否显示品牌的选择
+        selbrandinpu:'',//搜索框
+        selletter:[],
+        selatv:0,
+        istowched:false,
         //一级目录数据初始化
-        listdata: [
-        {
-          id: 1,
-          label: "一级 1",
-          type: 1,
-          icon: "el-icon-menu",
-          children: [
-            {
-              id: 4,
-              icon: "el-icon-arrow-right",
-              label: "二级 1-1",
-            },
-            {
-              id: 15,
-              icon: "el-icon-arrow-right",
-              label: "二级 1-1",
-            },
-            {
-              id: 16,
-              icon: "el-icon-arrow-right",
-              label: "二级 1-1",
-            },
-          ],
-        },
-        {
-          id: 2,
-          label: "一级 2",
-          type: 1,
-          icon: "el-icon-menu",
-          children: [
-            {
-              id: 5,
-              icon: "el-icon-arrow-right",
-              label: "二级 2-1",
-            },
-            {
-              id: 6,
-              icon: "el-icon-arrow-right",
-              label: "二级 2-2",
-            },
-          ],
-        },
-        {
-          id: 3,
-          label: "一级 3",
-          type: 1,
-          icon: "el-icon-menu",
-          children: [
-            {
-              id: 7,
-              icon: "el-icon-arrow-right",
-              label: "二级 3-1",
-            },
-            {
-              id: 8,
-              icon: "el-icon-arrow-right",
-              label: "二级 3-2",
-            },
-          ],
-        },
-        ],
+        list:[],
+        listone:[],
 
     };
   },
@@ -196,6 +157,30 @@ export default {
     isbrand(newVal) {
       this.$emit("update:isbrandFun", false);
       this.isbrand = newVal;
+    },
+  },
+  computed: {
+    treeListdata(){
+        //checkedListdata:[],//一级目录选中的数组
+        //checkedchildrenList:[],//二级目录选中的数组
+        // this.checkedListdata.map((v,i)=>{
+        //     v.carGroupList= v.carGroupList.map((v1,i2)=>{
+        //           for (let x = 0; x < this.checkedchildrenList.length; x++) {
+        //             if(this.checkedchildrenList[x].groupId!=v1.groupId){
+        //                 return v1
+        //             } 
+        //           }
+
+        //      })
+        // })
+        this.checkedListdata.forEach(element => {
+          
+        });
+
+
+        console.log(1);
+      return  this.checkedListdata
+
     }
   },
   methods: {
@@ -204,48 +189,96 @@ export default {
       this.isbrand = false;
     },
     handlecheckedListdataChange(value) {
-      if(!this.onechecked){
-        this.childrenList=[]
-        this.checkedchildrenList=[]
-        // this.oneindex
-      }
+      console.log(value,"1");
+      // const newChild = { id: id++, label: 'testtest', children: [] };
+      // this.treeListdata.push()
+      // if(!this.onechecked){
+      //   this.childrenList=[]
+      //   this.checkedchildrenList=[]
+      //   // this.oneindex
+      // }
         
-      console.log(value,'1222222');
-      this.treeListdata=this.checkedListdata
-      console.log( this.checkedListdata, this.checkedchildrenList,"一级目录和二级目录");
+      // console.log(value,'1222222');
+      // this.treeListdata=this.checkedListdata
+      // console.log( this.checkedListdata, this.checkedchildrenList,"一级目录和二级目录");
+    },
+    clickonecheck(e,val,index){
+      console.log(e.target,val,index);
+       this.listtow=val
+       this.istowched=!this.istowched
     },
     handlecheckedListdata(e,val,index){
-      this.onechecked=e
-      this.oneindex=index
-      if(e){
-        this.childrenList=val
-        // console.log(e,val,'111111111111');
-      }
-    },
-    handlecheckedchildrenListChange(value){
-      // console.log(value,"211111");
-    },
-    handlecheckedchildrenList(e,val){
-            if(e){
-        // console.log(e,val,'222222222');
-        // console.log( this.checkedListdata, this.checkedchildrenList,"一级目录和二级目录");
-        //     let newChild = 
-        //     this.treedata.push(newChild);
+      console.log(e,val,this.checkedListdata);
+      // this.istowched=e.target.checked
+      this.istowched=e
+      this.listtow=val
+      let newtree={makeId:val.makeId,makeName:val.makeName,carGroupList:[]}
+     console.log( this.treeListdata);
 
-         this.treeListdata=this.checkedListdata
-      }
+
     },
+    handlecheckedchildrenList(ischeckd,val,index){
+      console.log(ischeckd,this.listtow);
+      console.log(val,index,'2222222');
+    },
+    //搜索父品牌子品牌
     addbrandleftseleFun(){
-      this.addbrandleftsele=!this.addbrandleftsele
+      this.getNoAddCarMakeTree(this.selbrandinpu)
+      console.log("搜索数据",this.selbrandinpu);
+    },
+    selletterstyFun(item,index){
+     
+      this.selatv=index
+      this.listone=this.list[this.selatv].carMakeGroupVoList
+      //  console.log(item,index);
+
+    },
+    remove(node,data){
+      console.log(node,data, data.makeId);
+      for (let i = 0; i < this.checkedListdata.length; i++) {
+        if(this.checkedListdata[i]==data.makeId){
+           this.checkedListdata.splice(i,1)
+        }
+      }
+
+     
+    },
+    async getNoAddCarMakeTree(){
+      let res=await getNoAddCarMakeTree({makeName:''})
+      if(res.code==0){
+          this.listzm=res.data.map(v=>{
+            return v.makeLetter
+          })
+          this.list=res.data
+          this.listone=this.list[this.selatv].carMakeGroupVoList
+          console.log( this.list,this.listone,this.listzm);
+      }
+     
     },
   },
   mounted() {
+    this.getNoAddCarMakeTree()
     console.log(this.isbrand);
   }
 };
 </script>
 
 <style lang="scss" scoped>
+/deep/.el-checkbox__input.is-checked .el-checkbox__inner,
+/deep/.el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  border-color: #7cd2a2;
+  background: #7cd2a2;
+  color: #7cd2a2;
+}
+/deep/.el-checkbox__inner:hover {
+  border-color: #7cd2a2;
+}
+/deep/.el-checkbox__input.is-checked + .el-checkbox__label {
+  color: #606266;
+}
+/deep/.el-checkbox__inner.is-focus .el-checkbox__inner {
+  border-color: #7cd2a2;
+}
 /deep/ .el-select {
   width: 100%;
   height: 32px;
@@ -264,6 +297,14 @@ export default {
 /deep/ .el-dialog__body {
   padding: 30px 20px 0 20px !important;
 }
+/deep/.el-scrollbar__wrap {
+    overflow-y: scroll;
+    /* overflow: hidden; */
+
+}
+/deep/.el-scrollbar__bar.is-vertical{
+  display: none;
+}
 .dialog-footer {
   display: flex;
 }
@@ -273,13 +314,14 @@ export default {
 .addbrand {
   width: 100%;
   height: 360px;
+  overflow: hidden;
   border: 1px solid #d7dae2;
   .addbrand_left {
     height: 100%;
     padding: 9px 9px 0 9px;
     background: #f5f6fa;
     .addbrand_leftbox {
-      height: 307px !important;
+      height: 312px !important;
       overflow: hidden !important;
       background: #fff !important;
     }
@@ -292,9 +334,9 @@ export default {
       font-size: 12px;
       padding-left: 10px;
       color: #838389;
-      > i {
-        margin-left: 95px;
-      }
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
     }
     .itemscroll {
       height: 307px;
@@ -309,31 +351,29 @@ export default {
     }
   }
   .addbrand_right {
-    height: 100px;
+    // height: 100px;
   }
 }
-.innerbox {
-  overflow-x: hidden;
-  overflow-y: auto;
-  color: #000;
-  font-size: 0.7rem;
-  height: 100%;
+.sellettersty{
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    font-size: 14px;
+    display: block;
+    
 }
-/*滚动条样式*/
-.innerbox::-webkit-scrollbar {
-  width: 4px;
-  /*height: 4px;*/
+.sellettersty.atv{
+color: #FFFFFF;
+background: #3B86FF;
 }
-.innerbox::-webkit-scrollbar-thumb {
-  display: none;
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-  background: rgba(0, 0, 0, 0.2);
+.scrollber{
+    // overflow-y: scroll;
+    margin-bottom: -17px;
+    overflow: hidden !important;
+    height: 320px;
+    padding: 8px 0 0 10px;
 }
-.innerbox::-webkit-scrollbar-track {
-  display: none;
-  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-  border-radius: 0;
-  background: rgba(0, 0, 0, 0.1);
-}
+
 </style>
