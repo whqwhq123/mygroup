@@ -1,0 +1,3288 @@
+{
+    "errMsg": "操作成功",
+    "code": 0,
+    "data": [
+        {
+            "makeLetter": "A",
+            "carMakeGroupVoList": [
+                {
+                    "makeId": 56,
+                    "makeName": "阿斯顿·马丁",
+                    "carGroupList": [
+                        {
+                            "groupId": 1,
+                            "makeId": null,
+                            "groupName": "AMR",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 192,
+                            "makeId": null,
+                            "groupName": "阿斯顿·马丁",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 261,
+                    "makeName": "爱驰汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 145,
+                            "makeId": null,
+                            "groupName": "爱驰汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 78,
+                    "makeName": "阿尔法·罗密欧",
+                    "carGroupList": [
+                        {
+                            "groupId": 191,
+                            "makeId": null,
+                            "groupName": "阿尔法·罗密欧",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 1,
+                    "makeName": "奥迪",
+                    "carGroupList": [
+                        {
+                            "groupId": 15,
+                            "makeId": null,
+                            "groupName": "一汽-大众奥迪",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "makeLetter": "B",
+            "carMakeGroupVoList": [
+                {
+                    "makeId": 88,
+                    "makeName": "北京",
+                    "carGroupList": [
+                        {
+                            "groupId": 68,
+                            "makeId": null,
+                            "groupName": "北京越野",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 2,
+                    "makeName": "宝马",
+                    "carGroupList": [
+                        {
+                            "groupId": 101,
+                            "makeId": null,
+                            "groupName": "宝马M",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 75,
+                            "makeId": null,
+                            "groupName": "华晨宝马",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 100,
+                            "makeId": null,
+                            "groupName": "宝马(进口)",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 3,
+                    "makeName": "奔驰",
+                    "carGroupList": [
+                        {
+                            "groupId": 124,
+                            "makeId": null,
+                            "groupName": "梅赛德斯-AMG",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 154,
+                            "makeId": null,
+                            "groupName": "福建奔驰",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 64,
+                            "makeId": null,
+                            "groupName": "北京奔驰",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 125,
+                            "makeId": null,
+                            "groupName": "梅赛德斯-迈巴赫",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 95,
+                            "makeId": null,
+                            "groupName": "奔驰(进口)",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 123,
+                    "makeName": "北汽制造",
+                    "carGroupList": [
+                        {
+                            "groupId": 66,
+                            "makeId": null,
+                            "groupName": "北京汽车制造厂",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 202,
+                    "makeName": "宝沃",
+                    "carGroupList": [
+                        {
+                            "groupId": 99,
+                            "makeId": null,
+                            "groupName": "宝沃",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 105,
+                    "makeName": "奔腾",
+                    "carGroupList": [
+                        {
+                            "groupId": 18,
+                            "makeId": null,
+                            "groupName": "一汽奔腾",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 5,
+                    "makeName": "标致",
+                    "carGroupList": [
+                        {
+                            "groupId": 39,
+                            "makeId": null,
+                            "groupName": "东风标致",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 28,
+                    "makeName": "北汽昌河",
+                    "carGroupList": [
+                        {
+                            "groupId": 71,
+                            "makeId": null,
+                            "groupName": "北汽昌河",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 310,
+                    "makeName": "比德文汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 127,
+                            "makeId": null,
+                            "groupName": "比德文汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 13,
+                    "makeName": "别克",
+                    "carGroupList": [
+                        {
+                            "groupId": 30,
+                            "makeId": null,
+                            "groupName": "上汽通用别克",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 179,
+                    "makeName": "北汽幻速",
+                    "carGroupList": [
+                        {
+                            "groupId": 69,
+                            "makeId": null,
+                            "groupName": "北汽幻速",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 109,
+                    "makeName": "宝骏",
+                    "carGroupList": [
+                        {
+                            "groupId": 102,
+                            "makeId": null,
+                            "groupName": "宝骏汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 135,
+                    "makeName": "北京汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 65,
+                            "makeId": null,
+                            "groupName": "北京汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 221,
+                    "makeName": "比速汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 128,
+                            "makeId": null,
+                            "groupName": "比速汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 17,
+                    "makeName": "本田",
+                    "carGroupList": [
+                        {
+                            "groupId": 38,
+                            "makeId": null,
+                            "groupName": "东风本田",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 110,
+                            "makeId": null,
+                            "groupName": "广汽本田",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 52,
+                    "makeName": "保时捷",
+                    "carGroupList": [
+                        {
+                            "groupId": 54,
+                            "makeId": null,
+                            "groupName": "保时捷",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 57,
+                    "makeName": "宾利",
+                    "carGroupList": [
+                        {
+                            "groupId": 103,
+                            "makeId": null,
+                            "groupName": "宾利",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 27,
+                    "makeName": "比亚迪",
+                    "carGroupList": [
+                        {
+                            "groupId": 126,
+                            "makeId": null,
+                            "groupName": "比亚迪汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "makeLetter": "C",
+            "carMakeGroupVoList": [
+                {
+                    "makeId": 30,
+                    "makeName": "长城",
+                    "carGroupList": [
+                        {
+                            "groupId": 181,
+                            "makeId": null,
+                            "groupName": "长城汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 130,
+                    "makeName": "长安欧尚",
+                    "carGroupList": [
+                        {
+                            "groupId": 188,
+                            "makeId": null,
+                            "groupName": "长安跨越",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 186,
+                            "makeId": null,
+                            "groupName": "长安汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 29,
+                    "makeName": "长安汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 184,
+                            "makeId": null,
+                            "groupName": "长安新能源",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 182,
+                            "makeId": null,
+                            "groupName": "长安乘用车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 189,
+                    "makeName": "成功汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 116,
+                            "makeId": null,
+                            "groupName": "成功汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 245,
+                    "makeName": "长安凯程",
+                    "carGroupList": [
+                        {
+                            "groupId": 183,
+                            "makeId": null,
+                            "groupName": "长安凯程",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "makeLetter": "D",
+            "carMakeGroupVoList": [
+                {
+                    "makeId": 317,
+                    "makeName": "大运汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 91,
+                            "makeId": null,
+                            "groupName": "大运汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 286,
+                    "makeName": "东风富康",
+                    "carGroupList": [
+                        {
+                            "groupId": 34,
+                            "makeId": null,
+                            "groupName": "东风富康",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 280,
+                    "makeName": "大乘汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 89,
+                            "makeId": null,
+                            "groupName": "大乘汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 34,
+                    "makeName": "东南",
+                    "carGroupList": [
+                        {
+                            "groupId": 32,
+                            "makeId": null,
+                            "groupName": "东南汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 228,
+                    "makeName": "电咖汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 152,
+                            "makeId": null,
+                            "groupName": "电咖汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 131,
+                    "makeName": "东风风行",
+                    "carGroupList": [
+                        {
+                            "groupId": 46,
+                            "makeId": null,
+                            "groupName": "东风风行",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 33,
+                    "makeName": "东风",
+                    "carGroupList": [
+                        {
+                            "groupId": 175,
+                            "makeId": null,
+                            "groupName": "郑州日产",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 40,
+                            "makeId": null,
+                            "groupName": "东风汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 4,
+                    "makeName": "大众",
+                    "carGroupList": [
+                        {
+                            "groupId": 14,
+                            "makeId": null,
+                            "groupName": "一汽-大众",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 90,
+                            "makeId": null,
+                            "groupName": "大众(进口)",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 24,
+                            "makeId": null,
+                            "groupName": "上汽大众",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 6,
+                            "makeId": null,
+                            "groupName": "JETTA捷达",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 277,
+                    "makeName": "东风瑞泰特",
+                    "carGroupList": [
+                        {
+                            "groupId": 166,
+                            "makeId": null,
+                            "groupName": "西安新青年",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 212,
+                    "makeName": "东风风光",
+                    "carGroupList": [
+                        {
+                            "groupId": 44,
+                            "makeId": null,
+                            "groupName": "东风风光",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 127,
+                    "makeName": "东风小康",
+                    "carGroupList": [
+                        {
+                            "groupId": 35,
+                            "makeId": null,
+                            "groupName": "东风小康",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 124,
+                    "makeName": "DS",
+                    "carGroupList": [
+                        {
+                            "groupId": 3,
+                            "makeId": null,
+                            "groupName": "DS汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 114,
+                    "makeName": "东风启辰",
+                    "carGroupList": [
+                        {
+                            "groupId": 33,
+                            "makeId": null,
+                            "groupName": "东风启辰",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 90,
+                    "makeName": "东风风神",
+                    "carGroupList": [
+                        {
+                            "groupId": 45,
+                            "makeId": null,
+                            "groupName": "东风风神",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 11,
+                    "makeName": "道奇",
+                    "carGroupList": [
+                        {
+                            "groupId": 174,
+                            "makeId": null,
+                            "groupName": "道奇(进口)",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "makeLetter": "F",
+            "carMakeGroupVoList": [
+                {
+                    "makeId": 10,
+                    "makeName": "福特",
+                    "carGroupList": [
+                        {
+                            "groupId": 156,
+                            "makeId": null,
+                            "groupName": "福特(进口)",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 187,
+                            "makeId": null,
+                            "groupName": "长安福特",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 135,
+                            "makeId": null,
+                            "groupName": "江铃福特",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 18,
+                    "makeName": "丰田",
+                    "carGroupList": [
+                        {
+                            "groupId": 48,
+                            "makeId": null,
+                            "groupName": "丰田(进口)",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 16,
+                            "makeId": null,
+                            "groupName": "一汽丰田",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 107,
+                            "makeId": null,
+                            "groupName": "广汽丰田",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 76,
+                    "makeName": "福田",
+                    "carGroupList": [
+                        {
+                            "groupId": 157,
+                            "makeId": null,
+                            "groupName": "福田汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 72,
+                            "makeId": null,
+                            "groupName": "北汽福田",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 59,
+                    "makeName": "法拉利",
+                    "carGroupList": [
+                        {
+                            "groupId": 139,
+                            "makeId": null,
+                            "groupName": "法拉利",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 178,
+                    "makeName": "福汽启腾",
+                    "carGroupList": [
+                        {
+                            "groupId": 155,
+                            "makeId": null,
+                            "groupName": "福汽启腾",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 116,
+                    "makeName": "福迪",
+                    "carGroupList": [
+                        {
+                            "groupId": 158,
+                            "makeId": null,
+                            "groupName": "福迪汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "makeLetter": "G",
+            "carMakeGroupVoList": [
+                {
+                    "makeId": 104,
+                    "makeName": "GMC",
+                    "carGroupList": [
+                        {
+                            "groupId": 4,
+                            "makeId": null,
+                            "groupName": "GMC",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 103,
+                    "makeName": "广汽传祺",
+                    "carGroupList": [
+                        {
+                            "groupId": 108,
+                            "makeId": null,
+                            "groupName": "广汽乘用车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 303,
+                    "makeName": "国机智骏",
+                    "carGroupList": [
+                        {
+                            "groupId": 87,
+                            "makeId": null,
+                            "groupName": "国机智骏",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 256,
+                    "makeName": "广汽新能源",
+                    "carGroupList": [
+                        {
+                            "groupId": 109,
+                            "makeId": null,
+                            "groupName": "广汽新能源",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 250,
+                    "makeName": "国金汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 88,
+                            "makeId": null,
+                            "groupName": "国金汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 119,
+                    "makeName": "观致",
+                    "carGroupList": [
+                        {
+                            "groupId": 167,
+                            "makeId": null,
+                            "groupName": "观致汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "makeLetter": "H",
+            "carMakeGroupVoList": [
+                {
+                    "makeId": 218,
+                    "makeName": "汉腾",
+                    "carGroupList": [
+                        {
+                            "groupId": 129,
+                            "makeId": null,
+                            "groupName": "汉腾汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 219,
+                    "makeName": "华泰新能源",
+                    "carGroupList": [
+                        {
+                            "groupId": 78,
+                            "makeId": null,
+                            "groupName": "华泰新能源",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 276,
+                    "makeName": "红星汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 159,
+                            "makeId": null,
+                            "groupName": "红星汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 106,
+                    "makeName": "红旗",
+                    "carGroupList": [
+                        {
+                            "groupId": 21,
+                            "makeId": null,
+                            "groupName": "一汽红旗",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 38,
+                    "makeName": "海马",
+                    "carGroupList": [
+                        {
+                            "groupId": 141,
+                            "makeId": null,
+                            "groupName": "海马郑州",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 19,
+                            "makeId": null,
+                            "groupName": "一汽海马",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 91,
+                    "makeName": "黄海",
+                    "carGroupList": [
+                        {
+                            "groupId": 203,
+                            "makeId": null,
+                            "groupName": "黄海汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 311,
+                    "makeName": "汉龙汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 130,
+                            "makeId": null,
+                            "groupName": "汉龙汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 312,
+                    "makeName": "HYCAN合创",
+                    "carGroupList": [
+                        {
+                            "groupId": 112,
+                            "makeId": null,
+                            "groupName": "广汽蔚来",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 139,
+                    "makeName": "哈弗",
+                    "carGroupList": [
+                        {
+                            "groupId": 86,
+                            "makeId": null,
+                            "groupName": "哈弗汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "makeLetter": "J",
+            "carMakeGroupVoList": [
+                {
+                    "makeId": 60,
+                    "makeName": "捷豹",
+                    "carGroupList": [
+                        {
+                            "groupId": 117,
+                            "makeId": null,
+                            "groupName": "捷豹",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 171,
+                    "makeName": "九龙",
+                    "carGroupList": [
+                        {
+                            "groupId": 50,
+                            "makeId": null,
+                            "groupName": "九龙汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 291,
+                    "makeName": "钧天汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 179,
+                            "makeId": null,
+                            "groupName": "钧天汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 238,
+                    "makeName": "江铃集团新能源",
+                    "carGroupList": [
+                        {
+                            "groupId": 136,
+                            "makeId": null,
+                            "groupName": "江铃集团新能源",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 77,
+                    "makeName": "Jeep",
+                    "carGroupList": [
+                        {
+                            "groupId": 111,
+                            "makeId": null,
+                            "groupName": "广汽菲克",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 5,
+                            "makeId": null,
+                            "groupName": "Jeep",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 260,
+                    "makeName": "捷途",
+                    "carGroupList": [
+                        {
+                            "groupId": 118,
+                            "makeId": null,
+                            "groupName": "捷途",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 79,
+                    "makeName": "江铃",
+                    "carGroupList": [
+                        {
+                            "groupId": 134,
+                            "makeId": null,
+                            "groupName": "江铃汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 39,
+                    "makeName": "金杯",
+                    "carGroupList": [
+                        {
+                            "groupId": 76,
+                            "makeId": null,
+                            "groupName": "华晨鑫源",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 74,
+                            "makeId": null,
+                            "groupName": "华晨华瑞",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 77,
+                            "makeId": null,
+                            "groupName": "华晨雷诺",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 26,
+                    "makeName": "吉利",
+                    "carGroupList": [
+                        {
+                            "groupId": 83,
+                            "makeId": null,
+                            "groupName": "吉利汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 44,
+                    "makeName": "江淮",
+                    "carGroupList": [
+                        {
+                            "groupId": 132,
+                            "makeId": null,
+                            "groupName": "江淮汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 302,
+                    "makeName": "几何汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 58,
+                            "makeId": null,
+                            "groupName": "几何汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 169,
+                    "makeName": "金龙",
+                    "carGroupList": [
+                        {
+                            "groupId": 178,
+                            "makeId": null,
+                            "groupName": "金龙汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "makeLetter": "K",
+            "carMakeGroupVoList": [
+                {
+                    "makeId": 185,
+                    "makeName": "凯翼",
+                    "carGroupList": [
+                        {
+                            "groupId": 59,
+                            "makeId": null,
+                            "groupName": "凯翼",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 234,
+                    "makeName": "卡升",
+                    "carGroupList": [
+                        {
+                            "groupId": 140,
+                            "makeId": null,
+                            "groupName": "浙江卡尔森",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 99,
+                    "makeName": "开瑞",
+                    "carGroupList": [
+                        {
+                            "groupId": 115,
+                            "makeId": null,
+                            "groupName": "开瑞",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 183,
+                    "makeName": "卡威",
+                    "carGroupList": [
+                        {
+                            "groupId": 80,
+                            "makeId": null,
+                            "groupName": "卡威汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 12,
+                    "makeName": "克莱斯勒",
+                    "carGroupList": [
+                        {
+                            "groupId": 55,
+                            "makeId": null,
+                            "groupName": "克莱斯勒(进口)",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 165,
+                    "makeName": "KTM",
+                    "carGroupList": [
+                        {
+                            "groupId": 7,
+                            "makeId": null,
+                            "groupName": "KTM",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 69,
+                    "makeName": "凯迪拉克",
+                    "carGroupList": [
+                        {
+                            "groupId": 60,
+                            "makeId": null,
+                            "groupName": "凯迪拉克(进口)",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 29,
+                            "makeId": null,
+                            "groupName": "上汽通用凯迪拉克",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "makeLetter": "L",
+            "carMakeGroupVoList": [
+                {
+                    "makeId": 322,
+                    "makeName": " 凌宝汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 84,
+                            "makeId": null,
+                            "groupName": "吉麦新能源",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 254,
+                    "makeName": "零跑汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 197,
+                            "makeId": null,
+                            "groupName": "零跑汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 63,
+                    "makeName": "雷诺",
+                    "carGroupList": [
+                        {
+                            "groupId": 43,
+                            "makeId": null,
+                            "groupName": "东风雷诺",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 61,
+                    "makeName": "兰博基尼",
+                    "carGroupList": [
+                        {
+                            "groupId": 57,
+                            "makeId": null,
+                            "groupName": "兰博基尼",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 24,
+                    "makeName": "路特斯",
+                    "carGroupList": [
+                        {
+                            "groupId": 170,
+                            "makeId": null,
+                            "groupName": "路特斯",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 285,
+                    "makeName": "罗夫哈特",
+                    "carGroupList": [
+                        {
+                            "groupId": 161,
+                            "makeId": null,
+                            "groupName": "罗夫哈特",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 180,
+                    "makeName": "陆地方舟",
+                    "carGroupList": [
+                        {
+                            "groupId": 193,
+                            "makeId": null,
+                            "groupName": "陆地方舟",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 226,
+                    "makeName": "领克",
+                    "carGroupList": [
+                        {
+                            "groupId": 200,
+                            "makeId": null,
+                            "groupName": "领克",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 40,
+                    "makeName": "力帆",
+                    "carGroupList": [
+                        {
+                            "groupId": 62,
+                            "makeId": null,
+                            "groupName": "力帆汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 255,
+                    "makeName": "理想汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 150,
+                            "makeId": null,
+                            "groupName": "理想汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 186,
+                    "makeName": "雷丁",
+                    "carGroupList": [
+                        {
+                            "groupId": 198,
+                            "makeId": null,
+                            "groupName": "雷丁",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 65,
+                    "makeName": "路虎",
+                    "carGroupList": [
+                        {
+                            "groupId": 92,
+                            "makeId": null,
+                            "groupName": "奇瑞·捷豹路虎",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 171,
+                            "makeId": null,
+                            "groupName": "路虎(进口)",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 19,
+                    "makeName": "铃木",
+                    "carGroupList": [
+                        {
+                            "groupId": 189,
+                            "makeId": null,
+                            "groupName": "长安铃木",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 31,
+                    "makeName": "猎豹汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 148,
+                            "makeId": null,
+                            "groupName": "猎豹汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 70,
+                    "makeName": "林肯",
+                    "carGroupList": [
+                        {
+                            "groupId": 123,
+                            "makeId": null,
+                            "groupName": "林肯(进口)",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 185,
+                            "makeId": null,
+                            "groupName": "长安林肯",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 45,
+                    "makeName": "陆风",
+                    "carGroupList": [
+                        {
+                            "groupId": 194,
+                            "makeId": null,
+                            "groupName": "陆风汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 278,
+                    "makeName": "领途",
+                    "carGroupList": [
+                        {
+                            "groupId": 201,
+                            "makeId": null,
+                            "groupName": "领途",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 62,
+                    "makeName": "劳斯莱斯",
+                    "carGroupList": [
+                        {
+                            "groupId": 63,
+                            "makeId": null,
+                            "groupName": "劳斯莱斯",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 274,
+                    "makeName": "LITE",
+                    "carGroupList": [
+                        {
+                            "groupId": 70,
+                            "makeId": null,
+                            "groupName": "北汽新能源",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 71,
+                    "makeName": "雷克萨斯",
+                    "carGroupList": [
+                        {
+                            "groupId": 199,
+                            "makeId": null,
+                            "groupName": "雷克萨斯",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "makeLetter": "M",
+            "carMakeGroupVoList": [
+                {
+                    "makeId": 66,
+                    "makeName": "玛莎拉蒂",
+                    "carGroupList": [
+                        {
+                            "groupId": 149,
+                            "makeId": null,
+                            "groupName": "玛莎拉蒂",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 126,
+                    "makeName": "迈凯伦",
+                    "carGroupList": [
+                        {
+                            "groupId": 172,
+                            "makeId": null,
+                            "groupName": "迈凯伦",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 54,
+                    "makeName": "MINI",
+                    "carGroupList": [
+                        {
+                            "groupId": 9,
+                            "makeId": null,
+                            "groupName": "MINI JCW",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 8,
+                            "makeId": null,
+                            "groupName": "MINI",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 14,
+                    "makeName": "马自达",
+                    "carGroupList": [
+                        {
+                            "groupId": 202,
+                            "makeId": null,
+                            "groupName": "马自达(进口)",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 22,
+                            "makeId": null,
+                            "groupName": "一汽马自达",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 190,
+                            "makeId": null,
+                            "groupName": "长安马自达",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 15,
+                    "makeName": "名爵",
+                    "carGroupList": [
+                        {
+                            "groupId": 85,
+                            "makeId": null,
+                            "groupName": "名爵",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "makeLetter": "N",
+            "carMakeGroupVoList": [
+                {
+                    "makeId": 246,
+                    "makeName": "哪吒汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 82,
+                            "makeId": null,
+                            "groupName": "合众汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 113,
+                    "makeName": "纳智捷",
+                    "carGroupList": [
+                        {
+                            "groupId": 160,
+                            "makeId": null,
+                            "groupName": "纳智捷",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "makeLetter": "O",
+            "carMakeGroupVoList": [
+                {
+                    "makeId": 72,
+                    "makeName": "讴歌",
+                    "carGroupList": [
+                        {
+                            "groupId": 113,
+                            "makeId": null,
+                            "groupName": "广汽讴歌",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 168,
+                            "makeId": null,
+                            "groupName": "讴歌(进口)",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "makeLetter": "P",
+            "carMakeGroupVoList": [
+                {
+                    "makeId": 273,
+                    "makeName": "Polestar极星",
+                    "carGroupList": [
+                        {
+                            "groupId": 10,
+                            "makeId": null,
+                            "groupName": "Polestar",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 84,
+                    "makeName": "帕加尼",
+                    "carGroupList": [
+                        {
+                            "groupId": 105,
+                            "makeId": null,
+                            "groupName": "帕加尼",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "makeLetter": "Q",
+            "carMakeGroupVoList": [
+                {
+                    "makeId": 22,
+                    "makeName": "起亚",
+                    "carGroupList": [
+                        {
+                            "groupId": 36,
+                            "makeId": null,
+                            "groupName": "东风悦达起亚",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 25,
+                    "makeName": "奇瑞",
+                    "carGroupList": [
+                        {
+                            "groupId": 94,
+                            "makeId": null,
+                            "groupName": "奇瑞汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 93,
+                            "makeId": null,
+                            "groupName": "奇瑞新能源",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 272,
+                    "makeName": "乔治·巴顿",
+                    "carGroupList": [
+                        {
+                            "groupId": 49,
+                            "makeId": null,
+                            "groupName": "乔治·巴顿",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 200,
+                    "makeName": "全球鹰",
+                    "carGroupList": [
+                        {
+                            "groupId": 56,
+                            "makeId": null,
+                            "groupName": "全球鹰电动汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 217,
+                    "makeName": "前途",
+                    "carGroupList": [
+                        {
+                            "groupId": 61,
+                            "makeId": null,
+                            "groupName": "前途汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "makeLetter": "R",
+            "carMakeGroupVoList": [
+                {
+                    "makeId": 46,
+                    "makeName": "荣威",
+                    "carGroupList": [
+                        {
+                            "groupId": 27,
+                            "makeId": null,
+                            "groupName": "上汽荣威",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 20,
+                    "makeName": "日产",
+                    "carGroupList": [
+                        {
+                            "groupId": 37,
+                            "makeId": null,
+                            "groupName": "东风日产",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 316,
+                    "makeName": "瑞驰新能源",
+                    "carGroupList": [
+                        {
+                            "groupId": 151,
+                            "makeId": null,
+                            "groupName": "瑞驰新能源",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "makeLetter": "S",
+            "carMakeGroupVoList": [
+                {
+                    "makeId": 83,
+                    "makeName": "smart",
+                    "carGroupList": [
+                        {
+                            "groupId": 11,
+                            "makeId": null,
+                            "groupName": "smart",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 269,
+                    "makeName": "思皓",
+                    "carGroupList": [
+                        {
+                            "groupId": 131,
+                            "makeId": null,
+                            "groupName": "江淮大众",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 21,
+                    "makeName": "三菱",
+                    "carGroupList": [
+                        {
+                            "groupId": 106,
+                            "makeId": null,
+                            "groupName": "广汽三菱",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 23,
+                            "makeId": null,
+                            "groupName": "三菱(进口)",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 134,
+                    "makeName": "上汽MAXUS",
+                    "carGroupList": [
+                        {
+                            "groupId": 25,
+                            "makeId": null,
+                            "groupName": "上汽大通",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 266,
+                    "makeName": "SERES",
+                    "carGroupList": [
+                        {
+                            "groupId": 177,
+                            "makeId": null,
+                            "groupName": "金康SERES",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 220,
+                    "makeName": "SWM斯威汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 12,
+                            "makeId": null,
+                            "groupName": "SWM斯威汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 7,
+                    "makeName": "斯柯达",
+                    "carGroupList": [
+                        {
+                            "groupId": 26,
+                            "makeId": null,
+                            "groupName": "上汽斯柯达",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 75,
+                    "makeName": "双龙",
+                    "carGroupList": [
+                        {
+                            "groupId": 81,
+                            "makeId": null,
+                            "groupName": "双龙",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 187,
+                    "makeName": "赛麟",
+                    "carGroupList": [
+                        {
+                            "groupId": 169,
+                            "makeId": null,
+                            "groupName": "赛麟",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 73,
+                    "makeName": "斯巴鲁",
+                    "carGroupList": [
+                        {
+                            "groupId": 119,
+                            "makeId": null,
+                            "groupName": "斯巴鲁",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "makeLetter": "T",
+            "carMakeGroupVoList": [
+                {
+                    "makeId": 142,
+                    "makeName": "特斯拉",
+                    "carGroupList": [
+                        {
+                            "groupId": 147,
+                            "makeId": null,
+                            "groupName": "特斯拉中国",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 146,
+                            "makeId": null,
+                            "groupName": "特斯拉(进口)",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 122,
+                    "makeName": "腾势汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 162,
+                            "makeId": null,
+                            "groupName": "腾势汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "makeLetter": "W",
+            "carMakeGroupVoList": [
+                {
+                    "makeId": 145,
+                    "makeName": "五十铃",
+                    "carGroupList": [
+                        {
+                            "groupId": 133,
+                            "makeId": null,
+                            "groupName": "江西五十铃",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 114,
+                            "makeId": null,
+                            "groupName": "庆铃汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 9,
+                    "makeName": "沃尔沃",
+                    "carGroupList": [
+                        {
+                            "groupId": 138,
+                            "makeId": null,
+                            "groupName": "沃尔沃亚太",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 137,
+                            "makeId": null,
+                            "groupName": "沃尔沃(进口)",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 242,
+                    "makeName": "威马汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 97,
+                            "makeId": null,
+                            "groupName": "威马汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 182,
+                    "makeName": "潍柴汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 143,
+                            "makeId": null,
+                            "groupName": "潍柴汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 144,
+                            "makeId": null,
+                            "groupName": "潍柴英致",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 142,
+                            "makeId": null,
+                            "groupName": "潍柴亚星",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 82,
+                    "makeName": "五菱",
+                    "carGroupList": [
+                        {
+                            "groupId": 28,
+                            "makeId": null,
+                            "groupName": "上汽通用五菱",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 227,
+                    "makeName": "蔚来",
+                    "carGroupList": [
+                        {
+                            "groupId": 164,
+                            "makeId": null,
+                            "groupName": "蔚来",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 229,
+                    "makeName": "WEY",
+                    "carGroupList": [
+                        {
+                            "groupId": 13,
+                            "makeId": null,
+                            "groupName": "WEY",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "makeLetter": "X",
+            "carMakeGroupVoList": [
+                {
+                    "makeId": 16,
+                    "makeName": "雪佛兰",
+                    "carGroupList": [
+                        {
+                            "groupId": 195,
+                            "makeId": null,
+                            "groupName": "雪佛兰(进口)",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 31,
+                            "makeId": null,
+                            "groupName": "上汽通用雪佛兰",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 288,
+                    "makeName": "星途",
+                    "carGroupList": [
+                        {
+                            "groupId": 122,
+                            "makeId": null,
+                            "groupName": "星途",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 223,
+                    "makeName": "小鹏汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 104,
+                            "makeId": null,
+                            "groupName": "小鹏汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 313,
+                    "makeName": "新宝骏",
+                    "carGroupList": [
+                        {
+                            "groupId": 120,
+                            "makeId": null,
+                            "groupName": "新宝骏",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 23,
+                    "makeName": "现代",
+                    "carGroupList": [
+                        {
+                            "groupId": 67,
+                            "makeId": null,
+                            "groupName": "北京现代",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 8,
+                    "makeName": "雪铁龙",
+                    "carGroupList": [
+                        {
+                            "groupId": 196,
+                            "makeId": null,
+                            "groupName": "雪铁龙(进口)",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 42,
+                            "makeId": null,
+                            "groupName": "东风雪铁龙",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 263,
+                    "makeName": "新特汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 121,
+                            "makeId": null,
+                            "groupName": "新特汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "makeLetter": "Y",
+            "carMakeGroupVoList": [
+                {
+                    "makeId": 259,
+                    "makeName": "云雀汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 52,
+                            "makeId": null,
+                            "groupName": "云雀汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 252,
+                    "makeName": "裕路汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 165,
+                            "makeId": null,
+                            "groupName": "裕路汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 50,
+                    "makeName": "一汽",
+                    "carGroupList": [
+                        {
+                            "groupId": 20,
+                            "makeId": null,
+                            "groupName": "一汽红塔",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 17,
+                            "makeId": null,
+                            "groupName": "一汽吉林",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 74,
+                    "makeName": "英菲尼迪",
+                    "carGroupList": [
+                        {
+                            "groupId": 163,
+                            "makeId": null,
+                            "groupName": "英菲尼迪(进口)",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        },
+                        {
+                            "groupId": 41,
+                            "makeId": null,
+                            "groupName": "东风英菲尼迪",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 309,
+                    "makeName": "远程汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 173,
+                            "makeId": null,
+                            "groupName": "远程汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 235,
+                    "makeName": "云度",
+                    "carGroupList": [
+                        {
+                            "groupId": 51,
+                            "makeId": null,
+                            "groupName": "云度新能源",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 306,
+                    "makeName": "银隆新能源",
+                    "carGroupList": [
+                        {
+                            "groupId": 180,
+                            "makeId": null,
+                            "groupName": "银隆新能源",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 267,
+                    "makeName": "宇通客车",
+                    "carGroupList": [
+                        {
+                            "groupId": 98,
+                            "makeId": null,
+                            "groupName": "宇通客车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 81,
+                    "makeName": "依维柯",
+                    "carGroupList": [
+                        {
+                            "groupId": 79,
+                            "makeId": null,
+                            "groupName": "南京依维柯",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 115,
+                    "makeName": "野马汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 176,
+                            "makeId": null,
+                            "groupName": "野马汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "makeLetter": "Z",
+            "carMakeGroupVoList": [
+                {
+                    "makeId": 41,
+                    "makeName": "中华",
+                    "carGroupList": [
+                        {
+                            "groupId": 73,
+                            "makeId": null,
+                            "groupName": "华晨中华",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 51,
+                    "makeName": "众泰",
+                    "carGroupList": [
+                        {
+                            "groupId": 53,
+                            "makeId": null,
+                            "groupName": "众泰汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 201,
+                    "makeName": "知豆",
+                    "carGroupList": [
+                        {
+                            "groupId": 153,
+                            "makeId": null,
+                            "groupName": "知豆电动车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                },
+                {
+                    "makeId": 93,
+                    "makeName": "中兴汽车",
+                    "carGroupList": [
+                        {
+                            "groupId": 47,
+                            "makeId": null,
+                            "groupName": "中兴汽车",
+                            "groupLetter": null,
+                            "countryName": null,
+                            "ossUrl": null,
+                            "createTime": null,
+                            "updateTime": null,
+                            "groupEnname": null
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "success": true
+}
