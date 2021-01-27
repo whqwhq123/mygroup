@@ -35,9 +35,11 @@
                         selatv == index ? 'sellettersty atv' : 'sellettersty'
                       "
                     >
-                      <span @click="selletterstyFun(item, index)">{{
-                        item
-                      }}</span>
+                      <span
+                        @click="selletterstyFun(item, index)"
+                        style="width: 100px"
+                        >{{ item }}</span
+                      >
                     </el-row>
                   </el-scrollbar>
                 </el-col>
@@ -55,9 +57,9 @@
                         <i
                           class="el-icon-arrow-right"
                           :style="
-                            oneindex == index && onechecked
-                              ? 'margin-left: 18px;display: inherit;'
-                              : 'margin-left: 18px;display: none;'
+                            oneindex == index && istowched
+                              ? 'margin-left: 50px;display: inherit;'
+                              : 'margin-left: 50px;display: none;'
                           "
                         ></i>
                       </el-checkbox>
@@ -75,6 +77,7 @@
                         v-for="(itemtow, index) in listtow.carGroupList"
                         :label="itemtow"
                         :key="itemtow.groupId"
+                        class="ellipsis"
                         @change="
                           handlecheckedchildrenList($event, itemtow, index)
                         "
@@ -175,27 +178,7 @@ export default {
     },
 
   },
-  // computed: {
-  //   treeListdata(){
-  //       let arr=[]
-  //       this.checkedListdata.forEach(element => {
-  //         var newli={id:element.makeId,label:element.makeName,children:[]}
-  //         if(this.checkedchildrenList.length){
-  //         for (let i = 0; i < this.checkedchildrenList.length; i++) {
-  //             var item=element.carGroupList[i]
-  //             var newlia={id:item.groupId,label:item.groupName,children:[]}
-  //             newli.children.push(newlia)
-  //             console.log(newlia);
-     
-  //         }
-  //         }
-  //         arr.push(newli)
-  //       });
-  //       console.log(arr,1);
-  //     return  arr
 
-  //   }
-  // },
   methods: {
     //
     isbrandFun() {
@@ -236,7 +219,7 @@ export default {
     handlecheckedListdata(e,val,index){
       console.log(e,val,index,"1级");
       // this.istowched=e.target.checked
-      
+      this.oneindex=index
       this.istowched=e
       this.listtow=val
 
@@ -253,11 +236,13 @@ export default {
       this.getNoAddCarMakeTree(this.selbrandinpu)
       console.log("搜索数据",this.selbrandinpu);
     },
+    //点击字母触发
     selletterstyFun(item,index){
      
       this.selatv=index
+      this.istowched=false
       this.listone=this.list[this.selatv].carMakeGroupVoList
-      //  console.log(item,index);
+       console.log(item,index);
 
     },
     //tree X 处理
@@ -346,6 +331,12 @@ export default {
 }
 /deep/.el-scrollbar__bar.is-vertical {
   display: none;
+}
+.ellipsis /deep/ .el-checkbox__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 95px !important;
 }
 .dialog-footer {
   display: flex;

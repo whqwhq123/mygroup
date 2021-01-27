@@ -1,7 +1,5 @@
 <template>
-    <div>
-            企业资料
-    </div>
+  <div>企业资料</div>
 </template>
 
 <script>
@@ -11,5 +9,4 @@
 </script>
 
 <style lang="scss" scoped>
-
 </style>
