@@ -31,7 +31,7 @@
                     :label="itemchild1"
                     :key="itemchild1.functionCode"
                     :checked="checked"
-                  
+
                     @change="checkedChange($event, itemchild1.functionCode, item,itemchild1)"
                     >{{ itemchild1.functionName }}
                   </el-checkbox>
@@ -47,7 +47,7 @@
                       v-for="chicheitem in itemchild1.childFunctionList"
                       @change="radioChange(itemchild1,item)"
                       :key="chicheitem.functionCode"
-                     
+                    disabled
                       :label="chicheitem"
                       >{{ chicheitem.functionName }}</el-radio
                     >
@@ -93,7 +93,7 @@ export default {
     console.log(this.rolespowerdata, "角色权限数据");
     console.log(this.rolesseldata, "查看角色权限数据");
     this.rolesseldata.forEach(v => {
-      console.log(v);
+    //   console.log(v);
       this.recursivecheckboxData(this.rolespowerdata,v.functionCode,v.functionLevel)
       this.recursiveradioChange(v.functionCode,v.functionLevel)
     });
@@ -147,7 +147,8 @@ export default {
         for (let i = 0; i < data.length; i++) {
             if(data[i].functionCode==item){
                 // tableCode
-                this.checkboxData[data[i].parentCode]=data[i]
+                this.checkboxData[data[i].functionCode]=data[i]
+                 this.$forceUpdate()
                 return data[i]
             }
             if(data[i].childFunctionList!=null){
@@ -156,14 +157,17 @@ export default {
         }
       }, 
       recursiveradioChange(item,code){
-          console.log(item,code,this.checkboxData);
-          if(this.checkboxData.childFunctionList!=null){
+          if(code==null) return
+             console.log(item,code,this.checkboxData);
+          if(this.checkboxData[item].childFunctionList!=null){
               let arra=this.checkboxData[item].childFunctionList
               console.log(arra,"sdfsdfsd");
-            //   for (let i = 0; i < arra.length; i++) {
-            //       console.log(arra[i].tableCode==code);
-                  
-            //   }
+              for (let i = 0; i < arra.length; i++) {
+                  if(arra[i].tableCode==code){
+                    this.radioData[item]=arra[i]
+                     this.$forceUpdate()
+                  }                
+              }
           }
       }, 
     //多选框选中
