@@ -2,10 +2,10 @@
   <div class="page_body">
     <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="一级渠道管理" name="primary">
-            <primaryChannel />
+            <primaryChannel v-if="activeName == 'primary'"/>
         </el-tab-pane>
         <el-tab-pane label="二级渠道管理" name="secondary">
-          <secondaryChannel />
+          <secondaryChannel  v-if="activeName == 'secondary'"/>
         </el-tab-pane>
     </el-tabs>
   </div>

@@ -146,10 +146,9 @@ export default {
   .left_row {
     width: 43px;
     min-height: 52px;
-    background: #fff;
+    background-color: rgba($color: #fff, $alpha: 0.6);
     position: absolute;
     z-index: 10;
-    background: #fff;
     line-height: 52px;
     padding-left: 13px;
   }

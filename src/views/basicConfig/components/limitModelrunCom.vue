@@ -12,54 +12,56 @@
       <div class="frawertitle">
         {{ limitModeldata.runtype == 1 ? "限售管理" : "车型管理" }}
       </div>
+      <!-- 限售管理 -->
       <div class="limitModel" v-if="limitModeldata.runtype == 1">
-        <div class="limitModel_tit">本田>进口>本田SUV</div>
+        <div class="limitModel_tit">{{this.treeF.label}} > {{this.treeS.label}} > {{limitModeldata.row.modelName}}{{limitModeldata.row.levelName}}</div>
         <div class="limitModel_fun">
           <div class="floatstyf">
-            <div class="floatstyf_tit">批量操作</div>
+            <!-- <div class="floatstyf_tit">批量操作</div>
             <div class="floatstyf_buta" @click="islimitModelcheckFun(2)">
               限售
             </div>
             <div class="floatstyf_buta" @click="islimitModelcheckFun(1)">
               取消限售
-            </div>
+            </div> -->
           </div>
 
           <div class="floatstyr">
             <el-input
               class="floatstyr_inp"
               v-model="inputVal"
+              @keyup.enter.native="entterFun"
               placeholder="请输入内容"
             ></el-input>
-            <div class="floatstyr_buta">查询</div>
+            <div class="floatstyr_buta" @click.native="entterFun">查询</div>
           </div>
         </div>
         <div class="limitModel_tab">
           <el-table
             ref="multipleTable"
-            :data="tableData"
+            :data="restrictionData"
             tooltip-effect="dark"
             style="width: 100%"
             height="550"
             :default-sort="{ order: 'descending' }"
             @selection-change="handleSelectionChange"
           >
-            <el-table-column align="center" type="selection" width="55">
+            <el-table-column align="center"  width="55">
             </el-table-column>
-            <el-table-column align="center" label="全选" width="60">
-              <!-- <template slot-scope="scope">{{ scope.row.date }}</template> -->
-            </el-table-column>
-            <el-table-column align="center" prop="modelname" label="经销商名称">
+            <!-- <el-table-column align="center" label="全选" width="60">
+              <template slot-scope="scope">{{ scope.row.date }}</template>
+            </el-table-column> -->
+            <el-table-column align="center" prop="deptName" label="经销商名称">
             </el-table-column>
             <el-table-column
               align="center"
-              prop="vehicletype"
+              prop="areaName"
               label="所在城市"
               show-overflow-tooltip
             >
             </el-table-column>
             <el-table-column
-              prop="status"
+              prop="isLimit"
               label="是否限售"
               align="center"
               sortable
@@ -67,9 +69,9 @@
             >
               <template slot-scope="scope"
                 ><el-switch
-                  v-model="scope.row.status"
-                  :active-value="1"
-                  :inactive-value="2"
+                  v-model="scope.row.isLimit"
+                  active-value="1"
+                  inactive-value="0"
                   active-color="#13ce66"
                   inactive-color="#dcdfe6"
                   class="swcenter"
@@ -81,17 +83,18 @@
           </el-table>
         </div>
       </div>
+      <!-- 车型管理 -->
       <div class="limitModel" v-if="limitModeldata.runtype == 2">
-        <div class="limitModel_tit">本田>进口>本田SUV</div>
+        <div class="limitModel_tit">{{this.treeF.label}}>{{this.treeS.label}}>{{limitModeldata.row.modelName}}{{limitModeldata.row.levelName}}</div>
         <div class="limitModel_fun">
           <div class="floatstyf">
-            <div class="floatstyf_tit">批量操作</div>
-            <div class="floatstyf_buta" @click="islimitModelcheckFun(1)">
+            <div class="floatstyf_tit">操作</div>
+            <!-- <div class="floatstyf_buta" @click="islimitModelcheckFun(1)">
               在售
             </div>
             <div class="floatstyf_buta" @click="islimitModelcheckFun(2)">
               停售
-            </div>
+            </div> -->
             <div
               class="floatstyf_buta"
               style="width: 96px"
@@ -104,45 +107,47 @@
         <div class="limitModel_tab">
           <el-table
             ref="multipleTable"
-            :data="tableData"
+            :data="tablecatData"
             tooltip-effect="dark"
             style="width: 100%"
             height="550"
             :default-sort="{ order: 'descending' }"
             @selection-change="handleSelectionChange"
           >
-            <el-table-column align="center" type="selection" width="55">
+            <el-table-column align="center"  width="55">
             </el-table-column>
-            <el-table-column align="center" label="全选" width="60">
-              <!-- <template slot-scope="scope">{{ scope.row.date }}</template> -->
-            </el-table-column>
-            <el-table-column align="center" prop="modelname" label="经销商名称">
+            <!-- <el-table-column align="center" label="全选" width="60">
+              <template slot-scope="scope">{{ scope.row.date }}</template>
+            </el-table-column> -->
+            <el-table-column align="center" prop="styleName" label="车型名称">
             </el-table-column>
 
             <el-table-column
-              prop="status"
-              label="是否限售"
+              prop="onSale"
+              label="是否在售"
               align="center"
               sortable
               show-overflow-tooltip
             >
-              <template slot-scope="scope"
-                ><el-switch
-                  v-model="scope.row.status"
-                  :active-value="1"
-                  :inactive-value="2"
-                  active-color="#13ce66"
-                  inactive-color="#dcdfe6"
-                  class="swcenter"
-                  @change="changeSwitch(scope.row)"
-                >
-                </el-switch
-              ></template>
+              <template slot-scope="scope">
+                
+                <el-switch
+                v-model ="scope.row.onSale"
+                active-value='1'
+                inactive-value='0'
+                active-color="#13ce66"
+                inactive-color="#dcdfe6"
+                class="swcenter"
+                @change="changeSale(scope.row)"
+              >
+              </el-switch>
+                
+                </template>
             </el-table-column>
             <el-table-column
               align="center"
               prop="vehicletype"
-              label="所在城市"
+              label="操作"
               show-overflow-tooltip
             >
               <template slot-scope="scope">
@@ -157,50 +162,37 @@
           </el-table>
         </div>
       </div>
-      <!-- 分页 -->
-      <pagination
-        v-if="total > 0"
-        :total="total"
-        :page.sync="listQuery.page"
-        :limit.sync="listQuery.pageSize"
-        @pagination="getList"
-      />
-      <div slot="footer" class="dialog-footer">
-        <el-button class="sdmpbut" @click="islimitModelFun">取 消</el-button>
-        <el-button class="sdmpbut" type="primary" @click="islimitModelFun(1)"
-          >确 定</el-button
-        >
-      </div>
+        <!-- 分页 -->
+        <pagination
+          v-if="total > 0"
+          :total="total"
+          :page.sync="listQuery.page"
+          :limit.sync="listQuery.pageSize"
+          @pagination="getCarModelListFun"
+        />
+
+
     </el-drawer>
+
     <!-- 添加车系 -->
     <el-dialog
-      title="添加车系"
+      title="添加车型"
       :modal-append-to-body="false"
       width="25%"
       :visible.sync="dialogAddmodel"
     >
-      <el-form ref="form" :model="dialogSubData" label-width="40px" size="mini">
-        <el-form-item label="车系">
+      <el-form ref="form" :model="dialogSubData" label-width="80px" size="mini">
+        <el-form-item label="车型名称">
           <el-input
             style="width: 100%"
-            v-model="dialogSubData.subbrandTit"
+            placeholder="请输入自定义车型名称"
+            v-model="dialogSubData"
           ></el-input>
-        </el-form-item>
-        <el-form-item label="车种">
-          <el-select
-            v-model="dialogSubData.subbrandsel"
-            placeholder="请选择子品牌名称"
-          >
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button class="sdmpbut" @click="submitaddmodelFun">取 消</el-button>
-        <el-button class="sdmpbut" type="primary" @click="submitaddmodelFun(1)"
-          >确 定</el-button
-        >
+        <el-button class="sdmpbut" @click="submitaddmodelFun(1)">取 消</el-button>
+        <el-button class="sdmpbut" type="primary" @click="submitaddmodelFun(2)">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -208,6 +200,8 @@
 
 <script>
 import Pagination from "@/components/Pagination";
+import {getCarStyleList,changeOnSale,addCustomizeCarStyle,getDeptList,changeIsLimit} from "api/index.js";
+
   export default {
       props: {
       islimitModel: {
@@ -215,11 +209,16 @@ import Pagination from "@/components/Pagination";
       },
       limitModeldata:{
         type:Object
-      }
       },
-      components: {
-        Pagination
+      treeF:{
+        type:Object,
       },
+       treeS:{
+        type:Object,
+      },
+
+      },
+
       data() {
         return {
           listQuery: {
@@ -227,12 +226,9 @@ import Pagination from "@/components/Pagination";
             pageNum: 1,
             pageSize: 10
           },
-          dialogSubData: {
-              subbrandTit: '',
-              subbrandsel: '',
-              subbrandcus: '',
-            },
-          total: 20,
+          total: 0,
+          dialogSubData: '',
+        
           tableData: [
             {
               id:1,
@@ -269,13 +265,24 @@ import Pagination from "@/components/Pagination";
 
       
           ],
+          tablecatData:[],//车型管理tabs
+          restrictionData:[],//限售管理tabs
           multipleSelection: [],
           islimitModelchecAll:[],
           dialogAddmodel:false,
         }
       },
+      components: {
+        Pagination
+      },
       mounted() {
-        console.log(this.limitModeldata);
+        console.log(this.limitModeldata,this.treeF,this.treeS,);
+        
+        if (this.limitModeldata.runtype==1) {
+          this.getDeptListFun()
+        }else if (this.limitModeldata.runtype==2) {
+          this.getCarStyleListFun()
+        }
       },
         watch: {
       islimitModel(newVal) {
@@ -298,9 +305,22 @@ import Pagination from "@/components/Pagination";
         console.log(val);
     },
         //是否限售
-    changeSwitch (row) {
-      console.log(row);
+    async changeSwitch (row) {
+      console.log(row);  
+      let data={modelId:this.limitModeldata.row.modelId,deptId:row.deptId}
+      let res=await changeIsLimit(data)
+       
     },
+    //是否在售
+    async changeSale(row){
+      console.log(row);
+      let res=await changeOnSale({styleId:row.styleId,onSale:row.onSale==1?0:1})
+    },
+    // 限售管理查询
+    entterFun(){
+      this.getDeptListFun(this.inputVal.trim())
+    },
+
     //  批量操作  限售 取消限售
     islimitModelcheckFun(i){
       console.log(this.tableData);
@@ -339,10 +359,79 @@ import Pagination from "@/components/Pagination";
       console.log("添加车系");
     },
     //tianja添加车系
-    submitaddmodelFun(){
-      this.dialogAddmodel=false
-    },
+    async  submitaddmodelFun(type){
+      if(type==2){
+        console.log("发送请求",this.dialogSubData);
+        // styleName  车型名称
+        // modelId  车系id
+        console.log(this.limitModeldata.row.modelId);
+        if(this.dialogSubData.trim()!=''){
+        let data={
+          styleName:this.dialogSubData.trim(),
+          modelId:this.limitModeldata.row.modelId
+        }
+        let res=await addCustomizeCarStyle(data)
+        if (res.code==0) {
+          
+        this.dialogSubData=''
+        this.$message({
+          message: '添加成功',
+          type: 'success'
+        });
+        this.getCarStyleListFun()
+        this.dialogAddmodel=false
+        }else{
+           this.$message.error('操作失败');
+        }
+        }else{
+          this.$message.error('请填写车系名称');
+        }
 
+      }else{
+        this.dialogAddmodel=false
+      }
+      
+    },
+    //ajax
+    //车型管理tabs
+    async getCarStyleListFun(){
+      // modelId 车系id
+      // pageSize 每页数量
+      // pageNum 第几页
+      let data={
+        modelId:this.limitModeldata.row.modelId,
+        pageSize:this.listQuery.pageSize,
+        pageNum:this.listQuery.pageNum,
+      }
+      console.log();
+      let res=await getCarStyleList(data)
+      if(res.code==0){
+          console.log(res.data,"datadatadatadata车型管理tabs");
+          this.tablecatData=res.data
+          this.total=res.data.length
+      }else{
+          this.$message.error('操作失败');
+      }
+    },
+    //限售管理tabs restrictionData:[],//限售管理tabs  查询
+     async getDeptListFun(deptName=''){
+        let data={
+          modelId:this.limitModeldata.row.modelId,
+          groupId:this.limitModeldata.row.groupId,
+          deptName,
+          pageSize:this.listQuery.pageSize,
+          pageNum:this.listQuery.pageNum,
+        }
+        console.log();
+        let res=await getDeptList(data)
+        if(res.code==0){
+            console.log(res.data,"datadatadatadatax限售管理tabs");
+            this.restrictionData=res.data.list
+            this.total=res.data.total
+        }else{
+            this.$message.error('操作失败');
+        }
+      }
     }
 
   }
@@ -365,7 +454,7 @@ import Pagination from "@/components/Pagination";
 /deep/.el-input {
   height: 32px;
   line-height: 32px;
-  width: 180px;
+  // width: 180px;
 }
 /deep/ :focus {
   outline: 0;
@@ -382,6 +471,12 @@ import Pagination from "@/components/Pagination";
   font-size: 20px;
   font-weight: 600;
   margin-bottom: 20px;
+}
+.sdmpbut{
+  width: 50% !important;
+}
+.dialog-footer{
+  display: flex;
 }
 .limitModel {
   .limitModel_tit {

@@ -5,7 +5,7 @@
       :visible.sync="isbrand"
       append-to-body
       width="35%"
-      :before-close="isbrandFun"
+      :before-close="isbrand"
     >
       <div class="addbrand">
         <el-row style="height: 100%">
@@ -50,19 +50,20 @@
                         v-for="(itemone, index) in listone"
                         :label="itemone"
                         :key="itemone.makeId"
-                        style="margin-bottom: 7px"
+                        style="margin-bottom: 7px;width: 100px;"
                         @change="handlecheckedListdata($event, itemone, index)"
                       >
                         {{ itemone.makeName }}
-                        <i
+
+                      </el-checkbox>
+                        <!-- <i
                           class="el-icon-arrow-right"
                           :style="
                             oneindex == index && istowched
                               ? 'margin-left: 50px;display: inherit;'
                               : 'margin-left: 50px;display: none;'
                           "
-                        ></i>
-                      </el-checkbox>
+                        ></i> -->
                     </el-checkbox-group>
                   </el-scrollbar>
                 </el-col>
@@ -117,22 +118,21 @@
         </el-row>
       </div>
       <el-form label-width="130px" style="margin-top: 20px">
-        <el-form-item label="添加自定义子品牌">
-          <el-input v-model="sundata"></el-input>
+        <el-form-item label="添加自定义父品牌">
+          <el-input v-model="sundata" placeholder="请输入自定义父品牌"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button class="sdmpbut" @click="isbrandFun">取 消</el-button>
-        <el-button class="sdmpbut" type="primary" @click="isbrandFun"
+        <el-button class="sdmpbut" @click="isbrandFun(2)">取 消</el-button>
+        <el-button class="sdmpbut" type="primary" @click="isbrandFun(1)"
           >确 定</el-button
         >
       </div>
     </el-dialog>
   </div>
 </template>
-
 <script>
-import { getNoAddCarMakeTree } from "api/index.js";
+import { getNoAddCarMakeTree,addCustomizeCarMake,addCarMake } from "api/index.js";
 export default {
   props: {
     isbrand: {
@@ -140,7 +140,6 @@ export default {
     }
   },
   data() {
-
     return {
         checkedListdata:[],//一级目录选中的数组
         checkedchildrenList:[],//二级目录选中的数组
@@ -157,7 +156,6 @@ export default {
         //一级目录数据初始化
         list:[],
         listone:[],
-
     };
   },
   watch: {
@@ -176,14 +174,68 @@ export default {
         this.checkedchildrenList=newVal
         this.gettree()
     },
-
   },
-
   methods: {
-    //
-    isbrandFun() {
-      console.log(this.treeListdata);
-      this.isbrand = false;
+    //确定取消按钮
+    async isbrandFun(i) {
+      //添加品牌
+      if(i==1){
+      if (this.sundata!='') {
+        let res= await addCustomizeCarMake({makeName:this.sundata})
+        if(res.code==0){
+          this.isbrand = false
+          this.$message({
+          message: '添加成功',
+          type: 'success'
+        });
+        }else{
+          this.$message({
+            message: res.errMsg,
+            type: 'warning'
+          });
+        }
+      }
+      if(this.treeListdata.length){
+        var makeIds=''
+        var groupIds=''
+        this.treeListdata.forEach(v => {
+          makeIds+=v.id+','
+          if(v.children.length){
+            v.children.forEach(v1 => {
+              groupIds+=v1.id+','
+            });
+          }
+        });
+       makeIds = makeIds.substring(0, makeIds.lastIndexOf(','));
+       groupIds = groupIds.substring(0, groupIds.lastIndexOf(','));
+       if(makeIds!='' && groupIds!=''){
+        let res=await addCarMake({makeIds,groupIds})
+        if(res.code==0){
+        this.isbrand = false;
+        this.$message({
+          message: '添加成功',
+          type: 'success'
+        });
+        }else{
+          // res.errMsg
+          this.$message({
+          message: res.errMsg,
+          type: 'warning'
+        });
+        }
+       }else{
+        this.$message({
+          message: '请选择品牌',
+          type: 'warning'
+       })
+       }
+      }
+      }else if (i==2) {
+        this.isbrand = false;
+      }
+
+     //调用父组件的 请求
+      this.$parent.getAddCarMakeTreeFun()
     },
     //tree 数据处理
     gettree(){
@@ -200,56 +252,47 @@ export default {
                 for (let j = 0; j < element.carGroupList.length; j++) {
                   var jtem=element.carGroupList[j]
                   if(item.groupId==jtem.groupId){
-                        console.log(jtem,"dangqia");
                         var newlia={id:item.groupId,label:item.groupName,children:[]}
                         newli.children.push(newlia)   
                   }
-                      // console.log(item,jtem);
-                  
+                      // console.log(item,jtem);         
                 }
               }
-            }
-          
+            }  
           arr.push(newli)
         });
-        console.log(arr,'treeListdata');
+        // console.log(arr,'treeListdata');
       this.treeListdata=arr
     },
     // 一级多选目录
     handlecheckedListdata(e,val,index){
-      console.log(e,val,index,"1级");
+      // console.log(e,val,index,"1级");
       // this.istowched=e.target.checked
       this.oneindex=index
       this.istowched=e
       this.listtow=val
-
-
-
-
     },
     //二级多选目录
     handlecheckedchildrenList(e,val,index){
-      console.log(e,val,index,"2级");
+      // console.log(e,val,index,"2级");
     },
     //搜索父品牌子品牌
     addbrandleftseleFun(){
       this.getNoAddCarMakeTree(this.selbrandinpu)
-      console.log("搜索数据",this.selbrandinpu);
+      // console.log("搜索数据",this.selbrandinpu);
     },
     //点击字母触发
     selletterstyFun(item,index){
-     
       this.selatv=index
       this.istowched=false
       this.listone=this.list[this.selatv].carMakeGroupVoList
-       console.log(item,index);
-
+      //  console.log(item,index);
     },
     //tree X 处理
     remove(node,data){
-      console.log(node,data);
-            console.log(this.checkedListdata,'一级选中数据');
-      console.log(this.checkedchildrenList,'二级选中数据');
+      // console.log(node,data);
+      // console.log(this.checkedListdata,'一级选中数据');
+      // console.log(this.checkedchildrenList,'二级选中数据');
       for (let i = 0; i < this.checkedListdata.length; i++) {
         if(this.checkedListdata[i].makeId==data.id){
            this.checkedListdata.splice(i,1)
@@ -260,32 +303,31 @@ export default {
            this.checkedchildrenList.splice(j,1)
         }
       }
-
-     
     },
-    async getNoAddCarMakeTree(){
-      
-    var res = require('./api.json')//加载本地数据文件
-    this.listzm=res.data.map(v=>{
-        return v.makeLetter
-     })
-      this.list=res.data
-      this.listone=this.list[this.selatv].carMakeGroupVoList
-      console.log( this.list,this.listone,this.listzm);
-      // let res=await getNoAddCarMakeTree({makeName:''})
-      // if(res.code==0){
-      //     this.listzm=res.data.map(v=>{
-      //       return v.makeLetter
-      //     })
-      //     this.list=res.data
-      //     this.listone=this.list[this.selatv].carMakeGroupVoList
-      //     console.log( this.list,this.listone,this.listzm);
-      // }
-     
+    async getNoAddCarMakeTree(makeName=''){
+      let res=await getNoAddCarMakeTree({makeName})
+      if(res.code==0){
+          if (makeName=='') {
+          this.listzm=res.data.map(v=>{
+            return v.makeLetter
+          })
+          this.list=res.data
+          this.listone=this.list[this.selatv].carMakeGroupVoList
+          // console.log( this.list,this.listone,this.listzm,this.selatv);
+          }else{
+            // console.log(res.data[0].makeLetter, this.selatv);
+            this.listzm.forEach((v,i) => {
+              if (v==res.data[0].makeLetter) {
+                this.selatv=i
+                this.listone=this.list[this.selatv].carMakeGroupVoList         
+              }
+            });           
+          }
+      }
     },
   },
   mounted() {
-    this.getNoAddCarMakeTree()
+    this.getNoAddCarMakeTree();
     console.log(this.isbrand);
   }
 };

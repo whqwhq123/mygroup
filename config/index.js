@@ -29,7 +29,7 @@ module.exports = {
     // },
     autoOpenBrowser: true,
     host: '127.0.0.1', 
-    port: 8878, 
+    port: 8090, 
     devtool: 'cheap-module-eval-source-map',
   },
 //   build: {

@@ -8,3 +8,26 @@
     width: 500px !important;
     height: 32px !important;
 }
+
+/* 修改级联选择器样式 */
+.el-checkbox__input.is-checked .el-checkbox__inner,
+.el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  border-color: #7cd2a2 !important;
+  background: #7cd2a2 !important;
+  color: #7cd2a2 !important;
+}
+
+.el-cascader-node.in-active-path, .el-cascader-node.is-active, .el-cascader-node.is-selectable.in-checked-path {
+    color: #606266 !important;
+}
+
+.el-checkbox__inner:hover {
+  border-color: #7cd2a2 !important;
+}
+.el-checkbox__input.is-checked + .el-checkbox__label {
+  color: #606266 !important;
+}
+.el-checkbox__input.is-focus .el-checkbox__inner,
+.el-checkbox__inner.is-focus .el-checkbox__inner {
+  border-color: #7cd2a2 !important;
+}

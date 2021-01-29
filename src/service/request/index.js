@@ -1,4 +1,5 @@
 import axios from 'axios'
+import store from '@/store'
 
 // create an axios instance
 const service = axios.create({
@@ -7,10 +8,9 @@ const service = axios.create({
 
 service.interceptors.request.use(
   config => {
-    // if (store.getters.token) {
-    //   config.headers['token'] = getToken()
-    // }
-    // config.headers['api-version'] = process.env.VUE_APP_API_VERSION
+    if (store.getters.token) {
+      config.headers['token'] = store.getters.token || ''
+    }
 
     return config
   },
@@ -38,4 +38,3 @@ service.interceptors.response.use(
 )
 
 export default service
-

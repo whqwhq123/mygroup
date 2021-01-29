@@ -1,11 +1,9 @@
-// import { login, logout } from '@/api/user'
-import { asyncRoutes, constantRoutes } from '@/router'
-// 
+import { login } from '@/service/api'
 
 const state = {
   token: '',  //token
   userInfo: {}, //用户信息
-  roles: constantRoutes.concat(asyncRoutes)
+  roles: []
 }
 
 const mutations = {
@@ -22,30 +20,17 @@ const mutations = {
 
 const actions = {
   // user login
-  login({ commit }, userInfo) {
+  userLogin({ commit }, userInfo) {
     return new Promise((resolve, reject) => {
-      // login(userInfo).then(response => {
-      //   const { data } = response
-      //   commit('SET_TOKEN', data.token)
-
-      //   // commit('SET_ROLES', data.roles)
-      //   setToken(data.token)
-      //   resolve()
-      // }).catch(error => {
-      //   reject(error)
-      // })
-      const response = {
-        token: 'kkkkkkkkkkkkkkkkk',
-        info: {
-          name: '王五',
-          avatar: '',
-        },
-        roles: []
-      }
-      commit('SET_TOKEN', response.token)
-      commit('SET_UserInfo', response.info)
-      commit('SET_ROLES', constantRoutes.concat(asyncRoutes))
-      resolve()
+      login(userInfo).then(response => {
+        const { data } = response
+        commit('SET_TOKEN', data[1] || '')
+        commit('SET_UserInfo', data[0] || {})
+        commit('SET_ROLES', data[2])
+        resolve()
+      }).catch(error => {
+        reject(error)
+      })
     })
   },
 
@@ -62,7 +47,7 @@ const actions = {
       // })
     })
   },
-  
+
   // remove token
   resetToken({ commit }) {
     return new Promise(resolve => {
@@ -73,7 +58,6 @@ const actions = {
     })
   },
 
-  // dynamically modify permissions
   // changeRoles({ commit, dispatch }, role) {
   //   return new Promise(async resolve => {
   //     const token = role + '-token'

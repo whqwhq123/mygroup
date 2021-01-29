@@ -67,7 +67,7 @@ $bgColor: #43425d;
   position: fixed;
   top: 70px;
   left: 0;
-  z-index: 999;
+  // z-index: 999;
 }
 </style>
 <style scoped>

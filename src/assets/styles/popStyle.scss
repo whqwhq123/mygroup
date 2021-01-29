@@ -6,6 +6,10 @@
         opacity: 1;
         border-radius: 4px;
     }
+
+    /deep/.el-dialog__footer {
+        padding: 0;
+      }
     
     .dialog-footer {
         width: 100%;
@@ -26,7 +30,7 @@
                 color: #6289FE !important;
             }
 
-            &::before{
+            &:last-child::before{
                 content: '';
                 display: inline-block;
                 width: 1px;

@@ -1,96 +1,109 @@
  <!-- 添加人员 修改人员 -->
 <template>
-    <el-dialog :title="addAndsee" append-to-body="true" :visible.sync="isAddAndseeStaff" class="addAndseeStaff">
+  <div>
+    <el-dialog :title="addAndsee" append-to-body="true" :visible.sync="isAddAndseeStaff" width="600px" class="dialogStyle" :before-close="closeAddAndseeStaff">
       <!-- 表单内容 -->
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-        <el-row :gutter="20" class="lefromTit">
-          <el-col :span="6" :offset="1"><div class="grid-content bg-purple">基本信息</div></el-col>
-        </el-row>
-        <el-form-item label="姓名" prop="name">
-          <el-input v-model="ruleForm.name" placeholder="请输入真实姓名"></el-input>
+      <el-form ref="ruleForm" :model="editForm" :rules="rules" label-width="130px">
+        <div class="formBlockTit">基本信息</div>
+        <el-form-item label="姓名" prop="userName">
+          <el-input v-model="editForm.userName" placeholder="请输入真实姓名"></el-input>
         </el-form-item>
-        <el-form-item label="性别" prop="gender">
-          <el-radio-group v-model="ruleForm.gender">
-            <el-radio label="男"></el-radio>
-            <el-radio label="女"></el-radio>
-          </el-radio-group>
+        <el-form-item label="性别" prop="userSex">
+          <div class="radio_box">
+            <div class="radio_item">
+              <svg-icon :class="editForm.userSex == '1' ? 'select_icon' : ''" :icon-class="editForm.userSex == '1' ? 'singleChoice_icon' : 'singleChoice2_icon'" />男
+            </div>
+            <div class="radio_item">
+              <svg-icon :class="editForm.userSex == '2' ? 'select_icon' : ''" :icon-class="editForm.userSex == '2' ? 'singleChoice_icon' : 'singleChoice2_icon'" />女
+            </div>
+          </div>
         </el-form-item>
-        <el-form-item label="手机号" prop="phone">
-          <el-input v-model="ruleForm.phone" maxlength="11" ></el-input>
+        <el-form-item label="手机号" prop="userPhone">
+          <el-input v-model="editForm.userPhone" placeholder="请输入手机号" maxlength="11" ></el-input>
         </el-form-item>
-        <el-form-item label="所属部门" prop="department">
-          <el-select v-model="ruleForm.department" placeholder="请选择部门">
+        <el-form-item label="所属部门" prop="userDeptId">
+          <el-select v-model="editForm.userDeptId" placeholder="请选择">
             <el-option label="部门一" value="shanghai"></el-option>
             <el-option label="部门二" value="beijing"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="直属领导" prop="region">
-          <el-select v-model="ruleForm.region" placeholder="请选择领导">
-            <el-option label="领导一" value="shanghai"></el-option>
-            <el-option label="领导二" value="beijing"></el-option>
+        <el-form-item label="兼职部门" prop="deptIds">
+          <el-select v-model="editForm.deptIds" placeholder="请选择">
+            <el-option label="部门一" value="shanghai"></el-option>
+            <el-option label="部门二" value="beijing"></el-option>
           </el-select>
         </el-form-item>
-        <el-row :gutter="20" class="lefromTit">
-          <el-col :span="6" :offset="1"><div class="grid-content bg-purple">人事信息</div></el-col>
-        </el-row>
-          <el-form-item label="工号" prop="jobnum">
-            <el-input v-model="ruleForm.jobnum"></el-input>
+        <el-form-item label="角色" prop="roleIds">
+          <el-cascader v-model="editForm.roleIds" placeholder="请选择" :options="roleOptions" :props="props" clearable></el-cascader>
+        </el-form-item>
+        <el-form-item label="负责品牌" prop="ucUserBrands">
+          <el-select v-model="editForm.ucUserBrands" placeholder="请选择" disabled @click.native="isbrandPop = true"></el-select>
+        </el-form-item>
+
+        <div class="formBlockTit">人事信息</div>
+        <el-form-item label="工号" prop="userCode">
+            <el-input v-model="editForm.userCode"></el-input>
           </el-form-item>
         <el-form-item label="入职时间" required>
-            <el-form-item prop="date">
-              <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date" style="width: 100%"></el-date-picker>
+            <el-form-item prop="entryTime">
+              <el-date-picker type="date" placeholder="选择日期" v-model="editForm.entryTime" style="width: 100%"></el-date-picker>
             </el-form-item>
         </el-form-item>
-        <el-form-item label="职位" prop="position">
-          <el-input v-model="ruleForm.position"></el-input>
+        <el-form-item label="职位" prop="userPosition">
+          <el-input v-model="editForm.userPosition"></el-input>
         </el-form-item>
-        <el-form-item label="职级" prop="rank">
-          <el-input v-model="ruleForm.rank"></el-input>
+        <el-form-item label="职级" prop="userLevel">
+          <el-input v-model="editForm.userLevel"></el-input>
         </el-form-item>
-        <el-form-item label="是否在职" prop="isonthejob">
-          <el-switch v-model="ruleForm.isonthejob" :active-text-color="ruleForm.isonthejob?'#DCDFE6':'#DCDFE6'" :active-text="ruleForm.isonthejob?'在职':'离职'"></el-switch>
+        <el-form-item label="是否在职" prop="positionStatus">
+          <div class="radio_box">
+            <div class="radio_item">
+              <svg-icon :class="editForm.positionStatus == '1' ? 'select_icon' : ''" :icon-class="editForm.positionStatus == '1' ? 'singleChoice_icon' : 'singleChoice2_icon'" />在职
+            </div>
+            <div class="radio_item">
+              <svg-icon :class="editForm.positionStatus == '2' ? 'select_icon' : ''" :icon-class="editForm.positionStatus == '2' ? 'singleChoice_icon' : 'singleChoice2_icon'" />离职
+            </div>
+          </div>
         </el-form-item>
-        <!-- <el-form-item label="特殊资源" prop="resource">
-          <el-radio-group v-model="ruleForm.resource">
-            <el-radio label="线上品牌商赞助"></el-radio>
-            <el-radio label="线下场地免费"></el-radio>
-          </el-radio-group>
-        </el-form-item> -->
-        <el-row :gutter="20" class="lefromTit">
-          <el-col :span="6" :offset="1"><div class="grid-content bg-purple">备注信息</div></el-col>
-        </el-row>
-        <el-form-item  prop="desc">
-          <el-input type="textarea" resize="false" placeholder="请输入异动原因" v-model="ruleForm.desc"></el-input>
+
+        <div class="formBlockTit">备注信息</div>
+        <el-form-item prop="userRemark">
+          <el-input type="textarea" resize="false" placeholder="请输入异动原因" v-model="editForm.userRemark"></el-input>
         </el-form-item>
       </el-form>
-      <!-- 底部按钮 -->
       <div slot="footer" class="dialog-footer">
-        <el-button class="sdmpbut" @click="isAddAndseeStaff = false">取 消</el-button>
-        <el-button classs="sdmpbut" type="primary" @click="submitForm('ruleForm')">确 定</el-button>
+        <el-button type="text" class="popBtn" @click="closeAddAndseeStaff()">取 消</el-button>
+        <el-button type="text" class="popBtn" @click="submitForm()">确 定</el-button>
       </div>
     </el-dialog>
+    <brand-pop v-if="isbrandPop" :isbrandPop="isbrandPop" :isMultiple="true" :isEdit="isEdit" :brandInfo="brandInfo" @brandClick="brandClick"/>
+  </div>
 </template>
 
 <script>
+import { addUser } from '@/service/api/index';
+import { checkPhone } from '@/utils/index';
+import brandPop from "./brandPop";
 export default {
   props: {
     isAddAndseeStaff: {
       type: Boolean,
+      default: false,
     },
-    addAndsee: {
-      type: String,
+    isEdit: {
+      type: Boolean,
+      default: false
     },
-    addAndseefromData:{
-       type: Object,
+    personnelInfo:{
+      type: Object,
+      default: {}
     }
   },
   data() {
     var checkphone = (rule, value, callback) => {
-      // let phoneReg = /(^1[3|4|5|6|7|8|9]\d{9}$)|(^09\d{8}$)/;
       if (value === "") {
         callback(new Error("请输入手机号"));
-      } else if (!this.isCellPhone(value)) {
-        // 引入methods中封装的检查手机格式的方法
+      } else if (!checkPhone(value)) {
         callback(new Error("请输入正确的手机号!"));
       } else {
         callback();
@@ -98,144 +111,247 @@ export default {
     };
     return {
       dialogtitle: "",
+      addAndsee: '添加人员',
       isAddAndseeStaff: false,
-      ruleForm: {
-        name: "",
-        gender: "男",
-        phone: "",
-        department:"",  
-        jobnum:"",
-        region: "",
-        date: "",
-        position:"",
-        rank:"",
-        isonthejob: false,
-        resource: "",
-        desc: "",
+      props: { multiple: true },
+      roleOptions: [{
+        value: 1,
+        label: '东南',
+        children: [{
+          value: 2,
+          label: '上海',
+          children: [
+            { value: 3, label: '普陀' },
+            { value: 4, label: '黄埔' },
+            { value: 5, label: '徐汇' }
+          ]
+        }, {
+          value: 7,
+          label: '江苏',
+          children: [
+            { value: 8, label: '南京' },
+            { value: 9, label: '苏州' },
+            { value: 10, label: '无锡' }
+          ]
+        }, {
+          value: 12,
+          label: '浙江',
+          children: [
+            { value: 13, label: '杭州' },
+            { value: 14, label: '宁波' },
+            { value: 15, label: '嘉兴' }
+          ]
+        }]
+      }, {
+        value: 17,
+        label: '西北',
+        children: [{
+          value: 18,
+          label: '陕西',
+          children: [
+            { value: 19, label: '西安' },
+            { value: 20, label: '延安' }
+          ]
+        }, {
+          value: 21,
+          label: '新疆维吾尔族自治区',
+          children: [
+            { value: 22, label: '乌鲁木齐' },
+            { value: 23, label: '克拉玛依' }
+          ]
+        }]
+      }],
+      isbrandPop: false,
+      brandInfo: {},
+      editForm: {
+        userId: '',
+        userName: '',
+        userSex: '1',  //1 男 2女
+        // userPassword: '',
+        userCode: '',
+        userPhone: '',
+        userDeptId: '',
+        userBaseId: '',
+        entryTime: '',
+        userPosition: '',
+        userLevel: '',
+        positionStatus: '1',  //1在职，2离职
+        userRemark: '',
+        roleIds: '',
+        deptIds: '',
+        ucUserBrands: '',
+
       },
       rules: {
-        name: [
+        userName: [
           { required: true, message: "请输入姓名", trigger: "blur" },
-          { min: 2, max: 4, message: "长度在 2 到 4 个汉字", trigger: "blur" },
         ],
-        phone: [{ required: true, validator: checkphone, trigger: "blur" }],
-        department:[ { required: true, message: "请选择所属部门", trigger: "change" },],
-        region: [
-          { required: true, message: "请选择直属领导", trigger: "change" },
+        userSex: [
+          { required: true, message: "请选择是性别", trigger: "change" },
         ],
-        jobnum:[
+        userPhone: [
+          { required: true, validator: checkphone, trigger: "blur" }
+        ],
+        userDeptId:[ 
+          { required: true, message: "请选择所属部门", trigger: "change" }
+        ],
+        roleIds: [
+          { required: true, message: "请选择角色", trigger: "change" }
+        ],
+        ucUserBrands: [
+          { required: true, message: "请选择负责品牌", trigger: "change" }
+        ],
+        userCode:[
           { required: true, message: "请输入工号", trigger: "blur" },
         ],
-        date: [
-          {
-            type: "date",
-            required: true,
-            message: "请选择日期",
-            trigger: "change",
-          },
-        ],
-        position: [{ required: true, message: "请输入职位", trigger: "blur" },],
-        rank: [{ required: true, message: "请输入职级", trigger: "blur" },],
-        resource: [
-          { required: true, message: "请选择活动资源", trigger: "change" },
+        positionStatus: [
+          { required: true, message: "请选择是否在职", trigger: "change" },
         ]
       },
     };
   },
+  components: {
+    brandPop
+  },
   watch: {
     isAddAndseeStaff(newVal) {
-      this.$emit("update:addAndseeStaffBol", newVal);
       this.isAddAndseeStaff = newVal;
     },
-    addAndsee(newVal) {
-      this.addAndsee = newVal;
-    },
-  },
-  methods: {
-    //按钮确定
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          console.log("submit!", this.ruleForm);
-          this.isAddAndseeStaff = false;
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-    //手机号验证
-    isCellPhone(val) {
-      if (!/^1(3|4|5|6|7|8)\d{9}$/.test(val)) {
-        return false;
-      } else {
-        return true;
-      }
+    personnelInfo(newVal) {
+      this.personnelInfo = newVal;
     },
   },
   mounted() {
-    // addAndseefromData
-    console.log(this.ruleForm, "this.ruleForm");
-    console.log(this.isAddAndseeStaff, "this.dialogFormVisible");
+    
+
   },
+  methods: {
+    init() {
+      this.addAndsee = !this.isEdit ? '添加人员' : '修改人员'
+    },
+
+    //按钮确定
+    submitForm() {
+      this.$refs.ruleForm.validate(valid => {
+        if (valid) {
+          // let lngLatArr = []
+          // lngLatArr = this.editForm.lngLat && this.editForm.lngLat.split(',');
+          // let data = {
+          //   ...this.editForm,
+          //   curUserId: this.$store.getters.userInfo.userId || '',
+          //   deptLng: lngLatArr[0] || '',
+          //   deptLat: lngLatArr[1] || ''
+          // }
+          // delete data.address
+          // console.log(data)
+          
+          // if(!this.organizationInfo.isEdit) {
+          //   deptAdd(data).then(res => {
+          //     if(res.code == '0') {
+          //       this.$message({ type: 'success', message: '添加成功' })
+          //       this.isOrganize = false
+          //       this.$emit('closePop', true)
+          //     } else {
+          //       this.$message({
+          //         type: 'warning',
+          //         message: res.errMsg
+          //       })
+          //     }
+          //   })
+          // } else {
+          //   delete data.createTime
+          //   deptEdit(data).then(res => {
+          //     if(res.code == '0') {
+          //       this.$message({ type: 'success', message: '修改成功' })
+          //       this.isOrganize = false
+          //       this.$emit('closePop', true)
+          //     } else {
+          //       this.$message({
+          //         type: 'warning',
+          //         message: res.errMsg
+          //       })
+          //     }
+          //   })
+          // }
+
+          
+        }
+      })
+    },
+
+    brandClick(data) {
+      console.log(data)
+      // this.editForm = {
+      //   ...this.editForm,
+      //   ...data
+      // }
+      this.isbrandPop = false
+    },
+
+
+    closeAddAndseeStaff () {
+      this.isAddAndseeStaff = false
+      this.$emit('closePop', false)
+    }
+
+  }
 };
 </script>
 
 <style lang="scss" scoped>
-/deep/ .el-button {
-  width: 50% !important;
-}
-/deep/ .el-dialog {
-  width: 700px;
-  margin-top: 48px !important;
-}
-/deep/ .el-dialog__wrapper{
-  z-index: 9991 !important;
-}
-/deep/ .el-dialog__title {
-  font-size: 20px;
-  color: #43425d;
-}
-/deep/ input.el-input__inner{
-  width: 500px !important;
-  height: 32px !important;
-  line-height:32px !important;
-}
-/deep/ .el-textarea{
-  width: 500px;
-  resize: none;
-}
-/deep/ .el-date-editor{
-  width: 500px !important;
-  height: 32px !important;
-  line-height:32px !important;
-}
-/deep/ .el-input__icon{
-  line-height:32px !important;
-}
-/deep/ .el-form-item__label{
-  line-height:32px !important;
-}
-/deep/ .el-textarea__inner{ // 然后找到对应的类名，在这里将拉伸去掉即可
-  resize: none;
-}
-/deep/ .el-form-item__content{
-  line-height: 32px;
-}
-.claFrom {
-  height: 646px;
-}
-.lefromTit {
-  color: #4d4f5c;
+@import '@/assets/styles/popStyle.scss';
+.formBlockTit {
   font-size: 16px;
-  margin-bottom: 30px;
+  font-family: Source Han Sans CN;
   font-weight: bold;
+  line-height: 20px;
+  color: #4D4F5C;
+  padding: 0 0 20px 40px;
+  box-sizing: border-box;
 }
-.dialog-footer {
+
+/deep/.el-input.is-disabled .el-input__inner {
+    background-color: #fff;
+    border-color: #E4E7ED;
+    color: #43425d;
+    cursor: pointer;
+}
+
+/deep/.el-input,
+/deep/.el-textarea {
+  width: 400px !important;
+}
+
+/deep/.el-form-item__content {
+  line-height: 40px;
+}
+
+/deep/.el-textarea{
+  position: absolute;
+  bottom: -18px;
+  left: 0;
+}
+
+.radio_box {
+  width: 100%;
   display: flex;
+  display: -webkit-flex;
+  display: -webkit-inline-flex;
+  font-size: 16px;
+  font-family: Source Han Sans CN;
+  font-weight: 400;
+  color: #4D4F5C;
+
+  .radio_item {
+    margin-right: 30px;
+    
+    .svg-icon {
+      margin-right: 6px;
+      color: #D7DAE2;
+    }
+    .select_icon {
+      color: #7CD2A2;
+    }
+  }
 }
 </style>
-<style>
-</style>
-
-

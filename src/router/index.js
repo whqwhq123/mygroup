@@ -125,7 +125,27 @@ export const asyncRoutes = [{
         title: '原始线索',
         icon: 'enterprise'
       }
-    }
+    },
+    {
+      path: 'addClue',
+      component: () => import('@/views/clueManage/addClue'),
+      name: 'addClue',
+      hidden:true,
+      meta: {
+        title: '新增原始线索',
+        icon: 'originalClue'
+      }
+    },
+    {
+      path: 'clueDetail',
+      component: () => import('@/views/clueManage/clueDetail'),
+      name: 'clueDetail',
+      hidden:true,
+      meta: {
+        title: '原始线索详情',
+        icon: 'originalClue'
+      }
+    },
   ]
 },
   // { path: '*', redirect: '/404', hidden: true }

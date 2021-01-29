@@ -1,254 +1,473 @@
- <!-- 添加人员 修改人员 -->
+<!-- 添加人员 修改人员 -->
 <template>
-    <el-dialog :title="addAndsee" append-to-body="true" :visible.sync="isOrganize" class="addAndseeStaff">
+  <div>
+    <el-dialog
+      :title="addAndsee"
+      append-to-body="true"
+      :visible.sync="isOrganize"
+      :before-close="closeOrganize"
+      width="700px"
+      class="dialogStyle"
+    >
       <!-- 表单内容 -->
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-        <el-row :gutter="20" class="lefromTit">
-          <el-col :span="6" :offset="1"><div class="grid-content bg-purple">基本信息</div></el-col>
-        </el-row>
-        <el-form-item label="上级名称" prop="name">
-          <el-input v-model="ruleForm.name"></el-input>
+      <el-form
+        ref="ruleForm"
+        :model="editForm"
+        :rules="rules"
+        label-width="150px"
+      >
+        <el-form-item label="上级组织名称" prop="deptParentName">
+          <el-input v-model="editForm.deptParentName" placeholder="请输入" disabled></el-input>
         </el-form-item>
-        <el-form-item label="组织级别" prop="department">
-          <el-select v-model="ruleForm.department" placeholder="请选择部门">
-            <el-option label="部门一" value="shanghai"></el-option>
-            <el-option label="部门二" value="beijing"></el-option>
+        <el-form-item label="组织级别" prop="deptLevel">
+          <el-select v-model="editForm.deptLevel" placeholder="请选择">
+            <el-option
+              v-for="(item, index) in levelList"
+              :key="index"
+              :label="item.tagName"
+              :value="item.tagId"
+            />
           </el-select>
         </el-form-item>
-        <el-form-item label="组织名称" prop="name">
-          <el-input v-model="ruleForm.name"></el-input>
+        <el-form-item label="组织名称" prop="deptName">
+          <el-input
+            v-model="editForm.deptName"
+            placeholder="20字符以内"
+            maxlength="20"
+          ></el-input>
         </el-form-item>
-        <el-form-item label="经营品牌" prop="department">
-          <el-select v-model="ruleForm.department" placeholder="请选择部门">
-            <el-option label="部门一" value="shanghai"></el-option>
-            <el-option label="部门二" value="beijing"></el-option>
-          </el-select>
+        <el-form-item label="经营品牌" prop="brandName" v-if="editForm.deptLevel == 50">
+          <el-select v-model="editForm.brandName" placeholder="请选择" disabled @click.native="isbrandPop = true"></el-select>
         </el-form-item>
-        
+        <el-form-item label="部门负责人" prop="name">
+          <el-autocomplete
+            v-model="editForm.deptPrincipal"
+            :fetch-suggestions="querySearchAsync"
+            @select="handleSelect"
+            placeholder="请输入姓名/工号搜索"
+          ></el-autocomplete>
+        </el-form-item>
+        <el-form-item label="所在区域" prop="name">
+          <el-cascader
+            ref="cascaderAddr"
+            placeholder="请选择省市区"
+            :options="area"
+            v-model="editForm.address"
+            :props="{ value:'Code', currentLabels:'label' }"
+            @change="regionChange"
+          ></el-cascader>
+        </el-form-item>
+        <el-form-item label="地址" prop="name">
+          <el-input v-model="editForm.companyAddr" placeholder="请输入地址" @change="get_location()"></el-input>
+        </el-form-item>
+        <el-form-item label="经纬度" prop="name">
+          <el-input
+            v-model="editForm.lngLat"
+            placeholder="请输入经纬度"
+          ></el-input>
+        </el-form-item>
 
-
-        <el-form-item label="性别" prop="gender">
-          <el-radio-group v-model="ruleForm.gender">
-            <el-radio label="男"></el-radio>
-            <el-radio label="女"></el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="手机号" prop="phone">
-          <el-input v-model="ruleForm.phone" maxlength="11" ></el-input>
-        </el-form-item>
-
-        <el-form-item label="直属领导" prop="region">
-          <el-select v-model="ruleForm.region" placeholder="请选择领导">
-            <el-option label="领导一" value="shanghai"></el-option>
-            <el-option label="领导二" value="beijing"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-row :gutter="20" class="lefromTit">
-          <el-col :span="6" :offset="1"><div class="grid-content bg-purple">人事信息</div></el-col>
-        </el-row>
-          <el-form-item label="工号" prop="jobnum">
-            <el-input v-model="ruleForm.jobnum"></el-input>
-          </el-form-item>
-        <el-form-item label="入职时间" required>
-            <el-form-item prop="date">
-              <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date" style="width: 100%"></el-date-picker>
-            </el-form-item>
-        </el-form-item>
-        <el-form-item label="职位" prop="position">
-          <el-input v-model="ruleForm.position"></el-input>
-        </el-form-item>
-        <el-form-item label="职级" prop="rank">
-          <el-input v-model="ruleForm.rank"></el-input>
-        </el-form-item>
-        <el-form-item label="是否在职" prop="isonthejob">
-          <el-switch v-model="ruleForm.isonthejob" :active-text-color="ruleForm.isonthejob?'#DCDFE6':'#DCDFE6'" :active-text="ruleForm.isonthejob?'在职':'离职'"></el-switch>
-        </el-form-item>
-        <!-- <el-form-item label="特殊资源" prop="resource">
-          <el-radio-group v-model="ruleForm.resource">
-            <el-radio label="线上品牌商赞助"></el-radio>
-            <el-radio label="线下场地免费"></el-radio>
-          </el-radio-group>
-        </el-form-item> -->
-        <el-row :gutter="20" class="lefromTit">
-          <el-col :span="6" :offset="1"><div class="grid-content bg-purple">备注信息</div></el-col>
-        </el-row>
-        <el-form-item  prop="desc">
-          <el-input type="textarea" resize="false" placeholder="请输入异动原因" v-model="ruleForm.desc"></el-input>
-        </el-form-item>
+        <div class="map_container" id="container">
+          <div class="map_button">
+            <span
+              @click="map_change(1)"
+              v-bind:class="[map_type == 1 ? 'hover' : '']"
+              style="border-right: 1px solid #aaa;"
+              >地图</span
+            >
+            <span
+              @click="map_change(2)"
+              v-bind:class="[map_type == 2 ? 'hover' : '']"
+              >卫星</span
+            >
+          </div>
+        </div>
       </el-form>
-      <!-- 底部按钮 -->
       <div slot="footer" class="dialog-footer">
-        <el-button class="sdmpbut" @click="isOrganize = false">取 消</el-button>
-        <el-button classs="sdmpbut" type="primary" @click="submitForm('ruleForm')">确 定</el-button>
+        <el-button type="text" class="popBtn" @click="closeOrganize"
+          >取 消</el-button
+        >
+        <el-button type="text" class="popBtn" @click="submitForm()"
+          >确 定</el-button
+        >
       </div>
     </el-dialog>
+
+    <brand-pop v-if="isbrandPop" :isbrandPop="isbrandPop" :isMultiple="isMultiple" :isEdit="organizationInfo.isEdit" :brandInfo="brandInfo" @brandClick="brandClick"/>
+  </div>
 </template>
 
 <script>
+var satelliteLayer = ''
+var geocoder = ''
+import { getDeptPrincipal, deptAdd, getDeptByIdForEdit, deptEdit } from '@/service/api/index'
+import { lazyAMapApiLoaderInstance } from "vue-amap";
+import area from "@/assets/javaScript/areaList.js";
+import brandPop from "./brandPop";
 export default {
   props: {
     isOrganize: {
       type: Boolean,
+      default: false
     },
-    organize: {
-      type: String,
-    },
-    organizeData:{
-       type: Object,
+    organizationInfo: {
+      type: Object,
+      default: {}
     }
   },
   data() {
-    var checkphone = (rule, value, callback) => {
-      // let phoneReg = /(^1[3|4|5|6|7|8|9]\d{9}$)|(^09\d{8}$)/;
-      if (value === "") {
-        callback(new Error("请输入手机号"));
-      } else if (!this.isCellPhone(value)) {
-        // 引入methods中封装的检查手机格式的方法
-        callback(new Error("请输入正确的手机号!"));
-      } else {
-        callback();
-      }
-    };
     return {
+      addAndsee: '添加组织',
+      map:"",
+      map_type: 1,
+      timeout:  null,
       dialogtitle: "",
-      isOrganize: false,
-      ruleForm: {
-        name: "",
-        gender: "男",
-        phone: "",
-        department:"",  
-        jobnum:"",
-        region: "",
-        date: "",
-        position:"",
-        rank:"",
-        isonthejob: false,
-        resource: "",
-        desc: "",
+      editForm: {
+        deptParentName: '',
+        deptParentId: '',
+        deptName: '',
+        deptLevel: '',
+        curUserId: '',
+        codeProvince: '',
+        codeCity: '',
+        codeArea: '',
+        nameProvince: '',
+        nameArea: '',
+        nameCity: '',
+        deptLng: '',
+        deptLat: '',
+        brandId: '',
+        brandName: '',
+        parentBrandId: '',
+        parentBrandName: '',
+        deptPrincipalId: '',
+        deptPrincipal: '',
+        address: '',
+        addressStr: '',
+        lngLat: '',
+        companyAddr: ''
       },
+      levelList: [{
+        tagName: "厂商",
+        tagId: "20",
+      },
+      {
+        tagName: "集团",
+        tagId: "30",
+      },
+      {
+        tagName: "大区",
+        tagId: "40",
+      },{
+        tagName: "经销商",
+        tagId: "50",
+      },{
+        tagName: "二级经销商",
+        tagId: "60",
+      },{
+        tagName: "部门",
+        tagId: "70",
+      }],
+      area: area.options,
+      plugin: [
+        {
+          pName: "ToolBar",
+          events: {
+            init(instance) {
+              console.log(instance);
+            }
+          }
+        }
+      ],
       rules: {
-        name: [
-          { required: true, message: "请输入姓名", trigger: "blur" },
-          { min: 2, max: 4, message: "长度在 2 到 4 个汉字", trigger: "blur" },
+        deptParentName: [
+          { required: true, message: "请选择上级组织", trigger: "blur" }
         ],
-        phone: [{ required: true, validator: checkphone, trigger: "blur" }],
-        department:[ { required: true, message: "请选择所属部门", trigger: "change" },],
-        region: [
-          { required: true, message: "请选择直属领导", trigger: "change" },
+        deptName: [
+          { required: true, max: 20, message: "请输入组织名称", trigger: "blur" }
         ],
-        jobnum:[
-          { required: true, message: "请输入工号", trigger: "blur" },
+        brandName: [
+          { required: true, message: "请选择经营品牌", trigger: "blur" }
         ],
-        date: [
-          {
-            type: "date",
-            required: true,
-            message: "请选择日期",
-            trigger: "change",
-          },
+        deptLevel: [
+          { required: true, message: "请选择组织级别", trigger: "change" }
         ],
-        position: [{ required: true, message: "请输入职位", trigger: "blur" },],
-        rank: [{ required: true, message: "请输入职级", trigger: "blur" },],
-        resource: [
-          { required: true, message: "请选择活动资源", trigger: "change" },
-        ]
       },
+      isMultiple: false,
+      isbrandPop: false,
+      brandInfo: {}
     };
   },
   watch: {
     isOrganize(newVal) {
-      this.$emit("update:isOrganizeBol", newVal);
       this.isOrganize = newVal;
     },
     addAndsee(newVal) {
       this.addAndsee = newVal;
     },
+    organizationInfo(newVal) {
+      this.init(newVal)
+    }
+  },
+  components: {
+    brandPop
+  },
+  mounted() {
+    this.init(this.organizationInfo)
+
+    lazyAMapApiLoaderInstance.load().then(() => {
+      this.map = new AMap.Map("container", {
+        center: [116.397428, 39.90923],
+        zoom: 12
+      });
+      satelliteLayer = new AMap.TileLayer.Satellite();
+      this.map.addControl(
+        new AMap.ToolBar({
+          locate: false
+        })
+      );
+      geocoder = new AMap.Geocoder();
+    });
   },
   methods: {
-    //按钮确定
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          console.log("submit!", this.ruleForm);
-          this.isOrganize = false;
-        } else {
-          console.log("error submit!!");
-          return false;
+    init(newVal){
+      this.addAndsee = !newVal.isEdit ? '添加组织' : '修改组织'
+      if(!newVal.isEdit) {
+        this.editForm.deptParentName = newVal.deptName,
+        this.editForm.deptParentId = newVal.deptId,
+        this.levelList = this.levelList.filter(item => {
+          return newVal.deptLevel < item.tagId
+        })
+      } else {
+        this.getDetails(newVal.deptId)
+      }
+    },
+
+    getDetails(deptId){
+      getDeptByIdForEdit({deptId: deptId}).then(res =>{
+        if(res.code == 0) {
+          this.levelList = this.levelList.filter(item => {
+            return res.data.deptParentLevel < item.tagId
+          })
+          this.editForm = {
+            ...res.data,
+            lngLat: `${res.data.deptLng},${res.data.lat}`,
+            deptPrincipal: `${res.data.deptPrincipalVO.userName}/${res.data.deptPrincipalVO.userCode}`,
+            addressStr: `${res.data.nameProvince}${res.data.nameCity}${res.data.nameArea}`,
+            address: [res.data.codeProvince, res.data.codeCity, res.data.codeArea],
+            deptLevel: String(res.data.deptLevel)
+          }
+          this.brandInfo = {
+            parentBrandId: res.data.parentBrandId,
+            parentBrandName: res.data.parentBrandName,
+            brandId: res.data.brandId,
+            brandName: res.data.brandName
+          }
+          this.get_location()
+          this.$forceUpdate()
+        }
+      })
+    },
+
+    get_location(){
+      let that = this
+      let address = `${this.editForm.addressStr}${this.editForm.companyAddr}`
+      console.log(address)
+      geocoder.getLocation(address, function(status, result) {
+        if (status === 'complete' && result.geocodes.length) {
+          let marker = new AMap.Marker();
+          let lng = result.geocodes[0].location.lng
+          let lat = result.geocodes[0].location.lat
+          that.editForm.deptLng = lng
+          that.editForm.deptLat = lat
+          that.editForm.lngLat = `${lng},${lat}`
+          marker.setPosition(result.geocodes[0].location);
+          that.map.add(marker);
+          that.map.setFitView(marker);
+        }else{
+          this.$message({
+            type: 'warning',
+            message: '根据地址查询位置失败'
+          })
         }
       });
     },
-    //手机号验证
-    isCellPhone(val) {
-      if (!/^1(3|4|5|6|7|8)\d{9}$/.test(val)) {
-        return false;
+    //按钮确定
+    submitForm() {
+      this.$refs.ruleForm.validate(valid => {
+        if (valid) {
+          let lngLatArr = []
+          lngLatArr = this.editForm.lngLat && this.editForm.lngLat.split(',');
+          let data = {
+            ...this.editForm,
+            curUserId: this.$store.getters.userInfo.userId || '',
+            deptLng: lngLatArr[0] || '',
+            deptLat: lngLatArr[1] || ''
+          }
+          delete data.address
+          console.log(data)
+          
+          if(!this.organizationInfo.isEdit) {
+            deptAdd(data).then(res => {
+              if(res.code == '0') {
+                this.$message({ type: 'success', message: '添加成功' })
+                this.isOrganize = false
+                this.$emit('closePop', true)
+              } else {
+                this.$message({
+                  type: 'warning',
+                  message: res.errMsg
+                })
+              }
+            })
+          } else {
+            delete data.createTime
+            delete data.editTime
+            delete data.deptNo
+            delete data.companyLogo
+            delete data.children
+            delete data.deptPrincipalVO
+            deptEdit(data).then(res => {
+              if(res.code == '0') {
+                this.$message({ type: 'success', message: '修改成功' })
+                this.isOrganize = false
+                this.$emit('closePop', true)
+              } else {
+                this.$message({
+                  type: 'warning',
+                  message: res.errMsg
+                })
+              }
+            })
+          }
+
+          
+        }
+      })
+    },
+    map_change(type) {
+      this.map_type = type;
+      if (type == 1) {
+        this.map.remove(satelliteLayer);
       } else {
-        return true;
+        this.map.add(satelliteLayer);
       }
     },
-  },
-  mounted() {
-    // addAndseefromData
-    console.log(this.ruleForm, "添加组织this.ruleForm");
-    console.log(this.isOrganize, "添加组织this.dialogFormVisible");
+    querySearchAsync(queryString, cb) {
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        getDeptPrincipal({nameOrCode: queryString}).then(res => {
+          let results = ''
+          if(res.code == 0) {
+            results = res.data.map(item => {
+              return {
+                value: item.userName + '/'+ item.userCode,
+                id: item.userId
+              }
+            })
+          }
+          cb(results);
+        })
+      }, 5000 * Math.random());
+    },
+
+    handleSelect(item) {
+      this.editForm.deptPrincipalId = item.id
+    },
+    regionChange(e) {
+      console.log(this.editForm.address)
+      let data = this.$refs['cascaderAddr'].getCheckedNodes()[0].pathLabels
+
+      this.editForm = {
+        ...this.editForm,
+        codeProvince: e[0],
+        codeCity: e[1],
+        codeArea: e[2],
+        nameProvince: data[0],
+        nameCity: data[1],
+        nameArea: data[2],
+        addressStr: `${data[0]}${data[1]}${data[2]}`
+      }
+      this.get_location()
+    },
+
+    brandClick(data) {
+      console.log(data)
+      this.editForm = {
+        ...this.editForm,
+        ...data
+      }
+      this.isbrandPop = false
+    },
+
+    closeOrganize () {
+      this.isOrganize = false
+      this.$emit('closePop', false)
+    }
+    // changeLevel(e) {
+    //   this.editForm.deptLevel = e.deptLevel
+    //   this.editForm.deptName = e.deptName
+    // }
+    // editForm
   },
 };
 </script>
 
 <style lang="scss" scoped>
-/deep/ .el-button {
-  width: 50% !important;
+@import "@/assets/styles/popStyle.scss";
+
+/deep/.el-input.is-disabled .el-input__inner {
+    background-color: #fff;
+    border-color: #E4E7ED;
+    color: #43425d;
+    cursor: pointer;
 }
-/deep/ .el-dialog {
-  width: 700px;
-  margin-top: 48px !important;
+
+/deep/.el-input,
+/deep/.el-textarea {
+  width: 453px !important;
 }
-/deep/ .el-dialog__wrapper{
-  z-index: 9991 !important;
+
+/deep/.el-form-item__content {
+  line-height: 40px;
 }
-/deep/ .el-dialog__title {
-  font-size: 20px;
-  color: #43425d;
+
+/deep/.el-textarea {
+  position: absolute;
+  bottom: -18px;
+  left: 0;
 }
-/deep/ input.el-input__inner{
-  width: 500px !important;
-  height: 32px !important;
-  line-height:32px !important;
+
+.map_container {
+  position: relative;
+  width: 577px;
+  height: 326px;
+  margin: 0 auto;
 }
-/deep/ .el-textarea{
-  width: 500px;
-  resize: none;
+
+.map_button {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 100;
+  border: 1px solid #aaa;
+  border-radius: 2px;
+  color: #666;
 }
-/deep/ .el-date-editor{
-  width: 500px !important;
-  height: 32px !important;
-  line-height:32px !important;
+
+.map_button span {
+  display: inline-block;
+  background: #fff;
+  width: 42px;
+  height: 22px;
+  line-height: 22px;
+  text-align: center;
+  font-size: 12px;
+  cursor: pointer;
 }
-/deep/ .el-input__icon{
-  line-height:32px !important;
-}
-/deep/ .el-form-item__label{
-  line-height:32px !important;
-}
-/deep/ .el-textarea__inner{ // 然后找到对应的类名，在这里将拉伸去掉即可
-  resize: none;
-}
-/deep/ .el-form-item__content{
-  line-height: 32px;
-}
-.claFrom {
-  height: 646px;
-}
-.lefromTit {
-  color: #4d4f5c;
-  font-size: 16px;
-  margin-bottom: 30px;
-  font-weight: bold;
-}
-.dialog-footer {
-  display: flex;
+
+.map_button span.hover {
+  background: #3498e9;
+  color: #fff;
 }
 </style>
-<style>
-</style>
-
-

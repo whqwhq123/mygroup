@@ -4,8 +4,8 @@
       <el-col :span="6" class="colleft">
         <el-row type="flex" class="row-bg leftTit" justify="space-between">
           <el-col :span="8"><div class="leftTit_text">基本信息</div></el-col>
-          <el-col :span="8"
-            ><div class="leftTit_tomod">
+          <el-col :span="8">
+            <div class="leftTit_tomod">
               <el-button
                 type="text"
                 size="mini"
@@ -17,7 +17,10 @@
             </div></el-col
           >
         </el-row>
-        <el-tree :data="treedata" @node-click="nodeclickFun">
+            <!-- :default-expanded-keys="[treedata[0].id]" -->
+        <el-tree :data="treedata" @node-click="nodeclickFun"
+          node-key="id"
+        >
           <div
             class="custom-tree-node treecom"
             :style="
@@ -35,7 +38,7 @@
               <el-button
                 type="text"
                 size="mini"
-                v-if="data.type"
+                v-if="data.type!=2"
                 style="color: #3b86ff"
                 @click.stop="() => append(node, data)"
               >
@@ -57,7 +60,9 @@
         <el-row class="row-bg rightTit">
           <el-col><div class="rightTit_text">车系管理</div></el-col>
         </el-row>
-        <el-row class="row-bg rowPid">
+        <!-- v-if="tableData.length" -->
+        <template>
+          <el-row class="row-bg rowPid">
           <el-col :span="6">
             <el-input
               placeholder="请输入内容"
@@ -70,7 +75,7 @@
           <el-col :span="3">
             <el-button
               size="small"
-              @input.native="entterFun"
+              @click.native="entterFun"
               style="
                 color: #ffffff;
                 background: #43425d;
@@ -78,43 +83,43 @@
                 width: 70px;
                 margin-left: 15px;
               "
-              >查询</el-button
-            >
+              >查询</el-button>
           </el-col>
         </el-row>
         <el-row class="row-bg rowPid">
-          <el-col>
-            <el-radio-group v-model="radio" @change="radioFun" size="medium">
+          <!-- v-if="tableData.length" -->
+          <el-col >
+            <!-- <el-radio-group v-model="radio" @change="radioFun" size="medium">
               <el-radio-button label="在售"></el-radio-button>
               <el-radio-button label="停售"></el-radio-button>
-            </el-radio-group>
+            </el-radio-group> -->
             <div style="display: inline-block; float: right">
-              <el-button class="expBtn" type="text" @click="addmodelFun"
-                ><svg-icon icon-class="add_icon" />添加车系</el-button
-              >
-              <el-button class="expBtn" type="text"
-                ><svg-icon icon-class="export_icon" />导出列表</el-button
-              >
+              <el-button class="expBtn" type="text" @click="addmodelFun"><svg-icon icon-class="add_icon" />添加车系</el-button>
+              <!-- <el-button class="expBtn" type="text"><svg-icon icon-class="export_icon" />导出列表</el-button> -->
             </div>
           </el-col>
         </el-row>
         <el-row class="row-bg rowPid">
-          <el-col
-            ><div class="rightTit_text">
+          <el-col>
+            <div class="rightTit_text">
               <model-tabs-com
+                
                 :tableData="tableData"
                 @tabruneve="tabruneveFun"
-              ></model-tabs-com>
+              />
               <!-- 分页 -->
               <pagination
                 v-if="total > 0"
                 :total="total"
                 :page.sync="listQuery.page"
                 :limit.sync="listQuery.pageSize"
-                @pagination="getList"
-              /></div
-          ></el-col>
+                @pagination="getCarModelListFun"
+              />
+            </div>
+          </el-col>
         </el-row>
+        </template>
+  
       </el-col>
     </el-row>
     <!-- 添加子品牌 -->
@@ -141,8 +146,7 @@
             v-model="dialogSubData.subbrandsel"
             placeholder="请选择子品牌名称"
           >
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
+            <el-option v-for="sonitem in sonbrand" :key="sonitem.groupId" :label="sonitem.groupName" :value="sonitem.groupId"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="自定义子品牌">
@@ -151,9 +155,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button class="sdmpbut" @click="submitForm">取 消</el-button>
-        <el-button class="sdmpbut" type="primary" @click="submitForm(1)"
-          >确 定</el-button
-        >
+        <el-button class="sdmpbut" type="primary" @click="submitForm(1)">确 定</el-button>
       </div>
     </el-dialog>
     <!-- 添加车系 -->
@@ -163,23 +165,23 @@
       width="25%"
       :visible.sync="dialogAddmodel"
     >
-      <el-form ref="form" :model="dialogSubData" label-width="40px" size="mini">
+      <el-form ref="form" :model="dialogSubseries" label-width="40px" size="mini">
         <el-form-item label="车系">
-          <el-input v-model="dialogSubData.subbrandTit"></el-input>
+          <el-input v-model="dialogSubseries.subbrandTit"></el-input>
         </el-form-item>
         <el-form-item label="车种">
           <el-select
-            v-model="dialogSubData.subbrandsel"
+            v-model="dialogSubseries.subbrandsel"
             placeholder="请选择子品牌名称"
           >
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
+          <!-- vehicle -->
+            <el-option v-for="(vehitem,index) in vehicle" :key="index" :label="vehitem" :value="vehitem"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button class="sdmpbut" @click="submitaddmodelFun">取 消</el-button>
-        <el-button class="sdmpbut" type="primary" @click="submitaddmodelFun(1)"
+        <el-button class="sdmpbut" @click="submitaddmodelFun(1)">取 消</el-button>
+        <el-button class="sdmpbut" type="primary" @click="submitaddmodelFun(2)"
           >确 定</el-button
         >
       </div>
@@ -190,14 +192,16 @@
       v-if="isbrand"
       :isbrand="isbrand"
       :isbrandFun.sync="isbrand"
-    ></modeladd-brand-com>
+    />
     <!-- 车型管理和限售管理 -->
     <limit-modelrun-com
       v-if="islimitModel"
       :limitModeldata="limitModeldata"
       :islimitModel="islimitModel"
+      :treeF="treeF"
+      :treeS="treeS"
       :islimitModelFun.sync="islimitModel"
-    ></limit-modelrun-com>
+    />
   </div>
 </template>
 
@@ -206,107 +210,22 @@ import modelTabsCom from "./components/modelTabsCom";
 import modeladdBrandCom from "./components/modeladdBrandCom";
 import limitModelrunCom from "./components/limitModelrunCom";
 import Pagination from "@/components/Pagination";
+import { getAddCarMakeTree,getCarGroupByMakeId,addCarMake,addCustomizeCarGroup,getCarModelList,getLevelNames ,addCustomizeCarModel,deleteCarMakeOrCarGroup} from "api/index.js";
+
 export default {
   data() {
-
     return {
-      treedata:  [
-      {
-        id: 1,
-        label: "一级 1",
-        type: 1,
-        icon: "el-icon-menu",
-        children: [
-          {
-            id: 4,
-            icon: "el-icon-arrow-right",
-            label: "二级 1-1",
-          },
-          {
-            id: 15,
-            icon: "el-icon-arrow-right",
-            label: "二级 1-1",
-          },
-          {
-            id: 16,
-            icon: "el-icon-arrow-right",
-            label: "二级 1-1",
-          },
-        ],
-      },
-      {
-        id: 2,
-        label: "一级 2",
-        type: 1,
-        icon: "el-icon-menu",
-        children: [
-          {
-            id: 5,
-            icon: "el-icon-arrow-right",
-            label: "二级 2-1",
-          },
-          {
-            id: 6,
-            icon: "el-icon-arrow-right",
-            label: "二级 2-2",
-          },
-        ],
-      },
-      {
-        id: 3,
-        label: "一级 3",
-        type: 1,
-        icon: "el-icon-menu",
-        children: [
-          {
-            id: 7,
-            icon: "el-icon-arrow-right",
-            label: "二级 3-1",
-          },
-          {
-            id: 8,
-            icon: "el-icon-arrow-right",
-            label: "二级 3-2",
-          },
-        ],
-      },
-    ],
-          tableData: [
-        {
-          modelname: "路虎",
-          vehicletype:"SUV",
-          issell:1,
-          status:1,
-          islimit:1,
-        },
-                {
-          modelname: "宝马1",
-          vehicletype:"MVP",
-          issell:2,
-          status:2,
-          islimit:1,
-        },
-        {
-          modelname: "奔驰",
-          vehicletype:"SUV",
-          issell:1,
-          status:1,
-          islimit:2,
-        },
-        {
-          modelname: "宝马",
-          vehicletype:"MVP",
-          issell:2,
-          status:1,
-          islimit:1,
-        },
-
-   
-      ],
+    treedata: [],
+    tableData: [],
     dialogSubData: {
       subbrandTit: '',
       subbrandsel: '',
       subbrandcus: '',
+      subbrandid:'',
+    },
+    dialogSubseries: {
+      subbrandTit: '',
+      subbrandsel: ''
     },
     dialogSubBrand:false,
     dialogAddmodel:false,
@@ -317,10 +236,15 @@ export default {
       pageNum: 1,
       pageSize: 10
     },
-    total: 20,
+    total: 0,
     isbrand:false,
     islimitModel:false,
-    limitModeldata:{}
+    limitModeldata:{},
+    sonbrand:[],//添加子品牌  子品牌名称数据 
+    carseriesdefault:'',//默认车系显示
+    vehicle:[],//添加车系 车种数据 ,
+    treeF:{},
+    treeS:{}
     };
   },
   components: {
@@ -329,25 +253,36 @@ export default {
   watch: {
 
   },
+  mounted () {
+    this.getAddCarMakeTreeFun()  
+  },
+  watch: {
+    treedata(newVal){
+      console.log(newVal,"treedatatreedatatreedatatreedata");
+      this.treedata=newVal
+    }
+  },
   methods: {
     //左边树形结构选中
     nodeclickFun(e){
-      if(e.type==1) return
-        console.log(e);
+      if(e.type==1){
+        console.log(e,'父品牌数据');
+        this.treeF=e
+      }else{
+        this.carseriesdefault=e.id
+        this.treeS=e
+        this.getCarModelListFun()
+      }
+      
+
     },
     //添加品牌 子品牌 品牌
     append(node, data) {
-
-        
         if(data){
-        console.log(node, data,"添加子品牌");
+            console.log(node, data,"添加子品牌");
             this.dialogSubData.subbrandTit=data.label
-
-            // const newChild = { id: data.id++,icon: "el-icon-arrow-right", label: "testtest", children: [] };
-            // if (!data.children) {
-            // this.$set(data, "children", []);
-            // }
-            // data.children.push(newChild);
+            this.dialogSubData.subbrandid=data.id
+            this.getCarGroupByMakeIdFun(data.id)
             this.dialogSubBrand=true
         }else{
           console.log('添加品牌');
@@ -359,22 +294,59 @@ export default {
 
     },
     //子品牌 对话框 关闭之后
-    submitForm(){
-
-      this.dialogSubBrand=false
-      this.dialogSubData= {
-        subbrandTit: '',
-        subbrandsel: '',
-        subbrandcus: '',
+    submitForm(i){
+      if(i==1){
+      console.log(this.dialogSubData);
+      //
+      if(this.dialogSubData.subbrandsel!=''){
+          this.addCarMakeFun()
       }
-
+      //添加自定义品牌
+      if (this.dialogSubData.subbrandcus!='') {
+          this.addCustomizeCarGroupFun()
+      }
+      //
+      if (this.dialogSubData.subbrandsel!='' && this.dialogSubData.subbrandcus!='') {
+          this.addCarMakeFun()
+          this.addCustomizeCarGroupFun()
+      }
+      // console.log(this.dialogSubData.subbrandselid,"子品牌选择id");
+      //
+      }else{
+        this.dialogSubBrand=false
+ 
+      }
+      
     },
     // 删除基本信息
-    remove(node, data) {
-     
-      if (!node.childNodes.length) {
-         console.log(node);
-        console.log(1);
+   async remove(node) {
+     console.log(node.childNodes.length>1);
+      if (node.childNodes.length>1) {
+        console.log(node);
+        this.$message.error('子品牌存在，不可以删除！');
+      }else{
+        console.log(node);
+        console.log('删除品牌 请求接口');
+         let data={
+          makeId:'',  
+          groupId:''  
+        }
+        if(node.data.type==1){
+          data.makeId=node.data.id
+        }else if (node.data.type==2) {
+          data.groupId=node.data.id
+        }
+        console.log(data,'deleteCarMakeOrCarGroup');
+        let res=await deleteCarMakeOrCarGroup(data)
+        if(res.code==0){
+          this.$message({
+          message: '删除成功',
+          type: 'success'
+        });
+        this.getAddCarMakeTreeFun()
+        }else{
+           this.$message.error(res.errMsg);
+        }
       }
       // const parent = node.parent;
       // const children = parent.data.children || parent.data;
@@ -384,11 +356,7 @@ export default {
     //查询按钮
     entterFun(){
 
-      if (!this.inputVal || this.inputVal.trim() == "") {
-        console.log(this.inputVal);
-        console.log('发送请求');
-	    return false;
-	}
+      this.getCarModelListFun(this.inputVal.trim())
 
     },
     //在售停售
@@ -404,10 +372,162 @@ export default {
     //添加车系
     addmodelFun(){
       this.dialogAddmodel=true
+      this.getLevelNamesFun()
     },
-    submitaddmodelFun(){
-      this.dialogAddmodel=false
+    //添加车系 确定取消按钮
+    submitaddmodelFun(type){
+      if (type==2) {
+        
+        this.addCustomizeCarModelFun()
+      }else{
+        this.dialogAddmodel=false
+      }
+      this.dialogSubseries= {
+        subbrandTit: '',
+        subbrandsel: ''
+      }
+      
     },
+    //ajax
+    //获取tree 列表
+    async getAddCarMakeTreeFun(){
+   let res= await getAddCarMakeTree()
+   if(res.code==0){
+        let tree=[]
+        res.data.forEach(v => {
+          v.carMakeGroupVoList.forEach(v1 => {
+            var v1tree={id:v1.makeId,label:v1.makeName,type: 1,icon: "el-icon-menu",children:[]}
+            if(v1.carGroupList.length){
+              v1.carGroupList.forEach(v2 => {
+              var v2tree={id:v2.groupId,label:v2.groupName,type: 2,icon: "el-icon-arrow-right",}
+                v1tree.children.push(v2tree)
+              });
+            }
+            tree.push(v1tree)
+          });
+        });
+       this.treedata=tree
+      //  this.carseriesdefault    carid:'',  carname:''
+      this.carseriesdefault=this.treedata[0].children[0].id
+      console.log(this.treedata);
+      this.treeF=this.treedata[0],
+      this.treeS=this.treedata[0].children[0],
+      this.getCarModelListFun()
+      //  console.log(this.carseriesdefault,"默认数据显示");
+       
+      }
+    },
+    //添加子品牌获取子品牌数据
+    async getCarGroupByMakeIdFun(makeId ){
+      let res=await getCarGroupByMakeId({makeId})
+      if(res.code==0){
+        this.sonbrand=res.data   
+        this.getAddCarMakeTreeFun()    
+        // console.log(res.data,"子品牌数据");
+      }
+    },
+    //添加子品牌
+    async addCarMakeFun(){
+        let res=await addCarMake({makeIds:this.dialogSubData.subbrandid,groupIds:this.dialogSubData.subbrandsel})
+        if(res.code==0){
+        this.$message({
+          message: '添加成功',
+          type: 'success'
+        });
+        this.dialogSubData= {
+          subbrandTit: '',
+          subbrandsel: '',
+          subbrandcus: '',
+          subbrandid:'',
+        }
+        this.getAddCarMakeTreeFun() 
+        this.dialogSubBrand=false
+        }else{
+          this.$message({
+          message: res.errMsg,
+          type: 'warning'
+          });
+        }
+    },
+    //添加自定义品牌
+    async addCustomizeCarGroupFun(){
+      let res=await addCustomizeCarGroup({makeId:this.dialogSubData.subbrandid,groupName:this.dialogSubData.subbrandcus})
+        if(res.code==0){
+        this.$message({
+          message: '添加成功',
+          type: 'success'
+        });
+        this.dialogSubData= {
+          subbrandTit: '',
+          subbrandsel: '',
+          subbrandcus: '',
+          subbrandid:'',
+        }
+        this.getAddCarMakeTreeFun() 
+        this.dialogSubBrand=false
+        }else{
+          this.$message({
+          message: res.errMsg,
+          type: 'warning'
+          });
+        }
+    },
+    // 根据子品牌id获取车系管理列表
+    async getCarModelListFun(modelName=''){
+
+      var data={
+        groupId:this.carseriesdefault,
+        modelName,
+        pageNum: this.listQuery.pageNum,
+        pageSize: this.listQuery.pageSize
+      }
+     
+      let res=await  getCarModelList(data)
+        if(res.code==0){
+          this.tableData=res.data.list
+           this.total=res.data.total
+          console.log(res.data,"根据子品牌id获取车系管理列表");
+ 
+      }else{
+         this.$message.error('暂无数据');
+      }
+
+    },
+    //添加车系 获取车种
+    async getLevelNamesFun(){
+     let res=await getLevelNames()
+        if(res.code==0){
+          this.vehicle=res.data
+      }else{
+         this.$message.error('暂无数据');
+      }
+    },
+    // 添加自定义车系  
+    async addCustomizeCarModelFun(){
+
+      if (this.dialogSubseries.subbrandsel!='' &&this.dialogSubseries.subbrandsel!='') {
+        let data={
+          makeId:this.treeF.id,
+          groupId:this.treeS.id,
+          modelName:this.dialogSubseries.subbrandTit,
+          levelName:this.dialogSubseries.subbrandsel
+        }
+    let res=await addCustomizeCarModel(data)
+        if(res.code==0){
+          console.log(res);
+          this.vehicle.length=0
+          this.dialogAddmodel=false
+          this.getCarModelListFun()
+        }else{
+          this.$message.error('操作失败');
+        }
+      }else{
+         this.$message.error('请填写内容');
+      }
+
+ 
+    }
+
   },
 };
 </script>
