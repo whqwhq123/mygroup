@@ -68,6 +68,9 @@
 <script>
 export default {
   props: {
+    isedit: {
+      type: Boolean,
+    },
     //存放角色权限数据
     rolespowerdata:{
       type:Object
@@ -117,6 +120,14 @@ export default {
       // console.log(obj);
       return obj
     }
+  },
+  watch: {
+    //判断是不是编辑状态
+    isedit(newVal) {
+      this.isedit = newVal;
+    },
+
+
   },
   methods: {
     // 1递归查找符合要求的数据
@@ -195,7 +206,7 @@ export default {
     //单选框选中
     radioChange(functionCode, item,itemchild1) {
     // console.log(this.checkboxData,"多选框数据绑定初始化");
-    console.log(this.radioData,"单选数据绑定初始化");
+    // console.log(this.radioData,"单选数据绑定初始化");
     // console.log(functionCode, item,itemchild1);
     // console.log(this.checkboxData[itemchild1.functionCode]);
     if(!this.checkboxData[itemchild1.functionCode]){

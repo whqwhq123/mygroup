@@ -1,4 +1,5 @@
 <template>
+
   <el-scrollbar class="boxscroll">
     <div class="rolesrightbox">
       <!-- 权限渲染 -->
@@ -21,42 +22,30 @@
                 v-for="itemchild1 in item.childFunctionList"
                 :key="itemchild1"
                 class="rolessttyone_but_elcol"
-              >
-                <el-checkbox-group
-                  v-model="checkboxData[itemchild1.functionCode]"
-                  @change="checkedChange($event, itemchild1.functionCode, item,itemchild1)"
-                  class="marbot"
-                >
-                  <el-checkbox
-                    :label="itemchild1"
-                    :key="itemchild1.functionCode"
-                    :checked="checked"
-
-                    @change="checkedChange($event, itemchild1.functionCode, item,itemchild1)"
-                    >{{ itemchild1.functionName }}
-                  </el-checkbox>
-                </el-checkbox-group>
-                <template v-if="itemchild1.childFunctionList">
-                  <!-- 单选 -->
-                  <el-radio-group
-                    class="rolessttyone_but_groupAll"
-                    v-model="radioData[itemchild1.functionCode]"
-                  >
-                    <el-radio
-                      class="marbot"
-                      v-for="chicheitem in itemchild1.childFunctionList"
-                      @change="radioChange(itemchild1,item)"
-                      :key="chicheitem.functionCode"
-                    disabled
-                      :label="chicheitem"
-                      >{{ chicheitem.functionName }}</el-radio
-                    >
-                  </el-radio-group>
-                  <div
-                    class="rolessttyone_but_line"
-                    v-if="itemchild1.childFunctionList"
-                  ></div>
-                </template>
+              >   
+                <div v-if="checkboxData[itemchild1.functionCode]" style="display: flex;">
+                    <div class="checkboxtrue checkboxsty" > <i style="position: absolute;" class="el-icon-check"></i> 1</div>
+                    <div style="color: #b9b9b9;">{{ itemchild1.functionName }}</div>
+                    <template v-if="itemchild1.childFunctionList!=null">
+                        <div 
+                        v-for="itemchild2 in itemchild1.childFunctionList" 
+                        :key="itemchild2.functionCode"        
+                        >
+                        
+                        <div class="showrolestit" v-if="radioData[itemchild1.functionCode]==itemchild2.functionCode"
+                        > 
+                        {{'('+itemchild2.functionName+')'}}
+                        </div>
+                         
+                        </div>
+                    </template>
+                </div>
+                <!-- showrolesPowerCom -->
+                <div v-else style="display: flex;"> 
+                    <div class="checkboxfalse checkboxsty"></div>
+                    <div style="color: #b9b9b9;">{{ itemchild1.functionName }}</div>
+                </div>
+              
               </el-col>
             </el-row>
           </template>
@@ -69,18 +58,23 @@
 <script>
 export default {
   props: {
+    //权限表
     rolespowerdata: {
       type: Object,
     },
     rolesseldata:{
-        type:Object
+      type:Object
     }
   },
   data() {
     return {
+      //角色权限数据
+      // rolesseldata:[],
       powerlist: [],
       checked:false,
       itemdata:[], 
+      checkboxData:[],
+      radioData:{},
       value: true,
       dialogSubData: {
         subbrandTit: "",
@@ -90,16 +84,11 @@ export default {
     };
   },
   mounted() {
+    // this.listFunctionByRoleIdFun()
     console.log(this.rolespowerdata, "角色权限数据");
-    console.log(this.rolesseldata, "查看角色权限数据");
-    this.rolesseldata.forEach(v => {
-    //   console.log(v);
-      this.recursivecheckboxData(this.rolespowerdata,v.functionCode,v.functionLevel)
-      this.recursiveradioChange(v.functionCode,v.functionLevel)
-    });
- 
-    // console.log(this.checkboxData['100200110']={});
+    console.log(this.rolesseldata, "1点击查看查看角色权限数据");
     
+    this.rolesseldataFun(this.rolespowerdata)
   },
   computed: {
     //多选框数据绑定
@@ -108,24 +97,25 @@ export default {
       this.rolespowerdata.forEach(v => {
         if(v.childFunctionList){
           v.childFunctionList.forEach(v1 => {
-            obj[v1.functionCode]=[]
+            obj[v1.functionCode]=false
           })
         }
       });
       return obj
     },
-    //单选数据列表
+    //单选数据绑定初始化
     radioData(){
       let obj={}
       this.rolespowerdata.forEach(v => {
         if(v.childFunctionList){
           v.childFunctionList.forEach(v1 => {
             if(v1.childFunctionList){
-              obj[v1.functionCode]=[]
+              obj[v1.functionCode]=""
             }
           })    
         }
       });
+      // console.log(obj);
       return obj
     }
   },
@@ -137,120 +127,51 @@ export default {
       this.rolespowerdata = newVal;
     },
     rolesseldata(newVal){
-
       this.rolesseldata=newVal
-    }
-
+      console.log(this.rolespowerdata, "角色权限数据");
+      console.log(this.rolesseldata, "1点击查看查看角色权限数据");
+      console.log(this.checkboxData,"多选数据");
+      console.log(this.radioData,"单选数据");
+      this.rolesseldataFun(this.rolespowerdata)
+    },
+    checkboxData(newVal){
+      this.checkboxData=newVal
+    },
+    radioData(newVal){
+      this.radioData=newVal
+    },
   },
   methods: {
-      recursivecheckboxData(data,item){
-        for (let i = 0; i < data.length; i++) {
-            if(data[i].functionCode==item){
-                // tableCode
-                this.checkboxData[data[i].functionCode]=data[i]
-                 this.$forceUpdate()
-                return data[i]
+    //过滤数据回显
+    rolesseldataFun(data){
+      for (let i = 0; i < data.length; i++) {
+        var fcode= data[i].functionCode
+        var tableCode=data[i].tableCode
+        for (let j = 0; j < this.rolesseldata.length; j++) {
+          if (this.rolesseldata[j].functionCode==fcode) {
+            // console.log(data[i]);
+            this.checkboxData[data[i].functionCode]=true
+            if (data[i].childFunctionList!=null) {
+              this.rolesseldataFun(data[i].childFunctionList)
             }
-            if(data[i].childFunctionList!=null){
-                this.recursivecheckboxData(data[i].childFunctionList,item) 
+          }
+            if (this.rolesseldata[j].functionLevel==data[i].tableCode && data[i].tableCode!==null && this.rolesseldata[j].functionCode==data[i].parentCode) {
+              // console.log(data[i].parentCode,"data[i]data[i]");
+              // this.radioData[data[i].parentCode]=data[i].functionCode
+              this.radioData[data[i].parentCode]=data[i].functionCode
+              // this.$set(this.radioData,data[i].parentCode,data[i].functionCode)
             }
         }
-      }, 
-      recursiveradioChange(item,code){
-          if(code==null) return
-             console.log(item,code,this.checkboxData);
-          if(this.checkboxData[item].childFunctionList!=null){
-              let arra=this.checkboxData[item].childFunctionList
-              console.log(arra,"sdfsdfsd");
-              for (let i = 0; i < arra.length; i++) {
-                  if(arra[i].tableCode==code){
-                    this.radioData[item]=arra[i]
-                     this.$forceUpdate()
-                  }                
-              }
-          }
-      }, 
-    //多选框选中
-    checkedChange(e, functionCode, item,itemchild1) {
-      this.itemdata=item
-      console.log(e, functionCode, item,itemchild1);
-      console.log(this.checkboxData,this.radioData);
-      console.log(this.checkboxData[functionCode]);
-      console.log(this.radioData[itemchild1.functionCode],"当前点击单选数据绑定");
-      if (!e && this.radioData[itemchild1.functionCode]) {
-        this.radioData[itemchild1.functionCode]=[]
+            // for (const key in this.checkboxData) {
+            //     if (data[i].functionCode==key) {
+            //       this.checkboxData[data[i].functionCode]=true
+            //     }
+            // }
       }
-      for (const key in this.checkboxData) {
-        if(e && key==functionCode){
-          if(this.checkboxData[key][0]){
-            if(this.checkboxData[key][0].childFunctionList){
-              for (const key2 in this.checkboxData[key][0].childFunctionList) {
-                // console.log(this.checkboxData[key][0].childFunctionList[key2].functionCode);
-                // console.log(this.radioData[this.checkboxData[key][0].childFunctionList[key2].parentCode],'this.checkboxData.keys()');
+   
+    this.$forceUpdate()
+    },
 
-                if(this.checkboxData[key][0].childFunctionList[key2].functionCode==itemchild1.childFunctionList[0].functionCode){
-                  this.radioData[this.checkboxData[key][0].childFunctionList[key2].parentCode]=this.checkboxData[key][0].childFunctionList[key2]
-                console.log(this.checkboxData[functionCode],this.checkboxData[key][0].childFunctionList[key2],'this.checkboxData[key][0][key2]this.checkboxData[key][0][key2]this.checkboxData[key][0][key2]');            
-                console.log(this.radioData[this.checkboxData[key][0].childFunctionList[key2].parentCode],'this.checkboxData.keys()');
-              }
-              }
-            }
-          }
-        }
-      }
-      console.log(this.radioData,"this.radioDatathis.radioDatathis.radioData");
-      this.addsubmitprwer()
-      this.$forceUpdate()
-    },
-    //单选框选中
-    radioChange(itemchild1,item) {
-      this.itemdata=item
-      console.log(item,"itemitem");
-      console.log(this.checkboxData);
-      console.log(this.checkboxData[itemchild1.functionCode],'当前点击多选数据绑定');
-      console.log(this.radioData[itemchild1.functionCode],"当前点击单选数据绑定");
-      let ckdata=this.checkboxData[itemchild1.functionCode]
-      if(ckdata.length){
-      }else{
-        // this.checkboxData.push(ckdata)
-          if(item.childFunctionList){
-          item.childFunctionList.forEach(v => {
-            if ( v.functionCode==this.radioData[itemchild1.functionCode].parentCode) {
-              this.$set(ckdata,ckdata.length,v)
-              // this.checked=true
-              // ckdata.push(v.functionCode)
-              // this.checkboxData.splice(0,0)
-            }
-          });
-      }
-      }
-      // this.checkboxData.push(cheitem)
-      this.$forceUpdate()
-      this.addsubmitprwer()
-      console.log(this.checkboxData);
-      // console.log(itemchild1,item, this.checkboxData,this.radioData);
-    },
-    //添加提交
-    addsubmitprwer(){
-      let data=[]
-      for (const key in this.checkboxData) {
-        if(this.checkboxData[key].length){
-          if(this.checkboxData[key][0].childFunctionList){
-          for (const radkey in this.radioData) {
-            if(radkey==key && this.radioData[radkey]!=''){
-              data.push({functionCode:this.radioData[radkey].parentCode,functionLevel:this.radioData[radkey].tableCode})
-            }
-          }
-          }else{
-              data.push({functionCode:this.checkboxData[key][0].functionCode,functionLevel:this.checkboxData[key][0].tableCode})
-          }
-        }
-      }
-      data.push({functionCode:this.itemdata.functionCode,functionLevel:this.itemdata.tableCode})
-
-      console.log(data,"xunzhe asdfasd fasdf a");
-      this.$emit("update:powerAddData", data);
-    },
   },
 };
 </script>
@@ -377,5 +298,29 @@ export default {
 }
 .marbot {
   margin-bottom: 10px;
+}
+.showrolestit{
+    position: absolute;
+    top: 0;
+    left: 58px;
+    color: #b9b9b9;
+}
+.checkboxtrue{
+    width: 14px;
+    height: 14px;
+    background-color: #43425D;
+    color: #fff;
+    border:1px solid #43425D;
+}
+.checkboxfalse{
+    width: 14px;
+    height: 14px;
+    border:1px solid #43425D;
+}
+.checkboxsty{
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    margin-right: 5px;
 }
 </style>
