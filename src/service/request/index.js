@@ -1,7 +1,7 @@
 import axios from 'axios'
 import store from '@/store'
+import router from './../../router'
 
-// create an axios instance
 const service = axios.create({
   timeout: 10000 // request timeout
 })
@@ -24,11 +24,12 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     const res = response.data
-    // if (res.code) {
-    //   return Promise.reject(new Error(res.errMsg || 'Error'))
-    // } else {
-    //   return res
-    // }
+    if (res.code == '2001') {
+      sessionStorage.clear()
+      store.dispatch('user/logout')
+      // router.push('/login')
+      router.push({ path: '/login', query: { res: res }})
+    }
     return res
   },
   error => {

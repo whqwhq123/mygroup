@@ -10,60 +10,40 @@ export function getPurchasingPower(data) {
   })
 }
 
-//品牌车型基本信息 tree /carMake/getAddCarMakeTree
-
-// export function getAddCarMakeTree(data){
-//   return request({
-//     url:'http://10.20.0.164:4091/label/carMake/getAddCarMakeTree',
-//     method: 'post',
-//     headers:{
-//       'Content-Type': 'application/x-www-form-urlencoded'
-//     },
-//     data: qs.stringify(data)
-//   })
-// }
 
 // 添加子品牌 通过父品牌id 查询子品牌/carMake/getCarGroupByMakeId           makeId 
 export function getCarGroupByMakeId(data){
   return request({
-    url:'http://10.20.0.164:4091/label/carMake/getCarGroupByMakeId',
+    // url:'http://10.20.0.164:4091/label/carMake/getCarGroupByMakeId',
+    url:process.env.VUE_APP_USER_URL+ '/label/carMake/getCarGroupByMakeId',
     method: 'post',
-    headers:{
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
     data: qs.stringify(data)
   })
 }
 // 添加自定义子品牌  /carMake/addCustomizeCarGroup
 export function addCustomizeCarGroup(data){
   return request({
-    url:'http://10.20.0.164:4091/label/carMake/addCustomizeCarGroup',
+    // url:'http://10.20.0.164:4091/label/carMake/addCustomizeCarGroup',
+    url:process.env.VUE_APP_USER_URL+ '/label/carMake/addCustomizeCarGroup',
     method: 'post',
-    headers:{
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
     data: qs.stringify(data)
   })
 }
 // 根据子品牌id获取车系管理列表  /carModel/getCarModelList 
 export function getCarModelList(data){
   return request({
-    url:'http://10.20.0.164:4091/label/carModel/getCarModelList',
+    // url:'http://10.20.0.164:4091/label/carModel/getCarModelList',
+    url:process.env.VUE_APP_USER_URL+ '/label/carModel/getCarModelList',
     method: 'post',
-    headers:{
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
     data: qs.stringify(data)
   })
 }
 //添加品牌==》列表
 export function getNoAddCarMakeTree(data){
   return request({
-    url:'http://10.20.0.164:4091/label/carMake/getNoAddCarMakeTree',
+    // url:'http://10.20.0.164:4091/label/carMake/getNoAddCarMakeTree',
+    url:process.env.VUE_APP_USER_URL+ '/label/carMake/getNoAddCarMakeTree',
     method: 'post',
-    headers:{
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
     data: qs.stringify(data)
   })
 }
@@ -71,22 +51,18 @@ export function getNoAddCarMakeTree(data){
 //makeName
 export function addCustomizeCarMake(data){
   return request({
-    url:'http://10.20.0.164:4091/label/carMake/addCustomizeCarMake',
+    // url:'http://10.20.0.164:4091/label/carMake/addCustomizeCarMake',
+    url:process.env.VUE_APP_USER_URL+ '/label/carMake/addCustomizeCarMake',
     method: 'post',
-    headers:{
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
     data: qs.stringify(data)
   })
 }
 //添加已选品牌  /label/carMake/addCarMake
 export function addCarMake(data){
   return request({
-    url:'http://10.20.0.164:4091/label/carMake/addCarMake',
+    // url:'http://10.20.0.164:4091/label/carMake/addCarMake',
+    url:process.env.VUE_APP_USER_URL+ '/label/carMake/addCarMake',
     method: 'post',
-    headers:{
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
     data: qs.stringify(data)
   })
 }
@@ -94,11 +70,9 @@ export function addCarMake(data){
 //添加车系 获取车种 http://10.20.0.164:4091/label/carModel/getLevelNames
 export function getLevelNames(data){
   return request({
-    url:'http://10.20.0.164:4091/label/carModel/getLevelNames',
+    // url:'http://10.20.0.164:4091/label/carModel/getLevelNames',
+    url:process.env.VUE_APP_USER_URL+ '/label/carModel/getLevelNames',
     method: 'post',
-    headers:{
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
     data: qs.stringify(data)
   })
 }
@@ -106,11 +80,9 @@ export function getLevelNames(data){
 
 export function addCustomizeCarModel(data){
   return request({
-    url:'http://10.20.0.164:4091/label/carModel/addCustomizeCarModel',
+    // url:'http://10.20.0.164:4091/label/carModel/addCustomizeCarModel',
+    url:process.env.VUE_APP_USER_URL+ '/label/carModel/addCustomizeCarModel',
     method: 'post',
-    headers:{
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
     data: qs.stringify(data)
   })
 }
@@ -118,11 +90,9 @@ export function addCustomizeCarModel(data){
 //是否重点车系 /carModel/changeIsPoint
 export function changeIsPoint(data){
   return request({
-    url:'http://10.20.0.164:4091/label/carModel/changeIsPoint',
+    // url:'http://10.20.0.164:4091/label/carModel/changeIsPoint',
+    url:process.env.VUE_APP_USER_URL+ '/label/carModel/changeIsPoint',
     method: 'post',
-    headers:{
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
     data: qs.stringify(data)
   })
 }
@@ -132,22 +102,16 @@ export function changeIsPoint(data){
 
 export function getCarStyleList(data){
   return request({
-    url:'http://10.20.0.164:4091/label/carStyle/getCarStyleList',
+    url:process.env.VUE_APP_USER_URL+'/label/carStyle/getCarStyleList',
     method: 'post',
-    headers:{
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
     data: qs.stringify(data)
   })
 }
 // 通过子品牌获取经销商列表label/carStyle/getDeptList 
 export function getDeptList(data){
   return request({
-    url:'http://10.20.0.164:4091/label/carStyle/getDeptList',
+    url:process.env.VUE_APP_USER_URL+'/label/carStyle/getDeptList',
     method: 'post',
-    headers:{
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
     data: qs.stringify(data)
   })
 }
@@ -155,11 +119,8 @@ export function getDeptList(data){
 // label/carStyle/changeIsLimit
 export function changeIsLimit(data){
   return request({
-    url:'http://10.20.0.164:4091/label/carStyle/changeIsLimit',
+    url:process.env.VUE_APP_USER_URL+'/label/carStyle/changeIsLimit',
     method: 'post',
-    headers:{
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
     data: qs.stringify(data)
   })
 }
@@ -167,11 +128,8 @@ export function changeIsLimit(data){
 // 修改车型在售状态
 export function changeOnSale(data){
   return request({
-    url:'http://10.20.0.164:4091/label/carStyle/changeOnSale',
+    url:process.env.VUE_APP_USER_URL+'/label/carStyle/changeOnSale',
     method: 'post',
-    headers:{
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
     data: qs.stringify(data)
   })
 }
@@ -180,11 +138,8 @@ export function changeOnSale(data){
 
 export function addCustomizeCarStyle(data){
   return request({
-    url:'http://10.20.0.164:4091/label/carStyle/addCustomizeCarStyle',
+    url:process.env.VUE_APP_USER_URL+'/label/carStyle/addCustomizeCarStyle',
     method: 'post',
-    headers:{
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
     data: qs.stringify(data)
   })
 }
@@ -192,64 +147,74 @@ export function addCustomizeCarStyle(data){
 // /carMake/deleteCarMakeOrCarGroup
 export function deleteCarMakeOrCarGroup(data){
   return request({
-    url:'http://10.20.0.164:4091/label/carMake/deleteCarMakeOrCarGroup',
+    url:process.env.VUE_APP_USER_URL+'/label/carMake/deleteCarMakeOrCarGroup',
     method: 'post',
-    headers:{
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
     data: qs.stringify(data)
   })
 }
-
-
-
-
-
 //角色列表  
 export function rolelist(){
   return request({
-    url:'http://10.20.0.210:7030/logon/role/list',
+    url:process.env.VUE_APP_USER_URL+'/logon/role/list',
     method: 'post',
-    headers:{
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'token':'sdmp_header eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIiLCJleHAiOjE2MTE5OTgxNTgsInVzZXJfaWQiOiIxIiwiaWF0IjoxNjExOTExNzU4LCJ1c2VyX25hbWUiOm51bGx9.n5WTcXN0lcOUQO_2leUIctdysfT_ABFAqE5SxOrxUMA'
-    },
   })
 }
-//角色添加权限获取  http://10.20.0.210:7030/logon/function/allPermissionHaveLevel
+//角色权限获取  http://10.20.0.210:7030/logon/function/allPermissionHaveLevel
 export function allPermissionHaveLevel(){
   return request({
-    url:'http://10.20.0.210:7030/logon/function/allPermissionHaveLevel',
+    url:process.env.VUE_APP_USER_URL+'/logon/function/allPermissionHaveLevel',
     method: 'post',
-    headers:{
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'token':'sdmp_header eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIiLCJleHAiOjE2MTE5OTgxNTgsInVzZXJfaWQiOiIxIiwiaWF0IjoxNjExOTExNzU4LCJ1c2VyX25hbWUiOm51bGx9.n5WTcXN0lcOUQO_2leUIctdysfT_ABFAqE5SxOrxUMA'
-    },
   })
 }
+
+
+
+
 
 //角色新增 logon/role/add  
 export function rolesAdd(data){
   return request({
-    url:'http://10.20.0.210:7030/logon/role/add',
+    url:process.env.VUE_APP_USER_URL+'/logon/role/add',
     method: 'post',
-    headers:{
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'token':'sdmp_header eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIiLCJleHAiOjE2MTE5OTgxNTgsInVzZXJfaWQiOiIxIiwiaWF0IjoxNjExOTExNzU4LCJ1c2VyX25hbWUiOm51bGx9.n5WTcXN0lcOUQO_2leUIctdysfT_ABFAqE5SxOrxUMA'
-    },
     data:qs.stringify(data),
   })
 }
+//角色修改  logon/role/edit
+export function rolesEdit(data){
+  return request({
+    url:process.env.VUE_APP_USER_URL+'/logon/role/edit',
+    method: 'post',
+    data:qs.stringify(data),
+  })
+}
+
 //角色权限查询 logon/role/listFunctionByRoleId
 export function listFunctionByRoleId(data){
   return request({
-    url:'http://10.20.0.210:7030/logon/role/listFunctionByRoleId',
+    url:process.env.VUE_APP_USER_URL+'/logon/role/listFunctionByRoleId',
     method: 'post',
-    headers:{
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'token':'sdmp_header eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIiLCJleHAiOjE2MTE5OTgxNTgsInVzZXJfaWQiOiIxIiwiaWF0IjoxNjExOTExNzU4LCJ1c2VyX25hbWUiOm51bGx9.n5WTcXN0lcOUQO_2leUIctdysfT_ABFAqE5SxOrxUMA'
-    },
     data:qs.stringify(data),
+  })
+}
+// 品牌/车系/车型/数据列表
+export function getCarMakeModelStyle(){
+  return request({
+    method: 'post',
+    url:process.env.VUE_APP_USER_URL+'/label/carMake/getCarMakeModelStyleNames'
+  })
+}
+// 线索-->经销商数据
+export function getDealerData(){
+  return request({
+    method: 'post',
+    url:process.env.VUE_APP_USER_URL+'/logon/dept/queryDealer'
+  })
+}
+// 线索-->销售顾问数据
+export function getSalesData(deptId){
+  return request({
+    method: 'post',
+    url:process.env.VUE_APP_USER_URL +'/logon/user/queryByDeptId?deptId='+ deptId
   })
 }
 // 原始线索列表
@@ -260,15 +225,21 @@ export function clueSearch(deptId, page, data) {
   })
 }
 
-//线索列表的车型和渠道
+//原始线索的渠道数据
 export function clueList(deptId) {
   return request({
     method: 'post',
     url: process.env.VUE_APP_USER_URL + '/clue/original/condition?deptId=' + deptId
   })
 }
-
-// 线索详情
+//唯一线索列表的渠道数据
+export function onlyClueChannel(deptId) {
+  return request({
+    method: 'post',
+    url: process.env.VUE_APP_USER_URL + '/clue/unique/condition?deptId=' + deptId
+  })
+}
+// 原始线索详情
 export function getDetail(id) {
   return request({
     method: 'post',
@@ -299,6 +270,80 @@ export function clueExport(deptId, page, data) {
   })
 }
 
+//唯一线索 列表
+export function onlyClueList(deptId, page, data) {
+  return request({
+    method: 'post',
+    url: process.env.VUE_APP_USER_URL + '/clue/unique/page?deptId=' + deptId + '&' + page + '&' + data,
+  })
+}
+//唯一线索 人工派发/分配
+export function  distributeAssign(data) {
+  return request({
+    method: 'post',
+    url: process.env.VUE_APP_USER_URL + '/clue/unique/manual',
+    data:qs.stringify(data)
+  })
+}
+// 唯一线索详情
+export function onlyClueDetail(id){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL +'/clue/unique/detail?id='+id
+  })
+}
+// 线索清洗渠道数据
+export function cleanClueData(deptId) {
+  return request({
+    method: 'post',
+    url: process.env.VUE_APP_USER_URL + '/clue/clean/condition?deptId=' + deptId
+  })
+}
+//线索清洗
+export function cleanClueList(deptId, page, data) {
+  return request({
+    method: 'post',
+    url: process.env.VUE_APP_USER_URL + '/clue/clean/page?deptId=' + deptId + '&' + page + '&' + data,
+  })
+}
+//线索清洗派发/派发
+export function  cleanDistribute(data) {
+  return request({
+    method: 'post',
+    url: process.env.VUE_APP_USER_URL + '/clue/clean/manual',
+    data:qs.stringify(data)
+  })
+}
+//线索清洗分配/唯一线索人工分配----销售顾问 数据
+export function  assginSalemansData(roleId) {
+  return request({
+    method: 'post',
+    url: process.env.VUE_APP_USER_URL + '/logon/role/queryUserByRoleId?roleId='+roleId,
+  })
+}
+// 线索清洗详情
+export function CleaningDetail(id){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL +'/clue/clean/detail?id='+id
+  })
+}
+//线索清洗
+export function cleaning(user,validData,data){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL +'/clue/clean/result?'+qs.stringify(user)+'&'+qs.stringify(validData)+'&'+qs.stringify(data),
+    //data:qs.stringify(data)
+  })
+}
+// 组织人员重置密码
+export function organizeResetPassword(data){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL +'/logon/user/resetPasswordByUserId?'+qs.stringify(data),
+   // data:qs.stringify(data)
+  })
+}
 //省
 export function selectProvinceInfo(data) {
   return request({
@@ -334,7 +379,37 @@ export function login(data) {
     data: data
   })
 }
-
+//强制修改默认密码
+export function defaultPassword(data) {
+  return request({
+    url: process.env.VUE_APP_USER_URL + '/logon/changeDefaultPassword',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
+//修改密码（旧密码改新密码）
+export function changePassword(data) {
+  return request({
+    url: process.env.VUE_APP_USER_URL + '/logon/changePassword',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
+//获取验证码
+export function verificationCode(userPhone){
+   return request({
+    url: process.env.VUE_APP_USER_URL + '/logon/getVerificationCode?userPhone='+userPhone,
+    method: 'post',
+  })
+}
+// 确认修改密码
+export function confirmChangePassword(data){
+   return request({
+    url: process.env.VUE_APP_USER_URL + '/logon/resetPassword',
+    method: 'post',
+    data: data
+  })
+}
 //编辑企业信息
 export function companyEdit(data) {
   return request({
@@ -488,7 +563,7 @@ export function getDeptByIdForEdit(data){
     url:process.env.VUE_APP_USER_URL+ '/logon/dept/queryDeptByIdForEdit',
     data: qs.stringify(data)
   })
-} 
+}
 
 // 角色人员-业务线-启用停用
 export function deptUserStatus(data){
@@ -540,6 +615,100 @@ export function addUser(data){
   return request({
     method:'post',
     url:process.env.VUE_APP_USER_URL+'/logon/user/add',
+    data: qs.stringify(data)
+  })
+}
+
+// 修改组织人员
+export function editUser(data){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/logon/user/edit',
+    data: qs.stringify(data)
+  })
+}
+
+//组织人员导出
+export function exportList(data){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/logon/user/exportList',
+    data: qs.stringify(data),
+    responseType: 'blob'
+  })
+}
+
+// 获取品牌信息
+export function getMakGroupNameByGroupId(data){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/label/carMake/getMakGroupNameByGroupId',
+    data: qs.stringify(data)
+  })
+}
+
+// 组织成员启用停用
+export function upUseStatus(data){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/logon/user/userUseStatus ',
+    data: qs.stringify(data)
+  })
+}
+
+// 获取品牌信息
+export function getUserInfo(data){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/logon/user/queryUserInfo',
+    data: qs.stringify(data)
+  })
+}
+// 组织人员部门
+export function queryDeptTreeByDeptId(data){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/logon/dept/queryDeptTreeByDeptId',
+    data: qs.stringify(data)
+  })
+}
+// 新建活动  
+export function createActivity(data){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/label/activity/createActivity',
+    data: qs.stringify(data)
+  })
+}
+// 车系名称，模糊查询 
+export function getSelectCarModel(data){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/label/carModel/getSelectCarModel',
+    data: qs.stringify(data)
+  })
+}
+// 活动更新 
+export function updateActivity(data){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/label/activity/updateActivity',
+    data: qs.stringify(data)
+  })
+}
+// 获取活动信息(反显用)   activityId
+export function getActivityInfo(data){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/label/activity/getActivityInfo',
+    data: qs.stringify(data)
+  })
+}
+//营销活动 列表 查询
+export function marketingListPage(data){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/label/activity/getListPage',
     data: qs.stringify(data)
   })
 }

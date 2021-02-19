@@ -5,15 +5,18 @@
       <img src="../../assets/images/login_logo.png" />
       <div class="title">欢迎使用寻道管理系统</div>
       <div class="login_form">
-        <el-form class="company_form" ref="form" :model="form" :rules="rules">
+        <el-form class="company_form forgot" ref="form" :model="form" :rules="rules">
           <el-form-item prop="userPhone">
-            <el-input v-model="form['userPhone']" placeholder="请输入用户名"></el-input>
+            <el-input v-model="form['userPhone']" maxlength="11" placeholder="请输入用户名"></el-input>
           </el-form-item>
           <el-form-item prop="userPassword">
             <el-input type="password" v-model="form['userPassword']" placeholder="请输入登录密码"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submit()" :loading="submit_loading" :disabled="submit_loading">保存</el-button>
+            <el-button type="primary" @click="submit()" :loading="submit_loading" :disabled="submit_loading">登录</el-button>
+          </el-form-item>
+          <el-form-item class="forgot-btn">
+            <el-button type="text" @click="toggle">忘记密码</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -27,8 +30,26 @@
     login
   } from "@/service/api/index";
   import qs from 'qs'
+
+
   export default {
     data() {
+      var validUser = (rule,value,callback) => {
+          if(!value) {
+              return callback(new Error('手机号不能为空'));
+          }else{
+            if(value=='admin'){
+              callback()
+            }else{
+              const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+              if(reg.test(value)) {
+                  callback();
+              }else{
+                  return callback(new Error('手机号或用户名不正确'));
+              }
+            }
+          }  
+      }
       return {
         form: {
           userPhone: '',
@@ -36,14 +57,17 @@
         },
         list: [],
         rules: {
-          userPhone: [{
+          userPhone: [
+            {
             required: true,
-            message: '请输入手机号',
+            validator:validUser,
             trigger: 'blur'
-          }, {
-            pattern: /^[1][3,4,5,7,8][0-9]{9}$/,
-            message: '请输入手机号'
-          }],
+           },
+          //  {
+          //   pattern: /^[1][3,4,5,7,8][0-9]{9}$/,
+          //   message: '请输入手机号'
+          //  }
+          ],
           userPassword: [{
             required: true,
             message: '请输入密码',
@@ -54,28 +78,37 @@
       }
     },
     created() {
-
+       // console.log(this.$route,"this.$routethis.$routethis.$route");
     },
     methods: {
+      toggle(){
+       this.$router.push({name:'resetPassword'})
+      },
       submit() {
+       
         this.$refs['form'].validate((valid) => {
           if (valid) {
             let obj = {}
+
             obj['userPhone'] = this.form['userPhone']
             obj['userPassword'] = this.form['userPassword']
-
             this.submit_loading = true
             this.$store.dispatch('user/userLogin', obj)
-              .then(() => {
+              .then((res) => {
+                if (res.code==0) {
+                  this.$notify({
+                    title: '成功',
+                    message: '登录成功',
+                    type: 'success'
+                  });
+                }else{
+                  this.$notify.error({
+                    title:'提示',
+                    message: res.errMsg
+                  });
+                }
                 this.$router.push('/')
                 this.submit_loading = false
-              })
-              .catch(() => {
-                this.submit_loading = false
-                this.$notify.error({
-                  title: '错误',
-                  message: res.data.message,
-                });
               })
           }
         });
@@ -85,6 +118,7 @@
 </script>
 
 <style scoped>
+ 
   .title {
     color: #43425D;
     font-size: 30px;
@@ -139,5 +173,60 @@
     padding: 0;
     width: 620px;
     font-size: 26px;
+  }
+
+  /* 修改密码 */
+  /deep/ .forgot-btn .el-button--text{
+    width:auto;
+    text-align: right;
+  }
+  .forgot-title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 30px;
+  }
+  .login_right .forgot-title img{
+    width:67px;
+    height: 42px;
+    margin: 0;
+  }
+  .align-login{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .clickzm{
+    background: #D7DAE2;
+    color:#43425D;
+  }
+  .verification{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+  }
+  .verification .el-button{
+    width:140px;
+    background: #E4E6ED;
+    border: 0;
+    height: 56px;
+    line-height: 56px;
+    color: #43425D;
+    font-size: 22px;
+    position: absolute;
+    right: 5px;
+    z-index: 99;
+  }
+  .forgot .forgot-btn{
+    text-align: right;
+  }
+  /deep/ .align-login .el-button{
+    width: auto;
+    height: auto;
+    line-height: 0;
+    font-size: 16px;
   }
 </style>

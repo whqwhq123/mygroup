@@ -3,6 +3,8 @@ const getters = {
   token: state => state.user.token,
   userInfo: state => state.user.userInfo,
   roles: state => state.user.roles,
-  tagsArr: state => state.navTags.tagsArr,
+  functionCode: state => state.user.functionCode,
+  companyInfo: state => state.user.companyInfo,
+  tagsArr: state => state.navTags.tagsArr
 }
 export default getters

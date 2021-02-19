@@ -4,45 +4,66 @@
         <div class="content_item">
             <div class="infoTit">基本信息</div>
             <ul class="info_ul">
-                <li class="info_li"><span>姓名</span>{{info['userName']}}</li>
-                <li class="info_li"><span>性别</span>
-                  <template v-if="info['userSex']">
-                    {{info['userSex'] == 1 ? '男' : '女'}}
-                  </template>
-                  <template v-else>
-                    -
-                  </template>
+                <li class="info_li">
+                    <div class="li_tit">姓名</div>
+                    <div class="li_content">{{info['userName']}}</div>
                 </li>
-                <li class="info_li"><span>手机号</span>{{info['userPhone']}}</li>
-                <li class="info_li textBlue"><span>所属部门</span>{{info['deptName']}}</li>
+                <li class="info_li">
+                    <div class="li_tit">性别</div>
+                    <div class="li_content">
+                        <template v-if="info['userSex']">
+                            {{info['userSex'] == 1 ? '男' : '女'}}
+                        </template>
+                        <template v-else>
+                            -
+                        </template>
+                    </div>
+                </li>
+                <li class="info_li">
+                    <div class="li_tit">手机号</div>
+                    <div class="li_content">{{info['userPhone']}}</div>
+                </li>
                 <li class="info_li textBlue">
-                    <span>兼职部门</span>
-                    <ol class="partTimeJob_ol">
-                        <li class="partTimeJob_li" v-for="value in info['ucDeptUsers']">{{value['deptName']}}</li>
-                    </ol>
+                    <div class="li_tit">所属部门</div>
+                    <div class="li_content">{{info['deptName']}}</div>
                 </li>
-                <li class="info_li textBlue"><span>角色</span>
-                  <template v-for="value in info['ucRoleUsers']">
-                    <template v-if="index > 0">、</template>
-                    {{value['roleName']}}
-                  </template>
+                <li class="info_li textBlue">
+                    <div class="li_tit">兼职部门</div>
+                    <div class="li_content">
+                        <ol class="partTimeJob_ol">
+                            <li class="partTimeJob_li" v-for="value in info['ucDeptUsers']" :key="value">{{value['deptName']}}</li>
+                        </ol>
+                    </div>
                 </li>
-                <li class="info_li textBlue"><span>负责品牌</span>
-                <template v-for="(value,index) in info['ucUserBrands']">
-                  <template v-if="index > 0">、</template>
-                  {{value['brandName']}}
-                </template>
+                <li class="info_li textBlue">
+                    <div class="li_tit">角色</div>
+                    <div class="li_content">
+                        <template v-for="value in info['ucRoleUsers']">
+                            <template v-if="index > 0">、</template>
+                            {{value['roleName']}}
+                        </template>
+                    </div>
+                </li>
+                <li class="info_li textBlue">
+                    <div class="li_tit">负责品牌</div>
+                    <div class="li_content">
+                        <template v-for="(value,index) in info['ucUserBrands']">
+                        <template v-if="index > 0">、</template>
+                        {{value['brandName']}}
+                        </template>
+                    </div>
+    
                 </li>
             </ul>
         </div>
         <div class="content_item">
             <div class="infoTit">人事信息</div>
             <ul class="info_ul">
-                <li class="info_li"><span>工号</span>{{info['userCode']}}</li>
-                <li class="info_li"><span>入职时间</span>{{info['entryTimeStr'].substr(0,16)}}</li>
-                <li class="info_li"><span>职位</span>{{info['userPosition']}}</li>
-                <li class="info_li"><span>职级</span>{{info['userLevel'] ? info['userLevel'] : '-'}}</li>
-                <li class="info_li"><span>是否在职</span>{{info['positionStatus'] == 1 ? '在职' : '离职'}}</li>
+                <li class="info_li"><div class="li_tit">工号</div><div cla>{{info['userCode']}}</div></li>
+                <li class="info_li"><div class="li_tit">入职时间</div><div class="li_content">{{info['entryTimeStr'] ? info['entryTimeStr'].substr(0,16) : ''}}</div></li>
+                <li class="info_li"><div class="li_tit">职位</div><div class="li_content">{{info['userPosition']}}</div></li>
+                <li class="info_li"><div class="li_tit">职级</div><div class="li_content">{{info['userLevel'] ? info['userLevel'] : '-'}}</div></li>
+                <li class="info_li"><div class="li_tit">是否在职</div><div class="li_content">{{info['positionStatus'] == 1 ? '在职' : '离职'}}</div></li>
             </ul>
         </div>
         <div class="content_item">
@@ -96,11 +117,15 @@ export default {
                 display: -webkit-flex;
                 display: -webkit-inline-flex;
 
-                span {
+                .li_tit {
                     display: inline-block;
                     width: 70px;
                     color: rgba($color: #4D4F5C, $alpha: 0.5);
                     margin-right: 20px;
+                }
+
+                .li_content {
+                    flex: 1;
                 }
 
                 .partTimeJob_ol {

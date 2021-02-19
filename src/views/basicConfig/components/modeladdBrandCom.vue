@@ -1,62 +1,34 @@
 <template>
   <div>
-    <el-dialog
-      title="添加品牌"
-      :visible.sync="isbrand"
-      append-to-body
-      width="35%"
-      :before-close="isbrand"
-    >
+    <el-dialog title="添加品牌" :visible.sync="isbrand" append-to-body width="35%" :before-close="isbrand">
       <div class="addbrand">
         <el-row style="height: 100%">
           <!-- 搜索 -->
           <el-col :span="13" class="addbrand_left">
-            <el-input
-              placeholder="搜索父品牌/子品牌"
-              @change="addbrandleftseleFun"
-              v-model="selbrandinpu"
-            >
-              <el-button
-                slot="append"
-                icon="el-icon-search"
-                @change="addbrandleftseleFun"
-              ></el-button>
+            <el-input placeholder="搜索父品牌/子品牌" @change="addbrandleftseleFun" v-model="selbrandinpu">
+              <el-button slot="append" icon="el-icon-search" @change="addbrandleftseleFun"></el-button>
             </el-input>
             <!-- 多选 -->
             <el-row class="addbrand_leftbox">
               <template>
                 <el-col :span="2">
                   <el-scrollbar class="scrollber">
-                    <el-row
-                      v-for="(item, index) in listzm"
-                      :key="item"
-                      ref="sel"
-                      :class="
+                    <el-row v-for="(item, index) in listzm" :key="item" ref="sel" :class="
                         selatv == index ? 'sellettersty atv' : 'sellettersty'
-                      "
-                    >
-                      <span
-                        @click="selletterstyFun(item, index)"
-                        style="width: 100px"
-                        >{{ item }}</span
-                      >
+                      ">
+                      <span @click="selletterstyFun(item, index)" style="width: 100px">{{ item }}</span>
                     </el-row>
                   </el-scrollbar>
                 </el-col>
                 <el-col :span="12">
                   <el-scrollbar class="scrollber">
                     <el-checkbox-group v-model="checkedListdata">
-                      <el-checkbox
-                        v-for="(itemone, index) in listone"
-                        :label="itemone"
-                        :key="itemone.makeId"
-                        style="margin-bottom: 7px;width: 100px;"
-                        @change="handlecheckedListdata($event, itemone, index)"
-                      >
+                      <el-checkbox v-for="(itemone, index) in listone" :label="itemone" :key="itemone.makeId" style="margin-bottom: 7px;width: 100px;"
+                        @change="handlecheckedListdata($event, itemone, index)">
                         {{ itemone.makeName }}
 
                       </el-checkbox>
-                        <!-- <i
+                      <!-- <i
                           class="el-icon-arrow-right"
                           :style="
                             oneindex == index && istowched
@@ -70,19 +42,11 @@
                 <el-col :span="10">
                   <!-- childrenList -->
                   <el-scrollbar class="scrollber">
-                    <el-checkbox-group
-                      v-model="checkedchildrenList"
-                      v-if="istowched"
-                    >
-                      <el-checkbox
-                        v-for="(itemtow, index) in listtow.carGroupList"
-                        :label="itemtow"
-                        :key="itemtow.groupId"
-                        class="ellipsis"
-                        @change="
+                    <el-checkbox-group v-model="checkedchildrenList" v-if="istowched">
+                      <el-checkbox v-for="(itemtow, index) in listtow.carGroupList" :label="itemtow" :key="itemtow.groupId"
+                        class="ellipsis" @change="
                           handlecheckedchildrenList($event, itemtow, index)
-                        "
-                      >
+                        ">
                         {{ itemtow.groupName }}
                       </el-checkbox>
                     </el-checkbox-group>
@@ -94,20 +58,11 @@
           <!-- 树结构 -->
           <el-col :span="11" class="addbrand_right">
             <el-scrollbar class="scrollber" style="height: 377px">
-              <el-tree
-                :data="treeListdata"
-                node-key="id"
-                default-expand-all
-                :expand-on-click-node="false"
-              >
+              <el-tree :data="treeListdata" node-key="id" default-expand-all :expand-on-click-node="false">
                 <span class="custom-tree-node" slot-scope="{ node, data }">
                   <span>{{ node.label }}</span>
                   <span>
-                    <el-button
-                      type="text"
-                      size="mini"
-                      @click="() => remove(node, data)"
-                    >
+                    <el-button type="text" size="mini" @click="() => remove(node, data)">
                       <i class="el-icon-close"></i>
                     </el-button>
                   </span>
@@ -124,329 +79,378 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button class="sdmpbut" @click="isbrandFun(2)">取 消</el-button>
-        <el-button class="sdmpbut" type="primary" @click="isbrandFun(1)"
-          >确 定</el-button
-        >
+        <el-button class="sdmpbut" type="primary" @click="isbrandFun(1)">确 定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 <script>
-import { getNoAddCarMakeTree,addCustomizeCarMake,addCarMake } from "api/index.js";
-export default {
-  props: {
-    isbrand: {
-      type: Boolean
-    }
-  },
-  data() {
-    return {
-        checkedListdata:[],//一级目录选中的数组
-        checkedchildrenList:[],//二级目录选中的数组
-        treeListdata:[],//树结构的数据
-        childrenList:[],//二级目录数据初始化
-        onechecked:false,//一级目录是否选中
-        oneindex:-1,//一级目录的下标
-        sundata:'',//添加自定义子品牌
-        isbrand: false,//是否显示车型品牌对话框
-        selbrandinpu:'',//搜索框
-        selletter:[],
-        selatv:0,
-        istowched:false,
+  import {
+    getNoAddCarMakeTree,
+    addCustomizeCarMake,
+    addCarMake
+  } from "api/index.js";
+  export default {
+    props: {
+      isbrand: {
+        type: Boolean
+      }
+    },
+    data() {
+      return {
+        checkedListdata: [], //一级目录选中的数组
+        checkedchildrenList: [], //二级目录选中的数组
+        treeListdata: [], //树结构的数据
+        childrenList: [], //二级目录数据初始化
+        onechecked: false, //一级目录是否选中
+        oneindex: -1, //一级目录的下标
+        sundata: '', //添加自定义子品牌
+        isbrand: false, //是否显示车型品牌对话框
+        selbrandinpu: '', //搜索框
+        selletter: [],
+        selatv: 0,
+        istowched: false,
         //一级目录数据初始化
-        list:[],
-        listone:[],
-    };
-  },
-  watch: {
-    isbrand(newVal) {
-      this.$emit("update:isbrandFun", false);
-      this.isbrand = newVal;
+        list: [],
+        listone: [],
+      };
     },
-    treeListdata(newVal){
-      this.treeListdata=newVal
-    },
-    checkedListdata(newVal){
-      this.checkedListdata=newVal
+    watch: {
+      isbrand(newVal) {
+        this.$emit("update:isbrandFun", false);
+        this.isbrand = newVal;
+      },
+      treeListdata(newVal) {
+        this.treeListdata = newVal
+      },
+      checkedListdata(newVal) {
+        this.checkedListdata = newVal
         this.gettree()
-    },
-    checkedchildrenList(newVal){
-        this.checkedchildrenList=newVal
+      },
+      checkedchildrenList(newVal) {
+        this.checkedchildrenList = newVal
         this.gettree()
+      },
     },
-  },
-  methods: {
-    //确定取消按钮
-    async isbrandFun(i) {
-      //添加品牌
-      if(i==1){
-      if (this.sundata!='') {
-        let res= await addCustomizeCarMake({makeName:this.sundata})
-        if(res.code==0){
-          this.isbrand = false
-          this.$message({
-          message: '添加成功',
-          type: 'success'
-        });
-        }else{
-          this.$message({
-            message: res.errMsg,
-            type: 'warning'
-          });
-        }
-      }
-      if(this.treeListdata.length){
-        var makeIds=''
-        var groupIds=''
-        this.treeListdata.forEach(v => {
-          makeIds+=v.id+','
-          if(v.children.length){
-            v.children.forEach(v1 => {
-              groupIds+=v1.id+','
-            });
+    methods: {
+      //确定取消按钮
+      async isbrandFun(i) {
+        //添加品牌
+        if (i == 1) {
+          if (this.sundata != '') {
+            let res = await addCustomizeCarMake({
+              makeName: this.sundata
+            })
+            if (res.code == 0) {
+              this.isbrand = false
+              this.$message({
+                message: '添加成功',
+                type: 'success'
+              });
+            } else {
+              this.$message({
+                message: res.errMsg,
+                type: 'warning'
+              });
+            }
           }
-        });
-       makeIds = makeIds.substring(0, makeIds.lastIndexOf(','));
-       groupIds = groupIds.substring(0, groupIds.lastIndexOf(','));
-       if(makeIds!='' && groupIds!=''){
-        let res=await addCarMake({makeIds,groupIds})
-        if(res.code==0){
-        this.isbrand = false;
-        this.$message({
-          message: '添加成功',
-          type: 'success'
-        });
-        }else{
-          // res.errMsg
-          this.$message({
-          message: res.errMsg,
-          type: 'warning'
-        });
-        }
-       }else{
-        this.$message({
-          message: '请选择品牌',
-          type: 'warning'
-       })
-       }
-      }
-      }else if (i==2) {
-        this.isbrand = false;
-      }
-
-     //调用父组件的 请求
-      this.$parent.getAddCarMakeTreeFun()
-    },
-    //tree 数据处理
-    gettree(){
-      // console.log(this.checkedListdata,'一级选中数据');
-      // console.log(this.checkedchildrenList,'二级选中数据');
-      let arr=[]
-        this.checkedListdata.forEach(element => {
-          var newli={id:element.makeId,label:element.makeName,children:[]}
-            if(this.checkedchildrenList.length){
-              for (let i = 0; i < this.checkedchildrenList.length; i++) {        
-                  var item=this.checkedchildrenList[i]
-                  // var newlia={id:item.groupId,label:item.groupName,children:[]}
-                  // newli.children.push(newlia)   
-                for (let j = 0; j < element.carGroupList.length; j++) {
-                  var jtem=element.carGroupList[j]
-                  if(item.groupId==jtem.groupId){
-                        var newlia={id:item.groupId,label:item.groupName,children:[]}
-                        newli.children.push(newlia)   
-                  }
-                      // console.log(item,jtem);         
-                }
+          if (this.treeListdata.length) {
+            var makeIds = ''
+            var groupIds = ''
+            this.treeListdata.forEach(v => {
+              makeIds += v.id + ','
+              if (v.children.length) {
+                v.children.forEach(v1 => {
+                  groupIds += v1.id + ','
+                });
               }
-            }  
+            });
+            makeIds = makeIds.substring(0, makeIds.lastIndexOf(','));
+            groupIds = groupIds.substring(0, groupIds.lastIndexOf(','));
+            if (makeIds != '' || groupIds != '') {
+              let res = await addCarMake({
+                makeIds,
+                groupIds
+              })
+              if (res.code == 0) {
+                this.isbrand = false;
+                this.$notify({
+                  title: "成功",
+                  message: "添加成功",
+                  type: "success",
+                });
+              } else {
+                this.$notify.error({
+                  title: '错误',
+                  message: res.errMsg
+                });
+              }
+            } else {
+              this.$notify.error({
+                title: '错误',
+                message: '请选择品牌'
+              });
+            }
+          }
+        } else if (i == 2) {
+          this.isbrand = false;
+        }
+
+        //调用父组件的 请求
+        this.$parent.getAddCarMakeTreeFun()
+      },
+      //tree 数据处理
+      gettree() {
+        // console.log(this.checkedListdata,'一级选中数据');
+        // console.log(this.checkedchildrenList,'二级选中数据');
+        let arr = []
+        this.checkedListdata.forEach(element => {
+          var newli = {
+            id: element.makeId,
+            label: element.makeName,
+            children: []
+          }
+          if (this.checkedchildrenList.length) {
+            for (let i = 0; i < this.checkedchildrenList.length; i++) {
+              var item = this.checkedchildrenList[i]
+              // var newlia={id:item.groupId,label:item.groupName,children:[]}
+              // newli.children.push(newlia)
+              for (let j = 0; j < element.carGroupList.length; j++) {
+                var jtem = element.carGroupList[j]
+                if (item.groupId == jtem.groupId) {
+                  var newlia = {
+                    id: item.groupId,
+                    label: item.groupName,
+                    children: []
+                  }
+                  newli.children.push(newlia)
+                }
+                // console.log(item,jtem);
+              }
+            }
+          }
           arr.push(newli)
         });
         // console.log(arr,'treeListdata');
-      this.treeListdata=arr
-    },
-    // 一级多选目录
-    handlecheckedListdata(e,val,index){
-      // console.log(e,val,index,"1级");
-      // this.istowched=e.target.checked
-      this.oneindex=index
-      this.istowched=e
-      this.listtow=val
-    },
-    //二级多选目录
-    handlecheckedchildrenList(e,val,index){
-      // console.log(e,val,index,"2级");
-    },
-    //搜索父品牌子品牌
-    addbrandleftseleFun(){
-      this.getNoAddCarMakeTree(this.selbrandinpu)
-      // console.log("搜索数据",this.selbrandinpu);
-    },
-    //点击字母触发
-    selletterstyFun(item,index){
-      this.selatv=index
-      this.istowched=false
-      this.listone=this.list[this.selatv].carMakeGroupVoList
-      //  console.log(item,index);
-    },
-    //tree X 处理
-    remove(node,data){
-      // console.log(node,data);
-      // console.log(this.checkedListdata,'一级选中数据');
-      // console.log(this.checkedchildrenList,'二级选中数据');
-      for (let i = 0; i < this.checkedListdata.length; i++) {
-        if(this.checkedListdata[i].makeId==data.id){
-           this.checkedListdata.splice(i,1)
-        }
-      }
-      for (let j = 0; j < this.checkedchildrenList.length; j++) {
-        if(this.checkedchildrenList[j].groupId==data.id){
-           this.checkedchildrenList.splice(j,1)
-        }
-      }
-    },
-    async getNoAddCarMakeTree(makeName=''){
-      let res=await getNoAddCarMakeTree({makeName})
-      if(res.code==0){
-          if (makeName=='') {
-          this.listzm=res.data.map(v=>{
-            return v.makeLetter
-          })
-          this.list=res.data
-          this.listone=this.list[this.selatv].carMakeGroupVoList
-          // console.log( this.list,this.listone,this.listzm,this.selatv);
-          }else{
-            // console.log(res.data[0].makeLetter, this.selatv);
-            this.listzm.forEach((v,i) => {
-              if (v==res.data[0].makeLetter) {
-                this.selatv=i
-                this.listone=this.list[this.selatv].carMakeGroupVoList         
-              }
-            });           
+        this.treeListdata = arr
+      },
+      // 一级多选目录
+      handlecheckedListdata(e, val, index) {
+        console.log(e,val,index,"1级");
+        // this.istowched=e.target.checked
+        this.oneindex = index
+        this.istowched = e
+        this.listtow = val
+      },
+      //二级多选目录
+      handlecheckedchildrenList(e, val, index) {
+        this.istowched = e
+        console.log(e,val,index,"2级");
+      },
+      //搜索父品牌子品牌
+      addbrandleftseleFun() {
+        this.getNoAddCarMakeTree(this.selbrandinpu)
+        // console.log("搜索数据",this.selbrandinpu);
+      },
+      //点击字母触发
+      selletterstyFun(item, index) {
+
+        this.selatv = index
+        this.istowched = false
+        this.listone = this.list[this.selatv].carMakeGroupVoList
+        //  console.log(item,index);
+      },
+      //tree X 处理
+      remove(node, data) {
+        console.log(node,data);
+        console.log(this.checkedListdata,'一级选中数据');
+        console.log(this.checkedchildrenList,'二级选中数据');
+        for (let i = 0; i < this.checkedListdata.length; i++) {
+          if (this.checkedListdata[i].makeId == data.id) {
+            console.log(this.checkedListdata,this.checkedchildrenList,"手动阀手动阀");
+            for (let j = 0; j < this.checkedListdata[i].carGroupList.length; j++) {
+                var it=this.checkedListdata[i].carGroupList[j].groupId
+                for (let x = 0; x < this.checkedchildrenList.length; x++) {
+                  if(it==this.checkedchildrenList[x].groupId){
+                     this.checkedchildrenList.splice(x, 1)
+                  }                
+                }           
+            }
+            this.istowched = false
+            this.checkedListdata.splice(i, 1)
           }
-      }
+        }
+        for (let j = 0; j < this.checkedchildrenList.length; j++) {
+          if (this.checkedchildrenList[j].groupId == data.id) {
+            this.checkedchildrenList.splice(j, 1)
+          }
+        }
+      },
+      async getNoAddCarMakeTree(makeName = '') {
+        let res = await getNoAddCarMakeTree({
+          makeName
+        })
+        if (res.code == 0) {
+          if (makeName == '') {
+            this.listzm = res.data.map(v => {
+              return v.makeLetter
+            })
+            this.list = res.data
+            this.listone = this.list[this.selatv].carMakeGroupVoList
+            // console.log( this.list,this.listone,this.listzm,this.selatv);
+          } else {
+            // console.log(res.data[0].makeLetter, this.selatv);
+            this.listzm.forEach((v, i) => {
+              if (v == res.data[0].makeLetter) {
+                this.selatv = i
+                this.listone = this.list[this.selatv].carMakeGroupVoList
+              }
+            });
+          }
+        }
+      },
     },
-  },
-  mounted() {
-    this.getNoAddCarMakeTree();
-    console.log(this.isbrand);
-  }
-};
+    mounted() {
+      this.getNoAddCarMakeTree();
+      console.log(this.isbrand);
+    }
+  };
 </script>
 
 <style lang="scss" scoped>
-/deep/.el-checkbox__input.is-checked .el-checkbox__inner,
-/deep/.el-checkbox__input.is-indeterminate .el-checkbox__inner {
-  border-color: #7cd2a2;
-  background: #7cd2a2;
-  color: #7cd2a2;
-}
-/deep/.el-checkbox__inner:hover {
-  border-color: #7cd2a2;
-}
-/deep/.el-checkbox__input.is-checked + .el-checkbox__label {
-  color: #606266;
-}
-/deep/.el-checkbox__inner.is-focus .el-checkbox__inner {
-  border-color: #7cd2a2;
-}
-/deep/ .el-select {
-  width: 100%;
-  height: 32px;
-  line-height: 32px;
-}
+  /deep/.el-checkbox__input.is-checked .el-checkbox__inner,
+  /deep/.el-checkbox__input.is-indeterminate .el-checkbox__inner {
+    border-color: #7cd2a2;
+    background: #7cd2a2;
+    color: #7cd2a2;
+  }
 
-/deep/.el-select-dropdown .el-scrollbar {
-  height: 290px !important;
-}
+  /deep/.el-checkbox__inner:hover {
+    border-color: #7cd2a2;
+  }
 
-/deep/ .el-select-dropdown__item.selected {
-  color: #409eff;
-  font-weight: 700;
-  min-height: 340px;
-}
-/deep/ .el-dialog__body {
-  padding: 30px 20px 0 20px !important;
-}
-/deep/.el-scrollbar__wrap {
-  overflow-y: scroll;
-  /* overflow: hidden; */
-}
-/deep/.el-scrollbar__bar.is-vertical {
-  display: none;
-}
-.ellipsis /deep/ .el-checkbox__label {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 95px !important;
-}
-.dialog-footer {
-  display: flex;
-}
-.sdmpbut {
-  width: 50% !important;
-}
-.addbrand {
-  width: 100%;
-  height: 360px;
-  overflow: hidden;
-  border: 1px solid #d7dae2;
-  .addbrand_left {
-    height: 100%;
-    padding: 9px 9px 0 9px;
-    background: #f5f6fa;
-    .addbrand_leftbox {
-      height: 312px !important;
-      overflow: hidden !important;
-      background: #fff !important;
+  /deep/.el-checkbox__input.is-checked+.el-checkbox__label {
+    color: #606266;
+  }
+
+  /deep/.el-checkbox__inner.is-focus .el-checkbox__inner {
+    border-color: #7cd2a2;
+  }
+
+  /deep/ .el-select {
+    width: 100%;
+    height: 32px;
+    line-height: 32px;
+  }
+
+  /deep/.el-select-dropdown .el-scrollbar {
+    height: 290px !important;
+  }
+
+  /deep/ .el-select-dropdown__item.selected {
+    color: #409eff;
+    font-weight: 700;
+    min-height: 340px;
+  }
+
+  /deep/ .el-dialog__body {
+    padding: 30px 20px 0 20px !important;
+  }
+
+  /deep/.el-scrollbar__wrap {
+    overflow-y: scroll;
+    /* overflow: hidden; */
+  }
+
+  /deep/.el-scrollbar__bar.is-vertical {
+    display: none;
+  }
+
+  .ellipsis /deep/ .el-checkbox__label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 95px !important;
+  }
+
+  .dialog-footer {
+    display: flex;
+  }
+
+  .sdmpbut {
+    width: 50% !important;
+  }
+
+  .addbrand {
+    width: 100%;
+    height: 360px;
+    overflow: hidden;
+    border: 1px solid #d7dae2;
+
+    .addbrand_left {
+      height: 100%;
+      padding: 9px 9px 0 9px;
+      background: #f5f6fa;
+
+      .addbrand_leftbox {
+        height: 312px !important;
+        overflow: hidden !important;
+        background: #fff !important;
+      }
+
+      .addbrand_leftsele {
+        height: 32px;
+        line-height: 32px;
+        background: #ffffff;
+        border: 1px solid #d7dae2;
+        margin-bottom: 10px;
+        font-size: 12px;
+        padding-left: 10px;
+        color: #838389;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+      }
+
+      .itemscroll {
+        height: 307px;
+        overflow-y: scroll;
+      }
+
+      .itemsty {
+        font-size: 14px;
+        height: 30px;
+        line-height: 30px;
+      }
+
+      .itemscrollt {}
     }
-    .addbrand_leftsele {
-      height: 32px;
-      line-height: 32px;
-      background: #ffffff;
-      border: 1px solid #d7dae2;
-      margin-bottom: 10px;
-      font-size: 12px;
-      padding-left: 10px;
-      color: #838389;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-    }
-    .itemscroll {
-      height: 307px;
-      overflow-y: scroll;
-    }
-    .itemsty {
-      font-size: 14px;
-      height: 30px;
-      line-height: 30px;
-    }
-    .itemscrollt {
+
+    .addbrand_right {
+      // height: 100px;
     }
   }
-  .addbrand_right {
-    // height: 100px;
+
+  .sellettersty {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    font-size: 14px;
+    display: block;
   }
-}
-.sellettersty {
-  cursor: pointer;
-  width: 16px;
-  height: 16px;
-  line-height: 16px;
-  text-align: center;
-  font-size: 14px;
-  display: block;
-}
-.sellettersty.atv {
-  color: #ffffff;
-  background: #3b86ff;
-}
-.scrollber {
-  // overflow-y: scroll;
-  margin-bottom: -17px;
-  overflow: hidden !important;
-  height: 320px;
-  padding: 8px 0 0 10px;
-}
+
+  .sellettersty.atv {
+    color: #ffffff;
+    background: #3b86ff;
+  }
+
+  .scrollber {
+    // overflow-y: scroll;
+    margin-bottom: -17px;
+    overflow: hidden !important;
+    height: 320px;
+    padding: 8px 0 0 10px;
+  }
 </style>

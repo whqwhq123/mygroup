@@ -4,17 +4,18 @@
       <el-col class="colleft">
         <el-row type="flex" class="row-bg leftTit" justify="space-between">
           <el-col>
-            <div class="leftTit_item act_tit">业务线</div>
+            <!-- <div class="leftTit_item act_tit">业务线</div> -->
+            <div class="leftTit_item">业务线</div>
           </el-col>
           <el-col>
-            <div class="leftTit_item">品牌线</div>
+            <div class="leftTit_item"></div>
           </el-col>
         </el-row>
 
         <el-row type="flex" class="row-bg screenTree" justify="space-between">
           <el-col>
             <el-select
-              v-model="hierarchy"
+              v-model="deptLevel"
               class="filter-item-input"
               filterable
               clearable
@@ -32,14 +33,14 @@
           </el-col>
           <el-col>
             <div class="radioBox" @click="deptUseClick">
-              <img class="radio_img" v-if="deptUseStatus == 1" src="@/assets/images/radio_icon.png" alt="">
-              <div class="radio_circular" v-else></div>
+              <div class="radio_circular" v-if="deptUseStatus == 1"></div>
+              <img class="radio_img" v-else src="@/assets/images/radio_icon.png" alt="">
               <span>显示停用组织</span>
             </div>
           </el-col>
         </el-row>
 
-        <organize-tree :treedata="treedata" @upTree="upTree"/>
+        <organize-tree :treedata="treedata" :deptPrincipalId.sync="deptPrincipalId" :deptId.sync="deptId" @upTree="upTree" @upDeptId="upDeptId" />
       </el-col>
 
       <el-col class="colright">
@@ -54,7 +55,7 @@
           </el-row>
         </el-row>
         <el-row>
-          <organizeTable />
+          <organize-table :deptId="deptId" :deptPrincipalId="deptPrincipalId"/>
         </el-row>
       </el-col>
     </el-row>
@@ -70,13 +71,13 @@ export default {
   data() {
     return {
       userInfo: {},
-      deptUseStatus: '', //全部为空 1 正常、2 停用
+      deptUseStatus: '1', //全部为空 1 正常、2 停用
       treedata: [],
       radio: "1",
-      hierarchy: "-1",
+      deptLevel: "",
       levelList: [{
         tagName: "不限组织层级",
-        tagId: "-1",
+        tagId: "",
       }, {
         tagName: "厂商",
         tagId: "20",
@@ -90,20 +91,37 @@ export default {
         tagName: "经销商",
         tagId: "50",
       },{
-        tagName: "二级经销商",
+        tagName: "二网经销商",
         tagId: "60",
-      },{
-        tagName: "部门",
-        tagId: "70",
-      }],
+      },
+      // {
+      //   tagName: "部门",
+      //   tagId: "70",
+      // }
+      ],
+      deptId: '',
+      deptPrincipalId:'',//部门负责人id
     };
   },
   components: {
     organizeTree,
     organizeTable
   },
-  watch: {},
+  watch: {
+    deptLevel(newVal){
+      this.getBusiness()
+    },
+    deptId(newVal){
+      this.deptId=newVal
+    }
+  },
   created() {
+    let deptLevel = this.$store.getters.companyInfo.deptLevel || ''
+
+    this.levelList = this.levelList.filter(item => {
+      return item.tagId > deptLevel || item.tagId == ''
+    })
+
     this.userInfo = this.$store.getters.userInfo || {};
     this.getBusiness()
   },
@@ -111,9 +129,13 @@ export default {
     getBusiness(){
       deptQueryBusiness({
         curUserId: this.userInfo.userId || '',
-        deptUseStatus: this.deptUseStatus
+        deptUseStatus: this.deptUseStatus,
+        deptLevel: this.deptLevel || ''
       }).then(res=> {
         if(res.code == 0) {
+          if(res.data && res.data.length > 0) {
+            this.deptId = res.data[0].deptId
+          }
           this.treedata = res.data || []
         }
       })
@@ -124,6 +146,9 @@ export default {
     },
     upTree() {
       this.getBusiness()
+    },
+    upDeptId(val) {
+      this.deptId = val
     }
   },
 };
@@ -158,7 +183,9 @@ export default {
 
 .colleft {
   width: 320px;
-  min-height: 936px;
+  // min-height: 936px;
+  height: 730px;
+  overflow: auto;
   background: #ffffff;
   border: 1px solid #e4e6ed;
 
@@ -248,7 +275,7 @@ export default {
   border: 1px solid #e4e6ed;
   border-left: none;
   border-top: none;
-  height: 936px;
+  // height: 936px;
   overflow: hidden;
 
   .rightTit {

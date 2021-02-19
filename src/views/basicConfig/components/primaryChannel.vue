@@ -88,7 +88,7 @@
 
     <!-- 添加 -->
     <el-dialog
-      :title="dialogTit"
+      :title="!isEdit ? '新增一级渠道' : '修改一级渠道'"
       :visible.sync="dialogFormVisible"
       append-to-body="false"
       width="430px"
@@ -125,7 +125,7 @@
         <el-button type="text" class="popBtn" @click="dialogFormVisible = false"
           >取 消</el-button
         >
-        <el-button type="text" class="popBtn" @click="dialogTit == '新建一级渠道' ? saveChannel() : editChannel()"
+        <el-button type="text" class="popBtn" @click="!isEdit ? saveChannel() : editChannel()"
           >确 定</el-button
         >
       </div>
@@ -167,7 +167,7 @@ export default {
           { required: true, message: "请输入一级渠道名称", trigger: "blur" }
         ]
       },
-      dialogTit: '新建一级渠道'
+      isEdit: false
     };
   },
   computed: {},
@@ -195,9 +195,10 @@ export default {
       this.getListReq();
     },
     getListReq() {
+      // console.log(this.userInfo)
       let data = {
         ...this.listQuery,
-        deptId: this.userInfo.deptId
+        deptId: this.userInfo.userDeptId
       };
 
       if (this.tabPosition == "all") delete data.enabled;
@@ -217,23 +218,23 @@ export default {
         userId: null,
         remarks: null
       }
-      this.dialogTit = '新增一级渠道'
-      getChannelId({deptId: this.userInfo.deptId}).then(res => {
+      this.isEdit = false
+      getChannelId({deptId: this.userInfo.userDeptId}).then(res => {
         if(res.code == '0') {
           this.editForm.channelId = res.data
           this.dialogFormVisible = true;
         } else {
-          this.$message({
-            type: 'warning',
+          this.$notify.error({
+            title: '错误',
             message: res.errMsg
-          })
+          });
         }
         
       })
     },
     toEdit(row) {
-      this.dialogTit = '修改一级渠道'
-      this.editForm = row
+      this.isEdit = true
+      this.editForm = Object.assign({}, row);
       this.dialogFormVisible = true;
     },
     upStatus(row, flag){
@@ -244,43 +245,58 @@ export default {
       };
       updateStatus(data).then(res => {
         if(res.code == '0') {
-          this.$message({ type: 'success', message: '修改成功' })
+          this.$notify({
+            title: '成功',
+            message: '修改成功',
+            type: 'success'
+          });
           this.handleFilter()
         } else {
-          this.$message({
-            type: 'warning',
+          this.$notify.error({
+            title: '错误',
             message: res.errMsg
-          })
+          });
         }
       })
     },
     saveChannel() {
+      if(this.listLoading) return
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           this.listLoading = true
           let data = {
             ...this.editForm,
             userId: this.userInfo.userId,
-            deptId: this.userInfo.deptId
+            deptId: this.userInfo.userDeptId
           };
-          addChannel(data).then(res => {
-            if(res.code == '0') {
-              this.listLoading = false
-              this.dialogFormVisible = false
-              this.$message({ type: 'success', message: '添加成功' })
-              this.handleFilter()
-            } else {
-              this.$message({
-                type: 'warning',
-                message: res.errMsg
+          clearTimeout(timer);
+          let timer = setTimeout(()=> {
+              addChannel(data).then(res => {
+                if(res.code == '0') {
+                  this.listLoading = false
+                  this.dialogFormVisible = false
+                  this.$notify({
+                    title: '成功',
+                    message: '添加成功',
+                    type: 'success'
+                  });
+                  this.handleFilter()
+                } else {
+                  this.$notify.error({
+                    title: '错误',
+                    message: res.errMsg
+                  });
+                }
               })
-            }
-          })
+          }, 500);
+
+          
         }
       })
     },
 
     editChannel() {
+      if(this.listLoading) return
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           this.listLoading = true
@@ -288,19 +304,26 @@ export default {
             ...this.editForm,
             userId: this.userInfo.userId
           };
-          updateChannel(data).then(res => {
-            if(res.code == '0') {
-              this.listLoading = false
-              this.dialogFormVisible = false
-              this.$message({ type: 'success', message: '修改成功' })
-              this.handleFilter()
-            } else {
-              this.$message({
-                type: 'warning',
-                message: res.errMsg
-              })
-            }
-          })
+          clearTimeout(timer);
+          let timer = setTimeout(()=> {
+            updateChannel(data).then(res => {
+              if(res.code == '0') {
+                this.listLoading = false
+                this.dialogFormVisible = false
+                this.$notify({
+                  title: '成功',
+                  message: '修改成功',
+                  type: 'success'
+                });
+                this.handleFilter()
+              } else {
+                this.$notify.error({
+                  title: '错误',
+                  message: res.errMsg
+                });
+              }
+            })
+          }, 500)
         }
       })
     },
@@ -308,7 +331,7 @@ export default {
     exportTab() {
       let data = {
         ...this.listQuery,
-        deptId: this.userInfo.deptId
+        deptId: this.userInfo.userDeptId
       };
 
       if (this.tabPosition == "all") delete data.enabled;
@@ -318,10 +341,10 @@ export default {
         this.listLoading = false
         operateFile(res, '一级渠道')
       }).catch(() => {
-        this.$message({
-          type: 'warning',
+        this.$notify.error({
+          title: '错误',
           message: res.errMsg
-        })
+        });
       })
     }
   }

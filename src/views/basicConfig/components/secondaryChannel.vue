@@ -16,7 +16,7 @@
         placeholder="选择一级渠道"
       >
         <el-option
-          v-for="(item, index) in channelList"
+          v-for="(item, index) in channelSelectList"
           :key="index"
           :label="item.name"
           :value="item.channelId"
@@ -87,15 +87,15 @@
       <el-table-column label="清洗属性" width="200" align="center">
         <template slot-scope="scope">
           <el-select
-            v-model="scope.row.clear"
+            v-model="scope.row.cleanProp"
             class="filter-item-input"
             filterable
-            clearable
             placeholder="不需要"
             style="width:128px;height:32px"
+            @change="cleanChange($event,scope.row)"
           >
             <el-option
-              v-for="(item, index) in tagsList"
+              v-for="(item, index) in cleanList"
               :key="index"
               :label="item.tagName"
               :value="item.tagId"
@@ -133,7 +133,7 @@
 
     <!-- 添加 -->
     <el-dialog
-      :title="dialogTit"
+      :title="!isEdit ? '新建二级渠道' : '修改二级渠道'"
       :visible.sync="dialogFormVisible"
       append-to-body="false"
       width="430px"
@@ -145,8 +145,9 @@
         :rules="editFormRules"
         label-width="130px"
       >
-        <el-form-item label="一级渠道名称：" required>
-          <el-select v-model="editForm.parentName" filterable placeholder="请选择" @change="channelChoice">
+        <el-form-item label="一级渠道名称：">
+          <span v-if="isEdit==true">{{editForm.parentName}}</span>
+          <el-select v-if="isEdit==false" v-model="editForm.parentName" filterable placeholder="请选择" @change="channelChoice">
             <el-option
               v-for="item in channelList"
               :key="item.value"
@@ -180,7 +181,7 @@
         <el-button type="text" class="popBtn" @click="dialogFormVisible = false"
           >取 消</el-button
         >
-        <el-button type="text" class="popBtn" @click="dialogTit == '新建二级渠道' ? saveChannel() : editChannel()"
+        <el-button type="text" class="popBtn" @click="!isEdit ? saveChannel() : editChannel()"
           >确 定</el-button
         >
       </div>
@@ -206,15 +207,16 @@ export default {
         enabled: "",
         parentId: ""
       },
+      channelSelectList: [],
       channelList: [],
-      tagsList: [
+      cleanList: [
         {
           tagName: "不需要",
-          tagId: "1",
+          tagId: "none",
         },
         {
           tagName: "人工清洗",
-          tagId: "2",
+          tagId: "manual",
         }
       ],
       tabPosition: "all",
@@ -235,7 +237,7 @@ export default {
           { required: true, message: "请输入二级渠道名称", trigger: "blur" }
         ]
       },
-      dialogTit: '新建二级渠道'
+      isEdit: false
     };
   },
   computed: {},
@@ -266,7 +268,7 @@ export default {
     getListReq() {
       let data = {
         ...this.listQuery,
-        deptId: this.userInfo.deptId
+        deptId: this.userInfo.userDeptId
       };
 
       if (this.tabPosition == "all") delete data.enabled;
@@ -284,16 +286,26 @@ export default {
         name: "",
         pageNum: 1,
         pageSize: 100000,
-        deptId: this.userInfo.deptId
+        deptId: this.userInfo.userDeptId
       }).then(res => {
         if (res.code == "0") {
-          let channelList = res.data.content.map(item => {
-            return {
-              channelId: item.channelId,
-              name: item.name
-            }
+          let channelList = res.data.content.filter(item => {
+            return item.enabled
           })
-          this.channelList = channelList || [];
+          
+          this.channelList = channelList.map(item => {
+              return {
+                channelId: item.channelId,
+                name: item.name,
+              }
+          })
+
+          this.channelSelectList = res.data.content.map(item => {
+              return {
+                channelId: item.channelId,
+                name: item.name,
+              }
+          })
         }
       });
     },
@@ -318,12 +330,13 @@ export default {
         parentId,
         parentName,
       }
-      this.dialogTit = '新建二级渠道'
+      this.isEdit = false
       this.dialogFormVisible = true;
     },
     toEdit(row) {
-      this.dialogTit = '修改二级渠道'
-      this.editForm = row
+     // console.log(this.isEdit)
+      this.isEdit = true
+      this.editForm = Object.assign({}, row);
       this.dialogFormVisible = true;
     },
 
@@ -332,7 +345,7 @@ export default {
       this.editForm.parentId = value,
       this.editForm.parentName = label,
       getChannelId({
-        deptId: this.userInfo.deptId,
+        deptId: this.userInfo.userDeptId,
         parentId: value,
 
       }).then(res => {
@@ -340,10 +353,10 @@ export default {
           this.editForm.channelId = res.data
           
         } else {
-          this.$message({
-            type: 'warning',
+          this.$notify.error({
+            title: '错误',
             message: res.errMsg
-          })
+          });
         }
 
       })
@@ -360,40 +373,49 @@ export default {
           this.$message({ type: 'success', message: '修改成功' })
           this.handleFilter()
         } else {
-          this.$message({
-            type: 'warning',
+          this.$notify.error({
+            title: '错误',
             message: res.errMsg
-          })
+          });
         }
       })
     },
     saveChannel() {
+      if(this.listLoading) return
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           this.listLoading = true
           let data = {
             ...this.editForm,
             userId: this.userInfo.userId,
-            deptId: this.userInfo.deptId
+            deptId: this.userInfo.userDeptId
           };
-          addChannel(data).then(res => {
-            if(res.code == '0') {
-              this.listLoading = false
-              this.dialogFormVisible = false
-              this.$message({ type: 'success', message: '添加成功' })
-              this.handleFilter()
-            } else {
-              this.$message({
-                type: 'warning',
-                message: res.errMsg
-              })
-            }
-          })
+          clearTimeout(timer);
+          let timer = setTimeout(()=> {
+            addChannel(data).then(res => {
+              if(res.code == '0') {
+                this.listLoading = false
+                this.dialogFormVisible = false
+                this.$notify({
+                  title: '成功',
+                  message: '添加成功',
+                  type: 'success'
+                });
+                this.handleFilter()
+              } else {
+                this.$notify.error({
+                  title: '错误',
+                  message: res.errMsg
+                });
+              }
+            })
+          }, 500)
         }
       })
     },
 
     editChannel() {
+      if(this.listLoading) return
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           this.listLoading = true
@@ -401,19 +423,49 @@ export default {
             ...this.editForm,
             userId: this.userInfo.userId
           };
-          updateChannel(data).then(res => {
-            if(res.code == '0') {
-              this.listLoading = false
-              this.dialogFormVisible = false
-              this.$message({ type: 'success', message: '修改成功' })
-              this.handleFilter()
-            } else {
-              this.$message({
-                type: 'warning',
-                message: res.errMsg
-              })
-            }
-          })
+          clearTimeout(timer);
+          let timer = setTimeout(()=> {
+            updateChannel(data).then(res => {
+              if(res.code == '0') {
+                this.listLoading = false
+                this.dialogFormVisible = false
+                this.$notify({
+                  title: '成功',
+                  message: '修改成功',
+                  type: 'success'
+                });
+                this.handleFilter()
+              } else {
+                this.$notify.error({
+                  title: '错误',
+                  message: res.errMsg
+                });
+              }
+            })
+          }, 500)
+        }
+      })
+    },
+
+    cleanChange(val, row) {
+      let data = {
+        id: row.id,
+        userId: this.userInfo.userId,
+        cleanProp: val
+      };
+      updateChannel(data).then(res => {
+        if(res.code == '0') {
+          this.$notify({
+            title: '成功',
+            message: '修改成功',
+            type: 'success'
+          });
+          this.handleFilter()
+        } else {
+          this.$notify.error({
+            title: '错误',
+            message: res.errMsg
+          });
         }
       })
     },
@@ -421,7 +473,7 @@ export default {
     exportTab() {
       let data = {
         ...this.listQuery,
-        deptId: this.userInfo.deptId
+        deptId: this.userInfo.userDeptId
       };
 
       if (this.tabPosition == "all") delete data.enabled;
@@ -431,10 +483,10 @@ export default {
         this.listLoading = false
         operateFile(res, '一级渠道')
       }).catch(() => {
-        this.$message({
-          type: 'warning',
+        this.$notify.error({
+          title: '错误',
           message: res.errMsg
-        })
+        });
       })
     }
   }

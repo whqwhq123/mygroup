@@ -37,7 +37,8 @@ export default {
     };
   },
   created(){
-
+    
+    this.menuData[0].childFunctionList[1].childFunctionList = null
   },
   methods: {
 

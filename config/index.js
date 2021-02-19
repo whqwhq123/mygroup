@@ -13,7 +13,7 @@ const getIPAdress = () => {
     }
 }
 module.exports = {
-  title: '用户画像检索平台' || '',
+  title: 'SDMP 运营管理系统' || '',
   dev: {
     devServer : getIPAdress() || '127.0.0.1',
     assetsRoot: 'assets',   //打包文件路径
@@ -29,7 +29,7 @@ module.exports = {
     // },
     autoOpenBrowser: true,
     host: '127.0.0.1', 
-    port: 8090, 
+    port: 9090, 
     devtool: 'cheap-module-eval-source-map',
   },
 //   build: {

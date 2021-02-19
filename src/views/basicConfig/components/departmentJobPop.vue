@@ -1,9 +1,11 @@
-<!-- 选择所属部门 -->
+<!-- 选择兼职部门 -->
 <template>
   <el-dialog
     :title="addAndsee"
     append-to-body="true"
-    :visible.sync="isbrandPop"
+    :visible.sync="isDepartmentJobShow"
+    :before-close="handleClose"
+    default-expand-all
     width="700px"
     class="dialogStyle"
   >
@@ -23,10 +25,11 @@
               :props="defaultProps"
               :filter-node-method="filterNode"
               ref="tree"
+              :check-strictly="true"
               show-checkbox
-              @node-click="nodeclickFun"
+              @check-change="nodeclickFun"
             >
-              <div class="custom-tree-node treecom" slot-scope="{ node, data }" >
+              <div class="custom-tree-node treecom" slot-scope="{ node, data }">
                 <div class="node_titleft" v-if="data.type == 0">
                   <span>{{ node.label }}</span>
                 </div>
@@ -38,7 +41,22 @@
                     src="@/assets/images/right_angle.png"
                     alt=""
                   />
-                  <svg-icon :icon-class="data.icon" class="treeicon" />
+                  <svg-icon
+                    :icon-class="
+                      data.deptUseStatus == '2'
+                        ? 'prohibit_icon'
+                        : data.deptLevel == 20
+                        ? 'group_icon'
+                        : data.deptLevel == 30
+                        ? 'manufacturer_icon'
+                        : data.deptLevel == 40
+                        ? 'region_icon'
+                        : data.deptLevel == 50 || data.deptLevel == 60
+                        ? 'distributor_icon'
+                        : 'department_icon'
+                    "
+                    class="treeicon"
+                  />
                   <span>{{ node.label }}</span>
                   <i
                     :class="[
@@ -55,32 +73,19 @@
       <div class="popBox_right">
         <div class="choice">选择：</div>
         <div class="popContent select_content">
-          <div class="node_titleft">
+          <div class="node_titleft" v-for="value in list_tree" :key="value">
             <svg-icon class="treeicon" icon-class="department_icon" />
-            <span>销售部门</span>
-            <i class="el-icon-circle-close close_icon"></i>
-            <!-- <svg-icon :icon-class="data.icon" class="treeicon" /> -->
-            <!-- <span>{{ node.label }}</span> -->
-            <!--  -->
-          </div>
-          <div class="node_titleft">
-            <svg-icon class="treeicon" icon-class="department_icon" />
-            <span>销售部门</span>
-            <i class="el-icon-circle-close close_icon"></i>
-          </div>
-          <div class="node_titleft">
-            <svg-icon class="treeicon" icon-class="department_icon" />
-            <span>销售部门</span>
+            <span>{{ value["deptName"] }}</span>
             <i class="el-icon-circle-close close_icon"></i>
           </div>
         </div>
       </div>
     </div>
     <div slot="footer" class="dialog-footer">
-      <el-button type="text" class="popBtn" @click="isbrandPop = false"
+      <el-button type="text" class="popBtn" @click="handleClose()"
         >取 消</el-button
       >
-      <el-button type="text" class="popBtn" @click="submitForm('ruleForm')"
+      <el-button type="text" class="popBtn" @click="handleClose()"
         >确 定</el-button
       >
     </div>
@@ -90,151 +95,69 @@
 <script>
 export default {
   props: {
-    isbrandPop: {
+    isDepartmentJobShow: {
       type: Boolean,
       default: true
+    },
+    isEdit: {
+      type: Boolean,
+      default: false
     },
     addAndsee: {
       type: String,
       default: "选择所属部门"
     },
-    addAndseefromData: {
-      type: Object
+    treedata: {
+      type: Object,
+      default: []
     }
   },
   data() {
     return {
       filterText: "",
       defaultProps: {
-        children: "children",
-        label: "label"
+        value: "deptId",
+        label: "deptName",
+        children: "children"
       },
-      treedata: [
-        {
-          id: 0,
-          label: "全选",
-          type: 0,
-        },
-        {
-          id: 1,
-          label: "长安福特集团",
-          type: 1,
-          icon: "group_icon",
-          children: [
-            {
-              id: 4,
-              type: 2,
-              icon: "prohibit_icon",
-              label: "财务部",
-              disabled: true
-            },
-            {
-              id: 15,
-              type: 2,
-              icon: "region_icon",
-              label: "北部区",
-              children: [
-                {
-                  id: 30,
-                  type: 3,
-                  icon: "company_icon",
-                  label: "深圳长安汽车有限公司",
-                  children: [
-                    {
-                      id: 30,
-                      type: 4,
-                      icon: "department_icon",
-                      label: "销售部门",
-                      children: [
-                        {
-                          id: 30,
-                          type: 5,
-                          icon: "department_icon",
-                          label: "其他部门"
-                        },
-                        {
-                          id: 31,
-                          type: 5,
-                          icon: "department_icon",
-                          label: "其他部门"
-                        }
-                      ]
-                    },
-                    {
-                      id: 31,
-                      type: 4,
-                      icon: "department_icon",
-                      label: "销售部门",
-                      children: [
-                        {
-                          id: 30,
-                          type: 5,
-                          icon: "department_icon",
-                          label: "其他部门"
-                        },
-                        {
-                          id: 31,
-                          type: 5,
-                          icon: "department_icon",
-                          label: "其他部门"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  id: 31,
-                  type: 2,
-                  icon: "company_icon",
-                  label: "北京长安汽车有限公司"
-                }
-              ]
-            },
-            {
-              id: 16,
-              type: 2,
-              icon: "region_icon",
-              label: "华南区"
-            },
-            {
-              id: 14,
-              type: 2,
-              icon: "region_icon",
-              label: "华北区"
-            },
-            {
-              id: 17,
-              type: 2,
-              icon: "region_icon",
-              label: "华东区"
-            },
-            {
-              id: 18,
-              type: 2,
-              icon: "region_icon",
-              label: "南部区"
-            }
-          ]
-        }
-      ]
+      list_tree: [],
+      formObj: []
     };
   },
   watch: {
+    isDepartmentJobShow(val) {
+      this.isDepartmentJobShow = val;
+    },
     filterText(val) {
       this.$refs.tree.filter(val);
-    }
+    },
+    isEdit(newVal) {
+      this.newVal = newVal
+    },
   },
 
   methods: {
     //左边树形结构选中
     nodeclickFun(e) {
-      if (e.label == "财务部") return;
-      console.log(e);
+      this.list_tree = this.$refs.tree.getCheckedNodes();
+      console.log(this.list_tree)
+
+      this.formObj = this.list_tree.map(item => {
+        return {
+          deptName: item.deptName,
+          deptId: item.deptId
+        }
+      });
     },
     filterNode(value, data) {
       if (!value) return true;
       return data.label.indexOf(value) !== -1;
-    }
+    },
+    handleClose() {
+      this.isDepartmentJobShow = false
+      console.log(this.formObj,"this.formObjthis.formObj");
+      this.$emit('departmentJobClick', this.formObj)
+    },
   },
   mounted() {}
 };
@@ -284,9 +207,13 @@ export default {
   padding: 10px;
   box-sizing: border-box;
 
+  /deep/.el-input {
+    width: 100% !important;
+  }
+
   .screenBox {
     width: 100%;
-    height: 100%;
+    height: 85%;
     margin-top: 12px;
     overflow: auto;
 
@@ -299,6 +226,7 @@ export default {
       height: 30px;
       box-sizing: border-box;
     }
+
     /deep/ .el-tree-node__expand-icon {
       display: none;
     }

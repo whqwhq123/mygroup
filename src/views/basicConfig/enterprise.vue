@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="content">
-      <el-form class="company_form" ref="form" :model="form" label-width="120px">
+      <el-form class="company_form" ref="form" :model="form" :rules="rules" label-width="120px">
         <el-form-item label="企业logo" required>
           <div class="upload_left">
             <div class="uploader" @click="select_file()">
@@ -11,13 +11,13 @@
             </div>
             <div class="upload_text">上传图片</div>
           </div>
-          <div class="upload_right">图片格式：.jpg、png、gif，大小5M以内</div>
+          <div class="upload_right">图片格式：.jpg、png，大小5M以内</div>
           <div class="clear"></div>
         </el-form-item>
-        <el-form-item label="企业名称">
+        <el-form-item label="企业名称" prop="deptName">
           <el-input size="small" v-model="form.deptName" placeholder="请输入企业名称" style="width: 280px;"></el-input>
         </el-form-item>
-        <el-form-item label="组织级别">
+        <el-form-item label="组织级别" prop="deptLevel">
           <el-select size="small" v-model="form.deptLevel  " placeholder="请选择组织级别" style="width: 280px;">
             <el-option :label="value['name']" :value="value['value']" v-for="value in option_type" :key="value['value']"></el-option>
           </el-select>
@@ -29,7 +29,7 @@
           <el-input size="small" v-model="form.companyAddr" placeholder="请输入企业地址" style="width: 280px;"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submit()" :loading="submit_loading" :disabled="submit_loading">保存</el-button>
+          <el-button type="primary" @click="submit()"  v-if="get_role_function('100100110')"  :disabled="submit_loading">保存</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -42,27 +42,42 @@
     companyQuery,
     LoginApplication
   } from "@/service/api/index";
+  import { get_role_function } from '@/utils/index';
   export default {
     data() {
       return {
+        get_role_function,
         form: {},
         submit_loading: false,
         option_type: [{
           name: '厂商',
-          value: '20'
+          value: 20
         }, {
-          name: '集团',
-          value: '30'
+          name: '经销商集团',
+          value: 30
         }, {
-          name: '大区',
-          value: '40'
+          name: "大区",
+          value: 40,
         }, {
           name: '经销商',
-          value: '50'
+          value: 50
         }, {
-          name: '二级经销商',
-          value: '60'
-        }]
+          name: '二网经销商',
+          value: 60
+        }
+        ],
+        rules: {
+          deptName: [{
+            required: true,
+            message: '请输入企业名称',
+            trigger: 'blur'
+          }],
+          deptLevel: [{
+            required: true,
+            message: '请选择组织级别',
+            trigger: 'blur'
+          }]
+        }
       }
     },
     created() {
@@ -74,35 +89,44 @@
       },
       upload() {
         let that = this
-        LoginApplication().then((res) => {
-          if (res.code == 0) {
-            let OSS = require("ali-oss");
-            let sts = new OSS({
-              region: "oss-cn-beijing",
-              accessKeyId: res.data.credentials.accessKeyId,
-              accessKeySecret: res.data.credentials.accessKeySecret,
-              stsToken: res.data.credentials.securityToken,
-              bucket: "dssp-pcm",
-            });
-            let file = document.getElementById("file").files[0];
-            sts.multipartUpload(file.name, file)
-              .then(function(res) {
-                that.form['companyLogo'] = res.res.requestUrls[0]
-                that.form = JSON.parse(JSON.stringify(that.form))
-              })
-              .catch((err) => {
-                that.$notify.error({
-                  title: "错误",
-                  message: "请检查网络设置",
-                });
+        let file = document.getElementById("file").files[0];
+        let name_ext = this.get_ext(file.name);
+        if (name_ext != "jpg" && name_ext != "png") {
+          this.$notify.error({
+            title: "错误",
+            message: "请上传jpg或png格式的图片",
+          });
+        } else {
+          LoginApplication().then((res) => {
+            if (res.code == 0) {
+              let OSS = require("ali-oss");
+              let sts = new OSS({
+                region: "oss-cn-beijing",
+                accessKeyId: res.data.credentials.accessKeyId,
+                accessKeySecret: res.data.credentials.accessKeySecret,
+                stsToken: res.data.credentials.securityToken,
+                bucket: "dssp-pcm",
               });
-          } else {
-            this.$notify.error({
-              title: '错误',
-              message: res.data.message
-            });
-          }
-        })
+              sts.multipartUpload(file.name, file)
+                .then(function(res) {
+                  let res_name = res.res.requestUrls[0].split("?");
+                  that.form['companyLogo'] = res_name[0]
+                  that.form = JSON.parse(JSON.stringify(that.form))
+                })
+                .catch((err) => {
+                  that.$notify.error({
+                    title: "错误",
+                    message: "请检查网络设置",
+                  });
+                });
+            } else {
+              this.$notify.error({
+                title: '错误',
+                message: res.data.message
+              });
+            }
+          })
+        }
       },
       get_content() {
         let obj = {}
@@ -117,27 +141,46 @@
           }
         })
       },
+      get_ext(str) {
+        let arr = str.split(".");
+        return arr[arr.length - 1];
+      },
       submit() {
-        let obj = {}
-        obj['curUserId'] = this.$store.getters.userInfo['userId']
-        obj['deptName'] = this.form['deptName']
-        obj['deptLevel'] = this.form['deptLevel']
-        obj['companyLogo'] = this.form['companyLogo']
-        obj['companyPhone'] = this.form['companyPhone']
-        obj['companyAddr'] = this.form['companyAddr']
-        this.submit_loading = true
-        companyEdit(obj).then((res) => {
-          this.submit_loading = false
-          if (res.code == 0) {
-            this.$notify({
-              title: "成功",
-              message: "保存成功",
-              type: "success"
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+            let obj = {}
+            if (this.form['deptId']) {
+              obj['deptId'] = this.form['deptId']
+            }
+            obj['curUserId'] = this.$store.getters.userInfo['userId']
+            obj['deptName'] = this.form['deptName']
+            obj['deptLevel'] = this.form['deptLevel']
+            obj['companyLogo'] = this.form['companyLogo']
+            obj['companyPhone'] = this.form['companyPhone']
+            obj['companyAddr'] = this.form['companyAddr']
+            this.submit_loading = true
+            companyEdit(obj).then((res) => {
+              this.submit_loading = false
+              if (res.code == 0) {
+                this.$notify({
+                  title: "成功",
+                  message: "保存成功",
+                  type: "success"
+                })
+            
+                this.$store.state.user.companyInfo.deptName=this.form['deptName']
+                this.$store.state.user.companyInfo.companyLogo=this.form['companyLogo']
+              } else {
+                this.$notify.error({
+                  title: '错误',
+                  message: res.data.message
+                });
+              }
             })
           } else {
             this.$notify.error({
               title: '错误',
-              message: res.data.message
+              message: '请完善表单',
             });
           }
         })

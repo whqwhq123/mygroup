@@ -8,27 +8,25 @@
           </el-col>
         </el-row>
         <!-- 树形结构 -->
+      <el-scrollbar class="boxscroll">   
         <el-tree :data="treedata" @node-click="nodeclickFun">
+
           <div
             class="custom-tree-node treecom"
-            :style="
-              data.type == 1
-                ? 'background: #E4E6ED;border-bottom: 1px solid #D7DAE2;'
-                : ''
-            "
+            :style="data.type == 1? 'background: #E4E6ED;border-bottom: 1px solid #D7DAE2;': ''"
             slot-scope="{ node, data }"
           >
             <div class="node_titleft">
-              <i   :class="[data.icon, 'treeicon']"></i>
+              <i   :class="data.icon"></i>
               <span v-if="data.type == 1">{{ node.label }}（{{data.childrenNum}}）</span>
-              <span v-else>{{ node.label }}</span>
+              <span v-else>{{ node.label }}{{data.isroles?'':'(已停用)'}}</span>
             </div>
-            <div class="node_titright">
-              
+            <!-- v-if="data.isroles" -->
+            <div class="node_titright" >
               <el-button
                 type="text"
                 size="mini"
-                v-if="data.type == 1"
+                v-if="data.type == 1 && get_role_function('100300110')"
                 style="color: #3b86ff"
                 @click.stop="() => append(node, data)"
               >
@@ -39,6 +37,7 @@
                   type="text"
                   size="mini"
                   icon="el-icon-edit-outline"
+                   v-if="get_role_function('100300120')"
                   :style="data.type != 1 ? 'color: #929496;' : ''"
                   @click.stop="() => outline(node, data)"
                 >
@@ -55,190 +54,23 @@
             </div>
           </div>
         </el-tree>
+      </el-scrollbar>    
+
       </el-col>
       <!-- rolesPowerCom   有数据 -->
       <el-col v-if="isdata" :span="19" class="colright">
         <!-- 角色信息配置 添加 -->
         <template v-if="isadd">
-        <el-row>
-          <el-row  class="row-bg rightTit" style="border-right: none">
-            <el-col :span='4'>
-              <div class="roles_titsty" style="padding-left: 22px">
-                添加/修改角色
-              </div>
-            </el-col>
-            <el-col :span='20' style="display: flex;justify-content: flex-end;align-items: center;height: 50px;">
-              <div class="roles_titbutsty1" @click="onoffFun(1)">
-                取消
-              </div>
-              <div class="roles_titbutsty2" v-if="isedit" @click="onoffFun(3)">
-                保存
-              </div>
-              <div class="roles_titbutsty2" v-else @click="onoffFun(2)">
-                保存
-              </div>
-            </el-col>
-        </el-row>
-        </el-row>
-        <el-row >
-          <el-row class="rolenews">
-            <el-row class="rolenews_box">
-              <i class="el-icon-s-custom" style="font-size: 40px;color: #A5A4BF;"></i>
-            </el-row>
-            <el-row class="rolenews_box">
-              <span class="rolenews_tit">角色名称:</span>
-              <el-input v-model="rolesInput.rolname"  style="width:440px" placeholder="请输入内容"></el-input>
-            </el-row>
-            <el-row class="rolenews_box">
-              <span class="rolenews_tit">角色类型:</span>
-              <el-input v-model="rolesInput.roltype" disabled  style="width:440px" placeholder="请输入角色类型"></el-input>
-            </el-row>
-            <el-row class="rolenews_box">
-              <span class="rolenews_tit">角色描述:</span>
-              <el-input type="textarea" :rows="2" v-model="rolesInput.roldesc"  resize="none" style="width:440px" placeholder="请输入描述"></el-input>
-            </el-row>
-            <el-row class="rolenews_box">
-              <span class="rolenews_tit">是否停用:</span>
-              <el-switch
-                v-model="isroles"
-                :active-text="isroles?'启用':'停用'"
-                active-color="#13ce66"
-                inactive-color="#dcdfe6"
-                style="height: 32px;"
-              >
-              </el-switch>
-            </el-row>
-          </el-row>
-        </el-row>
+            <roles-power-com :onoffFun='onoffFun' :rolesInput="rolesInput" :rolespowerdata='rolespowerdata'></roles-power-com>
         </template>
         <!-- 角色信息配置 修改编辑 -->
         <template v-if="isedit">
-        <el-row>
-          <el-row  class="row-bg rightTit" style="border-right: none">
-            <el-col :span='4'>
-              <div class="roles_titsty" style="padding-left: 22px">
-                添加/修改角色
-              </div>
-            </el-col>
-            <el-col :span='20' style="display: flex;justify-content: flex-end;align-items: center;height: 50px;">
-              <div class="roles_titbutsty1" @click="onoffFun(1)">
-                取消
-              </div>
-              <div class="roles_titbutsty2" v-if="isedit" @click="onoffFun(3)">
-                保存
-              </div>
-              <div class="roles_titbutsty2" v-else @click="onoffFun(2)">
-                保存
-              </div>
-            </el-col>
-        </el-row>
-        </el-row>
-        <el-row >
-          <el-row class="rolenews">
-            <el-row class="rolenews_box">
-              <i class="el-icon-s-custom" style="font-size: 40px;color: #A5A4BF;"></i>
-            </el-row>
-            <el-row class="rolenews_box">
-              <span class="rolenews_tit">角色名称:</span>
-              <el-input v-model="rolesInput.rolname"  style="width:440px" placeholder="请输入内容"></el-input>
-            </el-row>
-            <el-row class="rolenews_box">
-              <span class="rolenews_tit">角色类型:</span>
-              <el-input v-model="rolesInput.roltype" disabled  style="width:440px" placeholder="请输入角色类型"></el-input>
-            </el-row>
-            <el-row class="rolenews_box">
-              <span class="rolenews_tit">角色描述:</span>
-              <el-input type="textarea" :rows="2" v-model="rolesInput.roldesc"  resize="none" style="width:440px" placeholder="请输入描述"></el-input>
-            </el-row>
-            <el-row class="rolenews_box">
-              <span class="rolenews_tit">是否停用:</span>
-              <el-switch
-                v-model="isroles"
-                :active-text="isroles?'启用':'停用'"
-                active-color="#13ce66"
-                inactive-color="#dcdfe6"
-                style="height: 32px;"
-              >
-              </el-switch>
-            </el-row>
-          </el-row>
-        </el-row>
+          <alterroles-power-com :onoffFun='onoffFun' :rolesseldata="rolesseldata" :rolesInput="rolesInput" :rolespowerdata='rolespowerdata'></alterroles-power-com>
         </template>
-        <!-- 角色信息配置 -->
+        <!-- 角色信息配置 查看-->
         <template v-if="isshow">
-        <el-row>
-          <el-row  class="row-bg rightTit" style="border-right: none">
-            <el-col :span='4'>
-              <div class="roles_titsty" style="padding-left: 22px">
-                角色信息配置
-              </div>
-            </el-col>
-        </el-row>
-        </el-row>
-        <el-row>
-          <el-row class="rolenews">
-            <el-row class="rolenews_box">
-              <i class="el-icon-s-custom" style="font-size: 40px;color: #A5A4BF;"></i>
-              
-            </el-row>
-            <el-row class="rolenews_box">
-              <span class="rolenews_tit">角色名称:</span>
-              <span>{{rolesdata.roleName}}</span>
-
-            </el-row>
-            <el-row class="rolenews_box">
-              <span class="rolenews_tit">角色类型:</span>
-             <span>{{rolesdata.roleTypeName}}</span>
-            </el-row>
-            <el-row class="rolenews_box">
-              <span class="rolenews_tit">角色描述:</span>
-              <span>{{rolesdata.roleDesc}}</span>
-             
-            </el-row>
-            <el-row class="rolenews_box">
-              <span class="rolenews_tit">是否停用:</span>
-              <span>{{rolesdata.isroles?'启用':'停用'}}</span>
-              <!-- <el-switch
-                v-model="rolesdata.isroles"
-                disabled
-                :active-text="rolesdata.isroles?'启用':'停用'"
-                active-color="#13ce66"
-                inactive-color="#dcdfe6"
-                style="height: 32px;"
-              >
-              </el-switch> -->
-            </el-row>
-          </el-row>
-        </el-row>
+            <showroles-power-com :rolesseldata="rolesseldata" :rolesInput="rolesInput" :rolespowerdata='rolespowerdata'></showroles-power-com>
         </template>
-        <!-- 角色权限 -->
-        <el-row>
-          <el-row class="row-bg rightTit" style="border-right: none">
-            <el-col>
-              <div class="roles_titsty" style="padding-left: 22px">
-                角色权限
-              </div>
-            </el-col>
-          </el-row>
-        </el-row>
-        <!-- 角色权限组件 -->
-        <el-radio-group
-          v-model="radio"
-          @change="radioFun"
-          size="medium"
-          style="margin: 13px 0 6px 22px"
-        >
-          <el-radio-button label="1">基础配置</el-radio-button>
-          <el-radio-button label="2">线索中心</el-radio-button>
-          <el-radio-button label="3">商品中心</el-radio-button>
-        </el-radio-group>
-        <template v-if="radio == 1">
-        <showroles-power-com v-if="isshow" :rolesseldata="rolesseldata" :rolespowerdata='rolespowerdata' ></showroles-power-com>
-        <roles-power-com v-if="isadd"  :rolespowerdata='rolespowerdata'  :powerAddData.sync="powerAddData"></roles-power-com>
-        <alterroles-power-com v-if="isedit"></alterroles-power-com>
-        
-        </template>
-
       </el-col>
         <!-- 无数据 -->
       <el-col v-else :span="19" class="colright">
@@ -271,11 +103,13 @@
 import rolesPowerCom from "./components/rolesPowerCom";
 import showrolesPowerCom from "./components/showrolesPowerCom";
 import alterrolesPowerCom from "./components/alterrolesPowerCom";
-import {rolelist,allPermissionHaveLevel,rolesAdd,listFunctionByRoleId } from "api/index.js";
+import {rolelist,allPermissionHaveLevel,rolesAdd,listFunctionByRoleId,rolesEdit } from "api/index.js";
 import {mapGetters} from 'vuex';
+import { get_role_function } from '@/utils/index';
 export default {
   data() {
     return {
+    get_role_function,
     treedata: [],
     //多选框数据绑定
     checkboxData:{
@@ -284,18 +118,15 @@ export default {
     //角色信息
     rolesdata:{},
     powerAddData:{},
+    //修改数据
+    powerEnditData:{},
     //权限信息
     rolespowerdata:[],
     //角色权限信息
     rolesseldata:[],
     showpower:false,
     //输入框数据绑定
-    rolesInput:{
-      rolname:'',
-      roltype:'',
-      roldesc:'',
-      isroles:true
-    },
+    rolesInput:{},
     //编辑状态
     isedit:false,
     //添加状态
@@ -304,7 +135,7 @@ export default {
     isshow:false,
     //有无数据
     isdata:false,
-  
+
     //是否启用
     isroles:true,
     dialogSubData: {
@@ -325,20 +156,27 @@ export default {
   },
   watch: {
   powerAddData(newVal){
-    this.powerData=newVal
+    this.powerAddData=newVal
   },
+  powerEnditData(newVal){
+    this.powerEnditData=newVal
+  }
   },
   mounted () {
     this.rolelistFun()
+    this.allPermissionHaveLevelFun()
   },
   methods: {
-    //左边树形结构选中
-    nodeclickFun(e){
+    //左边树形结构选中查看
+   async nodeclickFun(e){
       if(e.type==1) return
-      // console.log(e);
-      this.allPermissionHaveLevelFun()
-      this.listFunctionByRoleIdFun(e.roleId)
-      this.rolesdata=e
+      // if (!e.isroles) return
+      this.isroles=e.isroles
+      console.log(e,'左边树形结构选中角色查看信息');
+      // this.ine.roleUseStatus==1?true:false
+      this.rolesInput=e
+      await this.allPermissionHaveLevelFun()
+      await this.listFunctionByRoleIdFun(e.roleId)
       this.isshow=true
       this.isedit=false
       this.isadd=false
@@ -346,15 +184,9 @@ export default {
     },
     //添加角色
     append(node, data) {
-      this.rolesInput={
-        rolname:'',
-        roltype:'',
-        roldesc:'',
-        isroles:true
-      }
       console.log(node, data,"添加");
       this.addrolesdata=data
-      this.rolesInput.roltype=data.label
+      this.rolesInput=data
       this.allPermissionHaveLevelFun()
       this.isdata=true
       this.isshow=false
@@ -367,82 +199,137 @@ export default {
     },
     // 删除基本信息
     remove(node, data) {
-     
       if (!node.childNodes.length) {
-         console.log(node);
-        console.log(1);
+        //  console.log(node);
+        // console.log(1);
       }
     },
     //修改基本信息 控制页面效果
     outline(node, data){
+      // console.log(node,data);
+       this.allPermissionHaveLevelFun()
+      this.endirolesdata=data
+      this.rolesInput=data
       this.isedit=true
       this.isshow=false
       this.isadd=false
-      console.log("修改编辑");
+      // console.log("修改编辑");
     },
-    //保存取消按钮 1 取消  2 保存 3 编辑
-    async onoffFun(type){
-      console.log(type,"1 取消  2 保存 3 编辑");
-      // if(type==2){
-      //   // console.log( this.powerData,this.addrolesdata,' powerAddDatapowerAddData');
-      //   if(this.rolesInput.rolname=='') {
-      //      this.$message({
-      //       message: '请输入昵称',
-      //       type: 'warning'
-      //     });
-      //     return
-      //   }
-      //   this.powerData.push({functionCode:this.rolespowerdatares.functionCode,functionLevel:this.rolespowerdatares.tableCode})
-      //   let data={
-      //     curUserId:this.userInfo.userId,
-      //     roleName:this.rolesInput.rolname,
-      //     roleType:this.addrolesdata.id,
-      //     roleFunctions:JSON.stringify(this.powerData)
-      //   }
-      //   // console.log(this.powerData);
-      // //  console.log(this.rolespowerdatares,'权限配置');
+    //保存取消按钮 1 取消  2 新增 3 编辑
+    async onoffFun(type,ajaxdata,inputdata){
+      console.log(ajaxdata,"添加权限");
+      // console.log(type,"1 取消  2 保存 3 编辑");
+      if(type==2){
+        console.log( this.powerAddData,this.addrolesdata,' powerAddDatapowerAddData');
+        if(inputdata.rolname=='') {
+           this.$message({
+            message: '请输入昵称',
+            type: 'warning'
+          });
+          return
+        }
+        if (!ajaxdata  || !ajaxdata.length) {
+           this.$message({
+            message: '请选择权限',
+            type: 'warning'
+          });
+          return
+        }
+        let data={
+          curUserId:this.userInfo.userId,
+          roleName:inputdata.rolname,
+          roleType:this.addrolesdata.id,
+          roleDesc:inputdata.roldesc,
+          roleUseStatus:inputdata.isroles?1:2,
+          roleFunctions:JSON.stringify(ajaxdata)
+        }
+          //  roleUseStatus:this.
+        console.log(data,"添加按钮执行",ajaxdata);
 
-      //   let res=await rolesAdd(data)
-    
-      //   console.log(res,"rolesAdd新增");
-      //   if(res.code==0){
-      //   //q请求角色列表
-      //   this.$message({
-      //     message: '添加成功',
-      //     type: 'success'
-      //   });
-      //   this.isdata=false
-      //   this.rolelistFun()
-      //   }else{    
-      //     this.$message({
-      //       message: res.errMsg,
-      //       type: 'warning'
-      //     });
-      //   }
-      // }else if (type==3) {
-      //   //修改编辑
-      // }{
-
-      // }
-      // this.rolesInput={
-      //   rolname:'',
-      //   roltype:'',
-      //   roldesc:'',
-      //   isroles:true
-      // }
-    },
-    //基础配置 线索中心  商品中心
-    radioFun(e){
-        console.log(e);
+        let res=await rolesAdd(data)
+        if(res.code==0){
+        //q请求角色列表
+        this.$message({
+          message: '添加成功',
+          type: 'success'
+        });
+        this.isdata=false
+        this.rolelistFun()
+        }else{
+          this.$message({
+            message: res.errMsg,
+            type: 'warning'
+          });
+        }
+      }else if (type==3) {
+          // this.powerEnditData.push({functionCode:this.rolespowerdatares.functionCode,functionLevel:this.rolespowerdatares.tableCode})
+          // console.log(this.powerEnditData,"this.powerEnditDatathis.powerEnditData",this.rolesseldata);
+          // console.log(ajaxdata,"编辑提交");
+         let data={}
+        if(ajaxdata.length){
+          data={
+            curUserId:this.userInfo.userId,
+            roleId:this.endirolesdata.roleId,
+            roleName:inputdata.rolname,
+            roleDesc:inputdata.roldesc,
+            roleType:this.endirolesdata.roleType,
+            roleUseStatus:inputdata.isroles?1:2,
+            roleFunctions:JSON.stringify(ajaxdata)
+          }
+        }else{
+            data={
+            curUserId:this.userInfo.userId,
+            roleId:this.endirolesdata.roleId,
+            roleName:inputdata.rolname,
+             roleDesc:inputdata.roldesc,
+            roleType:this.endirolesdata.roleType,
+            roleUseStatus:inputdata.isroles?1:2,
+            roleFunctions:JSON.stringify(this.rolesseldata)
+          }
+        }
+        console.log(data,"编辑");
+        let res=await rolesEdit(data)
+        // console.log(res,"rolesenid 修改");
+        if(res.code==0){
+        //q请求角色列表
+        this.$message({
+          message: '修改成功',
+          type: 'success'
+        });
+        this.isdata=false
+        this.rolelistFun()
+        }else{
+          this.$message({
+            message: res.errMsg,
+            type: 'warning'
+          });
+        }
+      }else if (type==1) {
+        //编辑状态
+        this.isedit=false
+        //添加状态
+        this.isadd=false
+        //查看状态
+        this.isshow=false
+        //有无数据
+        this.isdata=false
+      }
+      this.rolesInput={
+        rolname:'',
+        roltype:'',
+        roldesc:'',
+        isroles:true
+      }
     },
     //ajax
-    //角色列表
+    //角色树形结构
     async rolelistFun(){
       let res=await rolelist()
         if(res.code==0){
+        console.log(res.data,"角色树形结构"); 
         let rolearr=[]
         res.data.forEach(v => {
-          var v1tree={id:v.roleType,label:v.roleName,type: 1,icon: "el-icon-menu",childrenNum:0,children: []}
+          var v1tree={id:v.roleType,label:v.roleName,type: 1,icon: "el-icon-s-custom treeicon1",childrenNum:0,children: []}
           if(v.rootRoles!=null){
             v1tree.childrenNum=v.rootRoles.length
             v.rootRoles.forEach(v1 => {
@@ -450,7 +337,7 @@ export default {
                 id:v1.roleId,
                 label:v1.roleName,
                 type: 2,
-                icon: "el-icon-arrow-right",
+                icon: v1.roleUseStatus==1?"el-icon-arrow-right treeicon2":"iconfont icon-tingyong treeicon1",
                 roleDesc:v1.roleDesc,
                 roleFunctions:v1.roleFunctions,
                 roleId: v1.roleId,
@@ -458,7 +345,7 @@ export default {
                 roleType: v1.roleType,
                 roleTypeName:v.roleName,
                 roleUseStatus:v1.roleUseStatus,
-                isroles:v1.roleUseStatus==1?false:true,
+                isroles:v1.roleUseStatus==1?true:false,
                 rootRoles: v1.rootRoles,
               }
               v1tree.children.push(v2tree)
@@ -468,7 +355,7 @@ export default {
         });
         this.isdata=false
         this.treedata=rolearr
-        // console.log(rolearr,"角色树形结构");
+       
 
       }else{
          this.$message.error('暂无数据');
@@ -477,9 +364,11 @@ export default {
     //角色权限获取
     async allPermissionHaveLevelFun(){
       let res =await allPermissionHaveLevel()
+      console.log(res);
       if(res.code==0){
-        this.rolespowerdata=res.data[0].childFunctionList
-        this.rolespowerdatares=res.data[0]
+
+        this.rolespowerdata=res.data
+        // this.rolespowerdatares=res.data
         // this.isdata=false
       }else{
          this.$message.error('暂无数据');
@@ -494,9 +383,8 @@ export default {
       }else{
          this.$message.error('暂无数据');
       }
-
     }
-    
+
   },
 };
 </script>
@@ -574,9 +462,10 @@ export default {
   cursor: hand;
 }
 .colleft {
-  min-height: 936px;
-  background: #ffffff;
-  border: 1px solid #e4e6ed;
+    height: 884px;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #e4e6ed;
   .treecom {
     display: flex;
     width: 100%;
@@ -595,6 +484,12 @@ export default {
     display: block;
   } */
 }
+.boxscroll{
+    height: 852px;
+    overflow-y: scroll;
+    margin-right: -23px;
+    margin-bottom: -24px;
+}
 .colright {
   border: 1px solid #e4e6ed;
   border-left: none;
@@ -602,7 +497,12 @@ export default {
   height: 936px;
   overflow: hidden;
 }
-.treeicon {
+.treeicon1 {
+  margin-right: 6px;
+  margin-left: 11px;
+  // transform: rotate(46deg);
+}
+.treeicon2 {
   margin-right: 6px;
   margin-left: 11px;
   transform: rotate(46deg);
@@ -630,7 +530,7 @@ export default {
     font-weight: 400;
     color: #43425D;
 
-  } 
+  }
 }
 .roles_titbutsty1{
     height: 32px;
@@ -638,7 +538,7 @@ export default {
     width: 100px;
     text-align: center;
     border-radius: 4px;
-    background: #E4E6ED; 
+    background: #E4E6ED;
     font-size: 14px;
     color: #43425D;
     margin-right: 20px;
@@ -654,4 +554,5 @@ export default {
     color: #FFFFFF;
     margin-right: 14px;
 }
+
 </style>

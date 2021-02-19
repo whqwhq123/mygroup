@@ -1,104 +1,142 @@
 <template>
   <div>
-    <!-- @node-click="nodeclickFun" -->
-    <el-tree :data="treedata" default-expand-all>
-      <div
-        :class="[
-          'custom-tree-node',
-          'treecom',
-          data.deptLevel == 20 || data.deptLevel == 30 ? 'oneLevel' : ''
-        ]"
-        slot-scope="{ node, data }"
-        @mouseover="mouseenter(data, true)"
-        @mouseout="mouseenter(data, false)"
-      >
-        <!-- {{node.expanded}} 展开缩放-->
-        <div class="node_titleft">
-          <img
-            v-if="data.deptLevel != 1"
-            class="nextIcon"
-            src="@/assets/images/right_angle.png"
-            alt=""
-          />
-          <svg-icon
-            :icon-class="
-              data.deptUseStatus == '2'
-                ? 'prohibit_icon'
-                : data.deptLevel == 20
-                ? 'group_icon'
-                : data.deptLevel == 30
-                ? 'manufacturer_icon'
-                : data.deptLevel == 40
-                ? 'region_icon'
-                : data.deptLevel == 50 || data.deptLevel == 60
-                ? 'distributor_icon'
-                : 'department_icon'
-            "
-            class="treeicon"
-          />
-          <span
-            >{{ data.deptName
-            }}{{ data.deptUseStatus == "2" ? "(已停用)" : "" }}</span
-          >
-          <i
-            v-if="data.deptLevel == 2"
-            :class="[
-              'iconStyle',
-              data.isMuntHover ? 'el-icon-arrow-up' : 'el-icon-arrow-down'
-            ]"
-          ></i>
-        </div>
-        <div class="node_titright">
-          <el-button
-            type="text"
-            size="mini"
-            icon="el-icon-more"
-            v-show="data.isMuntHover"
-            :class="['moreIcon', data.isOperation ? 'moreIcon-color' : '']"
-            @click.stop="() => append(node, data)"
-          ></el-button>
+    <!--  -->
+    <div class="hiddendiv">
+      <el-scrollbar class="boxscroll">  
+      <el-tree :data="treedata" default-expand-all @node-click="nodeclickFun">
+        <div
+          :class="[
+            'custom-tree-node',
+            'treecom',
+            data.deptLevel == 1 ? 'oneLevel' : ''
+          ]"
+          slot-scope="{ node, data }"
+          @mouseover="mouseenter(data, true)"
+          @mouseout="mouseenter(data, false)"
+        >
+          <!-- {{node.expanded}} 展开缩放-->
+          <div class="node_titleft">
+            <img
+              v-if="data.deptLevel != 1"
+              class="nextIcon"
+              src="@/assets/images/right_angle.png"
+              alt=""
+            />
+            <svg-icon
+              :icon-class="
+                data.deptUseStatus == '2'
+                  ? 'prohibit_icon'
+                  : data.deptLevel == 20
+                  ? 'group_icon'
+                  : data.deptLevel == 30
+                  ? 'manufacturer_icon'
+                  : data.deptLevel == 40
+                  ? 'region_icon'
+                  : data.deptLevel == 50 || data.deptLevel == 60
+                  ? 'distributor_icon'
+                  : 'department_icon'
+              "
+              class="treeicon"
+            />
+            <span
+              >{{ data.deptName
+              }}{{ data.deptUseStatus == "2" ? "(已停用)" : "" }}</span
+            >
+            <i
+              v-if="data.deptLevel == 2"
+              :class="[
+                'iconStyle',
+                data.isMuntHover ? 'el-icon-arrow-up' : 'el-icon-arrow-down'
+              ]"
+            ></i>
+          </div>
+          <div class="node_titright">
+            <el-button
+              type="text"
+              size="mini"
+              icon="el-icon-more"
+              v-show="data.isMuntHover"
+              :class="['moreIcon', data.isOperation ? 'moreIcon-color' : '']"
+              @click.stop="() => append(node, data)"
+            ></el-button>
+            <ul class="popover-group" v-show="data.isOperation" v-if="get_role_function('100200210') || get_role_function('100200220') || get_role_function('100200240')">
+              <li @click.stop="merchantAdd(node, data, false)" v-if="get_role_function('100200210')">添加</li>
+              <li @click.stop="merchantAdd(node, data, true)" v-if="get_role_function('100200220')">编辑</li>
+              <li @click.stop="merchantEnable(node, data)" v-if="get_role_function('100200240')">
+                {{ data.deptUseStatus == "2" ? "启用" : "停用" }}
+              </li>
+            </ul>
 
-          <ul class="popover-group" v-show="data.isOperation">
-            <li @click.stop="merchantAdd(node, data, false)">添加</li>
-            <li @click.stop="merchantAdd(node, data, true)">编辑</li>
-            <li @click.stop="merchantEnable(node, data)">
-              {{ data.deptUseStatus == "2" ? "启用" : "停用" }}
-            </li>
-          </ul>
+          </div>
         </div>
-      </div>
-    </el-tree>
-
-    <organize-com
-      v-if="isOrganize"
-      :isOrganize="isOrganize"
-      :organizationInfo="organizationInfo"
-      @closePop="closePop"
-    />
+      </el-tree>
+      </el-scrollbar>
+      <organize-com
+        v-if="isOrganize"
+        :isOrganize="isOrganize"
+        :organizationInfo="organizationInfo"
+        :deptId="deptId"
+        @closePop="closePop"
+      />
+    </div>
+     <!-- <organizeTable  v-if="!isOrganize" :deptId="deptId"/> -->
   </div>
+
 </template>
 <script>
 import organizeCom from "./organizeCom";
+import organizeTable from "./organizeTable";
 import { deptUserStatus } from "@/service/api/index";
+import { get_role_function } from '@/utils/index';
 export default {
   name: "organizeTree",
   props: {
     treedata: {
       type: Array,
-      default: [] // deptLevel 部门级别（20厂商，30集团，40大区，50经销商，60二级经销商，70部门）',
-    }
+      default: [] // deptLevel 部门级别（20厂商，30集团，40大区，50经销商，60二网经销商，70部门）',
+    },
+
   },
   data() {
     return {
+      get_role_function,
       isOrganize: false,
-      organizationInfo: {}
+      isOperation:false,
+      organizationInfo: {},
+      deptId: '',
+      deptPrincipalId:'',
+      isdeptIdtab:false,
     };
   },
   computed: {},
   components: {
-    organizeCom
+    organizeCom,
+    organizeTable
+  },
+  watch: {
+    treedata(newVal){
+      this.treedata=newVal
+      // this.addistreedata(newVal)
+    }
+
+  },
+  created(){
+    
+  },
+  mounted () {
+    
   },
   methods: {
+
+    //左边树形结构选中
+    nodeclickFun(e) {
+      if (e.deptUseStatus == 2) return;
+      this.deptId = e.deptId
+      // deptPrincipalId
+      console.log(e);
+      this.$emit('update:deptId',e.deptId)
+      this.$emit('update:deptPrincipalId',e.deptPrincipalId)
+    },
     //基础配置 线索中心  商品中心
     radioFun(e) {
       console.log(e);
@@ -106,9 +144,11 @@ export default {
 
     //操作
     append(node, data) {
+      console.log(node,data,this.treedata);
+      // this.selappend(this.treedata,data.deptId,!data.isOperation)
       this.$set(data, "isOperation", !data.isOperation);
+      this.$forceUpdate()
     },
-
     merchantAdd(node, data, flag) {
       //添加编辑
       this.organizationInfo = {
@@ -183,7 +223,10 @@ export default {
   position: relative;
   top: 1px;
 }
-
+.hiddendiv{
+  overflow: hidden;
+  height: 623px;
+}
 .nextIcon {
   width: 16px;
   height: 16px;
@@ -209,9 +252,13 @@ export default {
   color: #43425d;
 
   .node_titright {
-    margin-right: 15px;
     position: relative;
-
+    background: #ffffff;
+    width: 40px;
+    border-bottom: 1px solid #e4e6ed;
+    &.node_titright:hover{
+      background: #F5F7FA;
+    }
     .moreIcon {
       font-size: 18px;
       color: #43425d;
@@ -259,5 +306,11 @@ export default {
       border-bottom: none;
     }
   }
+}
+.boxscroll{
+    height: 648px;
+    overflow-y: scroll;
+    margin-right: -23px;
+    margin-bottom: -24px;
 }
 </style>

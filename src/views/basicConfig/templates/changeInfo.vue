@@ -15,7 +15,7 @@
           <div class="changeLabel">角色异动</div>
           <div class="changeContent">
             <div>操作人：{{value['userName']}}</div>
-            <div>组织由<span class="textBlue">{{value['roleIdsAgo']}}</span>异动到<span class="textBlue">{{value['roleIdsAfter']}}</span></div>
+            <div>角色由<span class="textBlue">{{value['roleIdsAgo']}}</span>异动到<span class="textBlue">{{value['roleIdsAfter']}}</span></div>
           </div>
         </div>
       </div>

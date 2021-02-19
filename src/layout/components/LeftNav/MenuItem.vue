@@ -4,6 +4,7 @@
         hasOneShowingChild(item.childFunctionList, item) &&
         (!onlyOneChild.childFunctionList || onlyOneChild.noShowingChildren)
       ">
+
       <app-link :to="resolvePath(onlyOneChild.functionUrl)">
         <el-menu-item :index="resolvePath(onlyOneChild.functionUrl)" :class="{ 'submenu-title-noDropdown': !isNest }">
           <i :class="'iconfont '+onlyOneChild.functionImage"></i>
@@ -12,12 +13,13 @@
       </app-link>
     </template>
 
-    <el-submenu v-else ref="subMenu" :index="resolvePath(item.functionUrl)" popper-append-to-body>
+    <el-submenu v-else ref="subMenu" :index="resolvePath(item.functionCode)" popper-append-to-body>
       <template slot="title">
         <i :class="'iconfont '+item.functionImage"></i>
         <span slot="title">{{ item.functionName }}</span>
       </template>
       <!-- 递归展示 -->
+
       <menu-item v-for="child in item.childFunctionList" :key="child.functionUrl" :is-nest="true" :item="child" :base-path="resolvePath(child.functionUrl)"
         class="nest-menu" />
     </el-submenu>
@@ -59,7 +61,7 @@
           };
           return true;
         }
-        
+
         const showingChildren = children.filter((item) => {
           if (item.hidden) {
             return false;
@@ -70,9 +72,9 @@
         });
 
         // 当只有一个子路由器时，默认显示子路由器
-        if (showingChildren.length === 1) {
-          return true;
-        }
+        // if (showingChildren.length === 1) {
+        //   return true;
+        // }
 
         // 如果没有要显示的子路由器，则显示父路由器
         if (showingChildren.length === 0) {

@@ -16,16 +16,11 @@
         <ul>
           <li v-for="item in makeLetter" :class="[letter==item ? 'act_li':'']" :key="item" @click="letterSearch(item)">{{item}}</li>
         </ul>
-        <el-cascader-panel ref="myCascader" v-model="selectedOptions" :options="options" :multiple="cascaderProps.multiple" :props="cascaderProps" :key="isResouceShow" @change="changeCascader">
-          <template slot-scope="{ node, data }">
+        <el-cascader-panel ref="myCascader"  v-model="selectedOptions" :options="options" :multiple="cascaderProps.multiple" :props="cascaderProps" :key="isResouceShow" @change="changeCascader">
+          <template slot-scope="{ node, data }" class="scrlltep">
             <span>{{ data.label }}</span>
             <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
           </template>
-
-          <!-- <template slot-scope="{ node, data }">
-            <span>{{ data.makeName }}</span>
-            <span v-if="!node.isLeaf"> ({{ data.carGroupList.length }}) </span>
-          </template> -->
         </el-cascader-panel>
       </div>
     </div>
@@ -41,7 +36,7 @@
 </template>
 
 <script>
-import { getAddCarMakeTree } from '@/service/api/index';
+import { getAddCarMakeTree, getMakGroupNameByGroupId } from '@/service/api/index';
 export default {
   props: {
     isbrandPop: {
@@ -75,7 +70,8 @@ export default {
       letter: '',
       options: [],
       dataList: [],
-      selectedOptions: ['']
+      selectedOptions: [''],
+      brandIdS: []
     };
   },
   watch: {
@@ -152,22 +148,40 @@ export default {
       this.isResouceShow = val
     },
     changeCascader(value) {
-      console.log(value, this.$refs.myCascader.getCheckedNodes())
-      // [0].pathLabels);
-
-
-      let pathLabels = this.$refs.myCascader.getCheckedNodes()[0].pathLabels 
-      this.brandInfo = {
-        parentBrandId: value[0],
-        parentBrandName: pathLabels[0],
-        brandId: value[1],
-        brandName: pathLabels[1]
+      // console.log(value, this.$refs.myCascader.getCheckedNodes())
+      if(!this.isMultiple) {
+        let pathLabels = this.$refs.myCascader.getCheckedNodes()[0].pathLabels 
+        this.brandInfo = {
+          parentBrandId: value[0],
+          parentBrandName: pathLabels[0],
+          brandId: value[1],
+          brandName: pathLabels[1]
+        }
+      } else {
+        let brandIdS = value.map(item => {
+          return item[1]
+        })
+        this.brandIdS = brandIdS
+        // console.log(brandIdS)
+        // console.log(value)
       }
+      
     },
 
-    handleClose() {
+    async handleClose() {
+      let data = ''
+      if(!this.isMultiple) {
+        data = this.brandInfo
+      } else {
+        data = await this.reqBrand()
+      }
       this.isbrandPop = false
-      this.$emit('brandClick', this.brandInfo)
+      this.$emit('brandClick', data)
+    },
+
+    async reqBrand(){
+      let res = await getMakGroupNameByGroupId({groupIds: this.brandIdS.join()})
+      return res.code == 0 ? res.data : {}
     }
   }
 };
@@ -259,4 +273,11 @@ export default {
     left: 3px;
   }
 }
+.scrlltep{
+  　overflow-y: scroll;
+　　scrollbar-color: transparent transparent;
+　　scrollbar-track-color: transparent;
+　　-ms-scrollbar-track-color: transparent;
+}
+
 </style>

@@ -2,7 +2,6 @@
   <div class="cule-detail">
      <div class="add-title">
        <span>原始线索详情</span>
-       <router-link to="/clueManage/originalClue"><el-button size="small">返回列表</el-button></router-link>
      </div>
      <el-row style="margin-top: 20px;">
        <el-form>
@@ -11,8 +10,8 @@
             <div class="add-user">
               <div class="user-title">
                 <span class="header-img">
-                  <img v-if="sex==1" src="../../assets/images/clueManage/man.png" alt="男头">
-                  <img v-else src="../../assets/images/clueManage/woman.png" alt="女头">
+                  <img v-if="sex==1" src="../../../assets/images/clueManage/man.png" alt="男头">
+                  <img v-else src="../../../assets/images/clueManage/woman.png" alt="女头">
                 </span>
                 <ul class="title-right">
                   <li><span class="user-name">{{clueUser.customerName}}</span><span>{{clueUser.mobile}}</span></li>
@@ -25,7 +24,7 @@
                     {{clueUser.sex}}
                   </el-form-item>
                   <el-form-item label="地址：" prop="province" class="dizhi-icon">
-                    {{clueUser.province}}{{clueUser.city}}{{clueUser.area}}
+                    {{clueUser.province}}&nbsp;/&nbsp;{{clueUser.city}}&nbsp;/&nbsp;{{clueUser.area}}
                   </el-form-item>
                   <el-form-item label="备注：" class="remark-icon">
                     {{clueUser.remarks}}
@@ -38,16 +37,16 @@
             {{clueUser.originalId}}
           </el-form-item>
           <el-form-item label="意向车型:" prop="carType" class="add-icon">
-            {{clueUser.intentCarStyle}}
+           {{clueUser.intentCarBrand}} &nbsp;/&nbsp;{{clueUser.intentCarModel}}&nbsp;/&nbsp;{{clueUser.intentCarStyle}}
           </el-form-item>
           <el-form-item label="来源渠道:" prop="fromChannel" class="add-icon">
-              {{clueUser.firstChannelName}}{{clueUser.secondChannelName}}
+              {{clueUser.firstChannelName}}&nbsp;/&nbsp;{{clueUser.secondChannelName}}
           </el-form-item>
           <el-form-item label="经销商名称:" class="add-icon">
               {{clueUser.dealerName}}
           </el-form-item>
           <el-form-item label="销售顾问:" class="add-icon">
-              {{clueUser.salesman}}
+              {{clueUser.salesmanName}}
           </el-form-item>
           <el-form-item label="创建时间：" class="add-icon">
             {{clueUser.createTime}}
@@ -60,7 +59,8 @@
 </template>
 
 <script>
-import { getDetail} from '../../service/api/index'
+import { getDetail} from '../../../service/api/index'
+import {parseTime} from '../../../utils/index'
 export default {
   data(){
     return {
@@ -76,8 +76,10 @@ export default {
   },
   methods:{
     getculeDetail(){
-      getDetail(this.id).then(res=>{      
-        this.clueUser=res.data;       
+      getDetail(this.id).then(res=>{    
+        console.log(res)  
+        this.clueUser=res.data;   
+        this.clueUser.createTime=parseTime(res.data.createTime);    
         if(res.data.sex=="男"){
           this.sex=1
         }
@@ -90,7 +92,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="css" scoped>
   /deep/ .el-form-item{
     margin-bottom: 10px;
     color: #4D4F5C;
@@ -135,19 +137,19 @@ export default {
   }
   .add-icon{
     padding-left: 70px;
-    background: url('../../assets/images/clueManage/line.png') no-repeat left center;
+    background: url('../../../assets/images/clueManage/line.png') no-repeat left center;
     
   }
   .sex-icon,.dizhi-icon,.remark-icon{
     padding-left: 30px
   }
   .sex-icon{
-    background: url('../../assets/images/clueManage/sex.png') no-repeat left center;
+    background: url('../../../assets/images/clueManage/sex.png') no-repeat left center;
   }
   .dizhi-icon{
-    background: url('../../assets/images/clueManage/dizhi.png') no-repeat left center;
+    background: url('../../../assets/images/clueManage/dizhi.png') no-repeat left center;
   }
   .remark-icon{
-    background: url('../../assets/images/clueManage/remark.png') no-repeat left 10px;
+    background: url('../../../assets/images/clueManage/remark.png') no-repeat left 10px;
   }
 </style>

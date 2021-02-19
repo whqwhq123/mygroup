@@ -5,7 +5,7 @@ import router from './router'
 //引入vuex组件
 import store from './store'
 import './assets/styles/index.scss'
-import './assets/styles/elemrewrite.css'   //重写elem  ui 的样式
+import './assets/styles/elemrewrite.css' //重写elem  ui 的样式
 // icon
 import './icons'
 // 引入ElementUI
@@ -15,6 +15,14 @@ import axios from 'axios'
 
 Vue.use(ElementUI);
 
+// 引入Echarts
+import Echarts from 'echarts'
+import 'echarts/lib/chart/line'
+Vue.prototype.$echarts = Echarts
+Vue.use(Echarts)
+// 引入vue-echarts
+import vueEcharts from 'vue-echarts/components/ECharts'
+Vue.component('chart', vueEcharts)
 // 引入谷歌地图
 import AMap from 'vue-amap'
 Vue.use(AMap)
@@ -28,17 +36,35 @@ AMap.initAMapApiLoader({
 })
 
 
-//在路由跳转之前判断，除了首页以外，其他页面必须登录才能访问,异步问题
 
+//在路由跳转之前判断，除了首页以外，其他页面必须登录才能访问,异步问题
 router.beforeEach((to, from, next) => {
-  // console.log(from)
-  /* 路由发生变化修改页面title */
   if (to.meta.title) {
     document.title = to.meta.title
   }
+
+  if (to.meta.requireAuth) {
+    let token = null
+    if(sessionStorage['store']){
+      token = JSON.parse(sessionStorage['store']).user.token
+    }
+    if (store.getters.token || token) {
+      next();
+    } else {
+      next({
+        path: '/login',
+        query: {
+          redirect: to.fullPath
+        }
+      });
+      return
+    }
+  } else {
+    next();
+    return
+  }
   next();
 })
-
 
 new Vue({
   //注入router

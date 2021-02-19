@@ -3,7 +3,8 @@
   <el-dialog
     :title="addAndsee"
     append-to-body="true"
-    :visible.sync="isbrandPop"
+    :visible.sync="isDepartmentShow"
+    :before-close="handleClose"
     width="458px"
     class="dialogStyle"
   >
@@ -20,7 +21,7 @@
           :data="treedata"
           :props="defaultProps"
           :filter-node-method="filterNode"
-          
+          default-expand-all
           ref="tree"
           @node-click="nodeclickFun"
         >
@@ -30,6 +31,7 @@
               'treecom',
               data.type == 1 ? 'oneLevel' : ''
             ]"
+           
             slot-scope="{ node, data }"
           >
             <div class="node_titleft">
@@ -39,19 +41,40 @@
                 src="@/assets/images/right_angle.png"
                 alt=""
               />
-              <svg-icon :icon-class="data.icon" class="treeicon" />
+              <svg-icon
+                :icon-class="
+                  data.deptUseStatus == '2'
+                    ? 'prohibit_icon'
+                    : data.deptLevel == 20
+                    ? 'group_icon'
+                    : data.deptLevel == 30
+                    ? 'manufacturer_icon'
+                    : data.deptLevel == 40
+                    ? 'region_icon'
+                    : data.deptLevel == 50 || data.deptLevel == 60
+                    ? 'distributor_icon'
+                    : 'department_icon'
+                "
+                class="treeicon"
+              />
               <span>{{ node.label }}</span>
-              <i :class="['iconStyle' ,node.expanded ? 'el-icon-arrow-up' : 'el-icon-arrow-down']"></i>
+              <i
+                v-if="data.children && data.children.length"
+                :class="[
+                  'iconStyle',
+                  node.expanded ? 'el-icon-arrow-up' : 'el-icon-arrow-down'
+                ]"
+              ></i>
             </div>
           </div>
         </el-tree>
       </div>
     </div>
     <div slot="footer" class="dialog-footer">
-      <el-button type="text" class="popBtn" @click="isbrandPop = false"
+      <el-button type="text" class="popBtn" @click="handleClose()"
         >取 消</el-button
       >
-      <el-button type="text" class="popBtn" @click="submitForm('ruleForm')"
+      <el-button type="text" class="popBtn" @click="handleClose()"
         >确 定</el-button
       >
     </div>
@@ -61,148 +84,70 @@
 <script>
 export default {
   props: {
-    isbrandPop: {
+    isDepartmentShow: {
       type: Boolean,
       default: true
+    },
+    isEdit: {
+      type: Boolean,
+      default: false
     },
     addAndsee: {
       type: String,
       default: "选择所属部门"
     },
-    addAndseefromData: {
-      type: Object
+    treedata: {
+      type: Object,
+      default: []
     }
   },
   data() {
     return {
       filterText: "",
       defaultProps: {
-        children: "children",
-        label: "label"
+        value: "deptId",
+        label: "deptName",
+        type:"deptUseStatus",
+        children: "children"
       },
-      treedata: [
-        {
-          id: 1,
-          label: "长安福特集团",
-          type: 1,
-          icon: "group_icon",
-          children: [
-            {
-              id: 4,
-              type: 2,
-              icon: "prohibit_icon",
-              label: "财务部",
-              disabled: true
-            },
-            {
-              id: 15,
-              type: 2,
-              icon: "region_icon",
-              label: "北部区",
-              children: [
-                {
-                  id: 30,
-                  type: 3,
-                  icon: "company_icon",
-                  label: "深圳长安汽车有限公司",
-                  children: [
-                    {
-                      id: 30,
-                      type: 4,
-                      icon: "department_icon",
-                      label: "销售部门",
-                      children: [
-                        {
-                          id: 30,
-                          type: 5,
-                          icon: "department_icon",
-                          label: "其他部门"
-                        },
-                        {
-                          id: 31,
-                          type: 5,
-                          icon: "department_icon",
-                          label: "其他部门"
-                        }
-                      ]
-                    },
-                    {
-                      id: 31,
-                      type: 4,
-                      icon: "department_icon",
-                      label: "销售部门",
-                      children: [
-                        {
-                          id: 30,
-                          type: 5,
-                          icon: "department_icon",
-                          label: "其他部门"
-                        },
-                        {
-                          id: 31,
-                          type: 5,
-                          icon: "department_icon",
-                          label: "其他部门"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  id: 31,
-                  type: 2,
-                  icon: "company_icon",
-                  label: "北京长安汽车有限公司"
-                }
-              ]
-            },
-            {
-              id: 16,
-              type: 2,
-              icon: "region_icon",
-              label: "华南区"
-            },
-            {
-              id: 14,
-              type: 2,
-              icon: "region_icon",
-              label: "华北区"
-            },
-            {
-              id: 17,
-              type: 2,
-              icon: "region_icon",
-              label: "华东区"
-            },
-            {
-              id: 18,
-              type: 2,
-              icon: "region_icon",
-              label: "南部区"
-            }
-          ]
-        }
-      ]
+      formObj: {}
     };
   },
   watch: {
+    isDepartmentShow(val) {
+      this.isDepartmentShow = val;
+    },
     filterText(val) {
       this.$refs.tree.filter(val);
-    }
+    },
+    isEdit(newVal) {
+      this.newVal = newVal
+    },
   },
-
+  mounted() {
+    // console.log(this.treedata,"treedatatreedata");
+  },
   methods: {
     //左边树形结构选中
     nodeclickFun(e) {
-      if (e.label == "财务部") return;
-      console.log(e);
+      this.formObj = {
+        deptId: e.deptId,
+        deptName: e.deptName,
+        deptLevel:e.deptLevel
+      }
     },
-    filterNode(value, data) {
-      if (!value) return true;
-      return data.label.indexOf(value) !== -1;
-    }
-  },
-  mounted() {}
+    filterNode(type, data, node) {
+      // console.log(value,data,node,"return data.label.indexOf(value) !== -1;");
+      if (!type) return true;
+      // return data.label.indexOf(value) !== -1;
+      // return data.type== 1;
+    },
+    handleClose() {
+      this.isDepartmentShow = false
+
+      this.$emit('departmentClick', this.formObj)
+    },
+  }
 };
 </script>
 
@@ -234,9 +179,13 @@ export default {
   padding: 10px;
   box-sizing: border-box;
 
+  /deep/.el-input {
+    width: 100% !important;
+  }
+
   .screenBox {
     width: 100%;
-    height: 100%;
+    height: 85%;
     margin-top: 12px;
     overflow: auto;
 
@@ -249,16 +198,18 @@ export default {
       height: 30px;
       box-sizing: border-box;
     }
+
     /deep/ .el-tree-node__expand-icon {
       display: none;
     }
+
     /deep/ .el-tree-node__content:hover {
       box-sizing: border-box;
       // border: 1px solid #3B86FF;
     }
 
-    /deep/.is-current > .el-tree-node__content{
-      background: #3B86FF;
+    /deep/.is-current > .el-tree-node__content {
+      background: #3b86ff;
       position: relative;
 
       /deep/.node_titleft {
@@ -277,7 +228,7 @@ export default {
       position: relative;
       top: 1px;
     }
-    
+
     .nextIcon {
       width: 16px;
       height: 16px;
@@ -311,18 +262,22 @@ export default {
           font-size: 18px;
           color: #43425d;
         }
+
         .moreIcon-color {
           color: #3b86ff;
         }
       }
+
       .node_titleft {
         padding-top: 2px;
       }
     }
+
     /* .treecom:hover .node_titright {
     display: block;
   } */
   }
+
   ::-webkit-scrollbar {
     display: none;
   }
