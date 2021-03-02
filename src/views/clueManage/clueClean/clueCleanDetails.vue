@@ -7,7 +7,7 @@
     </el-header>
     <p class="subtitle">线索详情</p>
     <el-row>
-      <el-form>
+      <el-form class="unique">
         <el-col :span="8" style="border:1px solid #E4E6ED;margin-right:20px">
           <div class="add-user">
               <div class="user-title">
@@ -16,30 +16,33 @@
                   <img v-else src="../../../assets/images/clueManage/woman.png" alt="女头">
                 </span>
                 <ul class="title-right">
-                  <li><span class="user-name">{{clueUser.unique.customerName}}</span><span>{{clueUser.unique.mobile}}</span></li>
-                  <li>{{clueUser.unique.telephone}}</li>
+                  <li><span class="user-name">{{clueUser.clean.customerName}}</span><span>{{clueUser.clean.mobile}}</span></li>
+                  <li>{{clueUser.clean.telephone}}</li>
                 </ul>
               </div>
               <p style="font-weight: 600;margin-left:15px;font-size:18px">客户信息</p>
               <div style="padding: 0 15px 15px">
                   <el-form-item label="性别：" prop="sex" class="sex-icon">
-                    {{clueUser.unique.sex}}
+                    {{clueUser.clean.sex}}
                   </el-form-item>
                   <el-form-item label="地址：" prop="province" class="dizhi-icon">
-                    {{clueUser.unique.province}}&nbsp;/&nbsp;{{clueUser.unique.city}}&nbsp;/&nbsp;{{clueUser.unique.area}}
+                    {{clueUser.clean.province}}&nbsp;/&nbsp;{{clueUser.clean.city}}&nbsp;/&nbsp;{{clueUser.clean.area}}
                   </el-form-item>
                   <el-form-item label="备注：" class="remark-icon">
-                    {{clueUser.unique.remarks}}
+                    {{clueUser.clean.remarks}}
                   </el-form-item>
               </div>
             </div>
         </el-col>
-        <el-col :span="8" style="margin-top: 20px">
+        <el-col :span="9" style="margin-top: 20px">
           <el-form-item label="唯一线索ID：" class="add-icon">
-            {{clueUser.unique.uniqueId}}
+            {{clueUser.clean.uniqueId}}
+          </el-form-item>
+          <el-form-item label="客户属性" class="add-icon">
+            {{clueUser.clean.custAttr}}
           </el-form-item>
           <el-form-item label="意向车型:" prop="carType" class="add-icon">
-           {{clueUser.unique.intentCarBrand}}&nbsp;/&nbsp;{{clueUser.unique.intentCarModel}}&nbsp;/&nbsp;{{clueUser.unique.intentCarStyle}}
+           {{clueUser.clean.intentCarBrand}}&nbsp;/&nbsp;{{clueUser.clean.intentCarModel}}&nbsp;/&nbsp;{{clueUser.clean.intentCarStyle}}
           </el-form-item>
           <el-form-item label="来源渠道:" prop="fromChannel" class="add-icon">
               {{clueUser.clean.firstChannelName}}&nbsp;/&nbsp;{{clueUser.clean.secondChannelName}}
@@ -51,10 +54,10 @@
               {{clueUser.clean.salesmanName}}
           </el-form-item>
           <el-form-item label="创建时间：" class="add-icon">
-            {{clueUser.unique.createTime}}
+            {{clueUser.clean.createTime}}
           </el-form-item>
         </el-col>
-        <el-col :span="8"></el-col>
+        <el-col :span="7"></el-col>
       </el-form>
     </el-row>
     <div class="hr" v-if="clueUser.clean.cleanStatus==2"></div>
@@ -157,7 +160,7 @@
         <el-col :span="8" style="height:10px;"></el-col>
       </el-form>
       <div style="clear:both;width:32%;text-align: center;">
-        <el-button size="mini" class="clean-cancel">取消</el-button>
+        <el-button size="mini" class="clean-cancel" @click="back">取消</el-button>
         <el-button size="mini" class="submit-btn" type="primary" @click="submit(invalidForm)">提交</el-button>
       </div>
     </el-row>
@@ -184,36 +187,38 @@
         <div class="hr"></div>
         <el-col :span="8">
           <el-col :span="4">
-            <img v-if="clueUser.clean.sex=='男'" src="../../../assets/images/clueManage/man.png" alt="男头">
+            <img v-if="clueUser.unique.sex=='男'" src="../../../assets/images/clueManage/man.png" alt="男头">
             <img v-else src="../../../assets/images/clueManage/woman.png" alt="女头">
           </el-col>
           <el-col :span="20">
             <el-form-item label="客户名称" style="margin-right: 20px">
-              {{clueUser.clean.customerName}}
+              {{clueUser.unique.customerName}}
             </el-form-item>
             <el-form-item label="客户性别" prop="sex">
-              {{clueUser.clean.sex}}
+              {{clueUser.unique.sex}}
             </el-form-item>
             <el-form-item label="客户地址" prop="address">
-              {{clueUser.clean.province}}&nbsp;/&nbsp;{{clueUser.clean.city}}&nbsp;/&nbsp;{{clueUser.clean.area}}
+              {{clueUser.unique.province}}&nbsp;/&nbsp;{{clueUser.unique.city}}&nbsp;/&nbsp;{{clueUser.unique.area}}
             </el-form-item>
             <el-form-item label="经销商" prop="dealerName">
-              {{clueUser.dealerName}}
+              {{clueUser.unique.dealerName}}
             </el-form-item>
           </el-col>
         </el-col>
         <el-col :span="8">
           <el-form-item label="意向车型" prop="intentionModel">
-             {{clueUser.clean.intentCarBrand}}&nbsp;/&nbsp;{{clueUser.clean.intentCarModel}}&nbsp;/&nbsp;{{clueUser.clean.intentCarStyle}}
+             {{clueUser.unique.intentCarBrand}}&nbsp;/&nbsp;{{clueUser.unique.intentCarModel}}&nbsp;/&nbsp;{{clueUser.unique.intentCarStyle}}
           </el-form-item>
           <el-form-item label="竞品车型" prop="jingCarModel">
-             {{clueUser.clean.compCarBrand==''? '&nbsp;/&nbsp;':''}} {{clueUser.clean.compCarModel==''?'&nbsp;/&nbsp;':''}}{{clueUser.clean.compCarStyle}}
+             {{clueUser.clean.compCarBrand==null?'':clueUser.clean.compCarBrand+'&nbsp;/&nbsp;'}} 
+             {{clueUser.clean.compCarModel==null?'':clueUser.clean.compCarModel+'&nbsp;/&nbsp;'}}
+             {{clueUser.clean.compCarStyle}}
           </el-form-item>
           <el-form-item label="预计成交时间" prop="validStatus">
             {{clueUser.clean.estTranDay}}
           </el-form-item>
           <el-form-item label="备注">
-            {{clueUser.clean.remarks}}
+            {{clueUser.unique.remarks}}
           </el-form-item> 
         </el-col>
         <el-col :span="8"></el-col>
@@ -476,7 +481,7 @@ export default {
           this.clueUser.unique.createTime=parseTime(res.data.unique.createTime);
         //  this.clueUser.clean.distributeTime=parseTime(res.data.clean.distributeTime)
           let qingxi=res.data.clean.cleanStatus;
-          let sex=res.data.unique.sex;
+          let sex=res.data.clean.sex;
          // let clue=res.data.clean.cleanResult;
           switch(qingxi){
             case '待清洗':
@@ -504,12 +509,23 @@ export default {
         userId:this.userInfo.userId,
         cleanResult:this.cleanResult
       }
+     
+      let disappear=this.invalidForm.invalidReason;
+      if(disappear==undefined){
+        disappear=''
+      }else{
+        disappear=this.invalidForm.invalidReason[0]
+        if(this.invalidForm.invalidReason[1]==undefined){
+          disappear=this.invalidForm.invalidReason[0]
+        }
+      }
+
       let invalidData={
         invalidMajorReason:this.invalidForm.invalidReason==undefined?'':this.invalidForm.invalidReason[0],
-        invalidMinorReason:this.invalidForm.invalidReason==undefined?'':this.invalidForm.invalidReason[1],
+        invalidMinorReason:disappear,
         remarks:this.invalidForm.remarks,
       }
-      console.log(this.effective);
+     
       let effective={
         customerName:this.effective.customerName,
         sex:this.effective.sex==1?'male':'female',
@@ -527,7 +543,7 @@ export default {
         compCarModel:this.effective.jingCarModel[1],
         compCarStyle:this.effective.jingCarModel[2]
       }
-    //  console.log(effective);
+      console.log(effective);
       cleaning(user,invalidData,effective).then(res=>{
          //console.log(res)
          if(res.code==0){
@@ -543,6 +559,9 @@ export default {
            })
          }
       })
+    },
+    back(){
+      this.$router.go(-1);
     },
     submit() {
       if(this.cleanResult==true){
@@ -574,6 +593,22 @@ export default {
   }
   /deep/ .effective .el-form-item{
     margin-bottom:20px
+  }
+  /deep/ .unique .el-col-9 .el-form-item__label{
+    width:100px;
+    text-align: left
+  }
+  /deep/ .invalid-over .el-form-item__label{
+    width: 100px;
+    text-align: left
+  }
+  /deep/ .effective-over .el-form-item__label{
+    width:100px;
+    /* text-align: right; */
+  }
+  /deep/ .effective-over .el-col-20 .el-form-item__label{
+    width:80px;
+    text-align: left;
   }
   .atg-header{
     padding-left: 0;

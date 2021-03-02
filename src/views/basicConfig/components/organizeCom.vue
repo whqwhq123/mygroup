@@ -515,6 +515,10 @@ export default {
   left: 0;
 }
 
+/deep/ .el-dialog__body{
+  height: 500px;
+  overflow: auto;
+}
 .map_container {
   position: relative;
   width: 577px;

@@ -53,15 +53,36 @@
             </div>
          </div>
        </el-col>
-       <el-col :span="10" style="margin-left:20px;margin-top: 20px">
+       <el-col :span="10" style="margin-left:20px;">
          <el-form-item label="原始线索ID：" class="add-icon">
            {{userData.originalId}}
          </el-form-item>
+         <!-- <el-form-item label="客户属性:" class="add-icon">
+            <el-select v-model="userData.custAttr" placeholder="请选择活动">
+              <el-option
+                v-for="item in custAttrData"
+                :key="item.name"
+                :label="item.name"
+                :value="item.value">
+              </el-option>
+            </el-select>
+         </el-form-item> -->
          <el-form-item label="意向车型:" prop="carType" class="add-icon">
              <el-cascader v-model="userData.carType" clearable ref="carType" placeholder="请选择意向车型" :options="intentCarStyleJia" :props="carTypeLabel"></el-cascader>
          </el-form-item>
          <el-form-item label="来源渠道:" prop="fromChannel" class="add-icon" :data="userData.Channels">
            <el-cascader v-model="userData.fromChannel" clearable placeholder="请选择来源渠道"  @change="selectChannel" ref="channelObj" :options="userData.Channels" :props="setKesLabel"></el-cascader>
+         </el-form-item>
+         
+         <el-form-item label="活动名称:" class="add-icon">
+            <el-select v-model="userData.activityId" placeholder="请选择活动">
+             <el-option
+              v-for="item in marketActity"
+              :key="item.name"
+              :label="item.activityName"
+              :value="item.activityId">
+            </el-option>
+            </el-select>
          </el-form-item>
          <el-form-item label="经销商名称:" class="add-icon">
             <el-select v-model="userData.dealers" placeholder="请选择经销商名称" @change="selectDealer">
@@ -100,7 +121,7 @@
 </template>
 
 <script>
-import {addClue,clueList,getId,getCarMakeModelStyle,getSalesData,getDealerData,getFirst,getSecond} from '../../../service/api/index'
+import {addClue,clueList,getId,getCarMakeModelStyle,getSalesData,getDealerData,getFirst,getSecond,getActivityData} from '../../../service/api/index'
 import area from '../../../assets/javaScript/areaList.js'
 import qs from 'qs'
 export default {
@@ -153,10 +174,11 @@ export default {
          callback()
        }
     };
-    var deptId=this.$store.getters.userInfo.userDeptId;
+    var userId=this.$store.getters.userInfo.userId;
     var that=this;
    
     return{
+      roleType:'',
       userData:{
         customerName:'',
         mobile:'',
@@ -169,6 +191,8 @@ export default {
         city:'',
         area:'',
         originalId:'',
+        activityId:'',
+      //  custAttr:'',
         carType:'',   //意向车型
         fromChannel:'',  //来源渠道
         dealers:'',    //经销商
@@ -177,6 +201,19 @@ export default {
         oneChannelName:'',
         twoChannelName:'',
       },
+      marketActity:[
+      ],
+      custAttrData:[
+        {
+          value:'submersible',
+          name:'潜客'
+        },
+        {
+          value:'guarantor',
+          name:'保客'
+        },
+        
+      ],
       requiredIcon:true,
       salesman:[],
       dealerName:[],
@@ -204,12 +241,13 @@ export default {
           let postData={
             pageNum: 1,
             pageSize: 99999,
-            deptId: deptId,
+            userId: userId,
             enabled:true
           }
           setTimeout(() => {
             if(level==0){
               getFirst(postData).then(res=>{  
+                console.log(res)
                 if(res.code==0){
                   let channels=res.data.content;
                   const nodes=channels.map((item, index) => ({
@@ -230,7 +268,7 @@ export default {
               getSecond({
                 pageNum: 1,
                 pageSize: 99999,
-                deptId: deptId,
+                userId: userId,
                 enabled:true,
                 parentId:value
               }).then(res=>{
@@ -280,9 +318,11 @@ export default {
   },
   created(){
     this.userInfo = this.$store.getters.userInfo || {};
-    this.getOriginalId()
-    this.getCarMake()
-    this.getDealer()
+    this.roleType=this.userInfo.ucRoleUsers[0].roleType;
+    this.getOriginalId();
+    this.getCarMake();
+    this.getDealer();
+    this.getActivityList();
   },
   methods: {
     selectSex(val){
@@ -291,6 +331,14 @@ export default {
       }else{
         this.postUserData.sex="female"
       }
+    },
+    getActivityList(){
+        getActivityData().then(res=>{
+          console.log(res)
+          if(res.code==0){
+            this.marketActity=res.data
+          }
+        })
     },
     reset_search(userData) { 
     //  console.log(this.$refs)
@@ -338,7 +386,7 @@ export default {
        // value=false;
         let id=this.userData.dealers;
         getSalesData(id).then(res=>{
-          console.log(res)
+      //    console.log(res)
           if(res.code==0){
             if(res.data.length>0){
               this.salesman=res.data;
@@ -380,7 +428,7 @@ export default {
     },
    
     getOriginalId(){  //线索id
-      getId(this.userInfo.userDeptId).then(res=>{
+      getId(this.userInfo.userId).then(res=>{
         this.userData.originalId=res.data;
       })
     },
@@ -393,10 +441,12 @@ export default {
           deptId:this.userInfo.userDeptId,
           userId:this.userInfo.userId,
           sex:this.postUserData.sex,
+        //  custAttr:this.userData.custAttr,
           customerName:this.userData.customerName,
           mobile:this.userData.mobile,
           remarks:this.userData.remarks,
           telephone:telPhone,
+          activityId:this.userData.activityId,
           originalId:this.userData.originalId,
           intentCarBrand:this.userData.carType[0],
           intentCarModel:this.userData.carType[1],
@@ -409,9 +459,10 @@ export default {
           city:this.userData.address[1],
           area:this.userData.address[2],
           dealerId:this.userData.dealers==undefined?'':this.userData.dealers.toString(),
-          salesmanId:this.userData.salesPer==undefined?'':this.userData.salesPer.toString()
+          salesmanId:this.userData.salesPer==undefined?'':this.userData.salesPer.toString(),
+          client:'web',
+          roleType:this.roleType
       }
-      console.log(this.postUserData);
       let that=this;
       addClue(qs.stringify(this.postUserData)).then(res=>{
        // console.log(res);

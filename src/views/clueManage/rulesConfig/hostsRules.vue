@@ -41,8 +41,8 @@
       <el-row class="mar-top">
         <el-col :span="4" style="height:10px"></el-col>
         <el-col :span="16">
-          <el-form-item label="顾问跟进：" prop="">
-            <el-input size="small" placeholder="0" v-model="hosts.validNum" style="width:140px;margin-right:10px;"></el-input>次后可申请战败，之前都为无效
+          <el-form-item label="顾问跟进：" prop="validNum">
+            <el-input size="small" placeholder="0" v-model="hosts.followNum" style="width:140px;margin-right:10px;"></el-input>次后可申请战败，之前都为无效
           </el-form-item>
         </el-col>
         <el-col :span="4" style="height:10px"></el-col>
@@ -56,18 +56,20 @@
 </template>
 
 <script>
-
+import {ruleOemSave,ruleOemDetail} from '@/service/api/index'
 export default {
   data(){
     return {
+     userInfo:{},
      modified:true,
+     id:'',
      hosts:{
        archive:'180',  //归档
        merge:'180',   //合并
        restartTime:'08:30',
        dealGuiCycle:'15',
        firstTimeFollow:'12',
-       validNum:'3'
+       followNum:'3'
      }
     }
   },
@@ -84,22 +86,51 @@ export default {
         next(false);
       });
   },
+  created () {
+     this.userInfo = this.$store.getters.userInfo || {};
+     this.getDetail()
+  },
   methods: {
-    save(rules){
-      this.modified=false;
-       let that=this;
-      //  that.$refs.rules.validate((valid) => {
-      //    if(valid){
-           that.$message({
-              type:'success',
-              message:'保存成功'
-            })
+    getDetail(){
+      let data={
+        deptId:this.userInfo.userDeptId
+      }
 
-      //    }else{
-      //      return false
-      //    }
-      //  })
-      
+      ruleOemDetail(data).then(res=>{
+        if(res.code==0){
+          console.log(res.data)
+         this.hosts.followNum=res.data.followNum;
+         this.id=res.data.id;
+        }else{
+          this.$notify({
+            message: res.errMsg,
+            type: "error",
+          });
+        }
+      })
+    },
+    save(rules){
+     
+      let data={
+        deptId:this.userInfo.userDeptId,
+        userId:this.userInfo.userId,
+        id:this.id,
+        followNum:this.hosts.followNum
+      }
+      ruleOemSave(data).then(res=>{
+        if(res.code==0){
+          this.$notify({
+            message: '保存成功',
+            type: "success",
+          });
+          this.modified=false;
+        }else{
+          this.$notify({
+            message: res.errMsg,
+            type: "error",
+          });
+        }
+      })
     },
     cancel(){
       this.$message('已取消此操作')

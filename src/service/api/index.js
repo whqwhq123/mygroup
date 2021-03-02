@@ -218,13 +218,26 @@ export function getSalesData(deptId){
   })
 }
 // 原始线索列表
-export function clueSearch(deptId, page, data) {
+export function clueSearch(userId, page, data) {
   return request({
     method: 'post',
-    url: process.env.VUE_APP_USER_URL + '/clue/original/page?deptId=' + deptId + '&' + page + '&' + data,
+    url: process.env.VUE_APP_USER_URL + '/clue/original/page?userId=' + userId + '&' + page + '&' + data,
   })
 }
-
+//唯一线索归集历史
+export function compilations(userId, data) {
+  return request({
+    method: 'post',
+    url: process.env.VUE_APP_USER_URL + '/clue/original/page?userId=' + userId + '&' + data,
+  })
+}
+//跟进历史
+export function followList(userId, data) {
+  return request({
+    method: 'post',
+    url: process.env.VUE_APP_USER_URL + '/clue/follow/page?userId=' + userId + '&' + data,
+  })
+}
 //原始线索的渠道数据
 export function clueList(deptId) {
   return request({
@@ -262,19 +275,19 @@ export function getId(deptId) {
   })
 }
 //线索列表导出
-export function clueExport(deptId, page, data) {
+export function clueExport(userId, page, data) {
   return request({
     method: 'post',
-    url: process.env.VUE_APP_USER_URL + '/clue/original/export?deptId=' + deptId + '&' + page + '&' + data,
+    url: process.env.VUE_APP_USER_URL + '/clue/original/export?userId=' + userId + '&' + page + '&' + data,
     responseType: 'blob'
   })
 }
 
 //唯一线索 列表
-export function onlyClueList(deptId, page, data) {
+export function onlyClueList(userId, page, data) {
   return request({
     method: 'post',
-    url: process.env.VUE_APP_USER_URL + '/clue/unique/page?deptId=' + deptId + '&' + page + '&' + data,
+    url: process.env.VUE_APP_USER_URL + '/clue/unique/page?userId=' + userId + '&' + page + '&' + data,
   })
 }
 //唯一线索 人工派发/分配
@@ -300,10 +313,10 @@ export function cleanClueData(deptId) {
   })
 }
 //线索清洗
-export function cleanClueList(deptId, page, data) {
+export function cleanClueList(userId, page, data) {
   return request({
     method: 'post',
-    url: process.env.VUE_APP_USER_URL + '/clue/clean/page?deptId=' + deptId + '&' + page + '&' + data,
+    url: process.env.VUE_APP_USER_URL + '/clue/clean/page?userId=' + userId + '&' + page + '&' + data,
   })
 }
 //线索清洗派发/派发
@@ -315,10 +328,11 @@ export function  cleanDistribute(data) {
   })
 }
 //线索清洗分配/唯一线索人工分配----销售顾问 数据
-export function  assginSalemansData(roleId) {
+export function  assginSalemansData(data) {
   return request({
     method: 'post',
-    url: process.env.VUE_APP_USER_URL + '/logon/role/queryUserByRoleId?roleId='+roleId,
+    url: process.env.VUE_APP_USER_URL + '/logon/role/queryUserByRoleId',
+    data:qs.stringify(data)
   })
 }
 // 线索清洗详情
@@ -712,3 +726,169 @@ export function marketingListPage(data){
     data: qs.stringify(data)
   })
 }
+
+// 品牌区 管理
+//已选父品牌列表
+export function getSelectCarMake(){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/label/carMakeOrder/getSelectCarMake',
+  })
+}
+// 父品牌运营位列表
+export function getCarMakeOrderList(){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/label/carMakeOrder/getCarMakeOrderList',
+  })
+}
+//新增父品牌运营位
+export function addCarMakeOrder(data){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/label/carMakeOrder/addCarMakeOrder',
+    data: qs.stringify(data)
+  })
+}
+//编辑父品牌运营位
+export function updateCarMakeOrder(data){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/label/carMakeOrder/updateCarMakeOrder',
+    data: qs.stringify(data)
+  })
+}
+
+//父品牌运营排序
+export function changeOrder(data){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/label/carMakeOrder/changeOrder',
+    data: qs.stringify(data)
+  })
+}
+
+// 获取车系运营位列表
+
+export function getCarModelOrderList(){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/label/carModelOrder/getCarModelOrderList'
+  })
+}
+
+//新增车系运营位列表
+export function addCarModelOrder(data){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/label/carModelOrder/addCarModelOrder',
+    data: qs.stringify(data)
+  })
+}
+//编辑车系运营位
+export function updateCarModelOrder(data){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/label/carModelOrder/updateCarModelOrder',
+    data: qs.stringify(data)
+  })
+}
+
+//车系运营排序
+export function changeCarModelOrder(data){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/label/carModelOrder/changeOrder',
+    data: qs.stringify(data)
+  })
+}
+//获取已选父品牌-子品牌-车系
+export function getSelectCarMakeGroupModel(){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/label/carModelOrder/getSelectCarMakeGroupModel'
+  })
+}
+//活动名称列表
+export function getActivityData(){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/label/activity/getAppActivities'
+  })
+}
+//主机厂战败/无效配置
+export function ruleOemSave(data){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/clue/rule/oem/save',
+    data:qs.stringify(data)
+  })
+}
+//主机厂配置详情
+
+export function ruleOemDetail(data){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/clue/rule/oem/detail',
+    data:qs.stringify(data)
+  })
+}
+// 报名记录列表
+// /label/activity/getActivitySignUps
+export function getActivitySignUps(data){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/label/activity/getActivitySignUps',
+    data: qs.stringify(data)
+  })
+}
+//签到 /label/activity/signIn
+export function getSignIn(data){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/label/activity/signIn',
+    data: qs.stringify(data)
+  })
+}
+//导出 /label/activity/exportActivitySignUps
+export function exportActivitySignUps(data){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/label/activity/exportActivitySignUps',
+    responseType: 'arraybuffer',
+    data: qs.stringify(data)
+  })
+}
+//下载二维码
+export function downloadCode(data) {
+  return request({
+    method: 'post',
+    url: process.env.VUE_APP_USER_URL + '/label/activity/getQRImage',
+    responseType: 'arraybuffer',
+    data: qs.stringify(data)
+  })
+}
+
+//活动详情创建人最后修改人发起部门
+export function queryUserAllInfo(data){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/logon/user/queryUserAllInfo',
+    data: qs.stringify(data)
+  })
+}
+//logon/dept/queryDeptById
+export function queryDeptById(data){
+  return request({
+    method:'post',
+    url:process.env.VUE_APP_USER_URL+'/logon/dept/queryDeptById',
+    data: qs.stringify(data)
+  })
+}
+
+
+
+
+
+
+

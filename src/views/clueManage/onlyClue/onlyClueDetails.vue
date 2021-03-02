@@ -1,10 +1,17 @@
 <template>
   <el-main>
     <el-header class="atg-header">
-      <span class="title">唯一线索详情</span> 
+      <span class="title">唯一线索详情</span>
       <span class="status green" v-if="onlyClueUser.clueStatus==0">{{clueUser.clueStatus}}<i class="el-icon-s-promotion"></i></span>
       <span class="status green" v-if="onlyClueUser.clueStatus==1">{{clueUser.clueStatus}}<i class="el-icon-s-promotion"></i></span>
-      <span class="status green" v-if="onlyClueUser.clueStatus==2">{{clueUser.clueStatus}}<i class="el-icon-time"></i></span>
+      <span class="status green" v-if="onlyClueUser.clueStatus==2">{{clueUser.clueStatus}}<i class="el-icon-s-promotion"></i></span>
+      <span class="status green" v-if="onlyClueUser.clueStatus==3">{{clueUser.clueStatus}}<i class="el-icon-s-promotion"></i></span>
+      <span class="status green" v-if="onlyClueUser.clueStatus==4">{{clueUser.clueStatus}}<i class="el-icon-s-promotion"></i></span>
+      <span class="status green" v-if="onlyClueUser.clueStatus==5">{{clueUser.clueStatus}}<i class="el-icon-s-promotion"></i></span>
+      <span class="status green" v-if="onlyClueUser.clueStatus==6">{{clueUser.clueStatus}}<i class="el-icon-s-promotion"></i></span>
+      <span class="status green" v-if="onlyClueUser.clueStatus==7">{{clueUser.clueStatus}}<i class="el-icon-s-promotion"></i></span>
+      <span class="status shibai" v-if="onlyClueUser.clueStatus==8">{{clueUser.clueStatus}}</i></span>
+      <span class="status invalid" v-if="onlyClueUser.clueStatus==9">{{clueUser.clueStatus}}</i></span>
     </el-header>
     <p class="subtitle">线索详情</p>
     <div>
@@ -12,14 +19,30 @@
         <el-step title="新建"></el-step>
         <el-step title="已派发"></el-step>
         <el-step title="已分配"></el-step>
+        <el-step title="已跟进"></el-step>
+        <el-step title="已到店"></el-step>
+        <el-step title="已试驾"></el-step>
+        <el-step title="已下订"></el-step>
+        <el-step title="已成交"></el-step>
+        <el-step title="已交车"></el-step>
+        <el-step title="战败/流失"></el-step>
+        <el-step title="无效"></el-step>
       </el-steps>
       <ul class="setps-time">
         <li>{{clueUser.createTime}}</li>
         <li>{{clueUser.distributeTime}}</li>
         <li>{{clueUser.assignTime}}</li>
+        <li>{{clueUser.followedTime}}</li>
+        <li>{{clueUser.arrivedTime}}</li>
+        <li>{{clueUser.drivenTime}}</li>
+        <li>{{clueUser.orderedTime}}</li>
+        <li>{{clueUser.dealTime}}</li>
+        <li>{{clueUser.deliveryTime}}</li>
+        <li>{{clueUser.defeatedTime}}</li>
+        <li>{{clueUser.invalidTime}}</li>
       </ul>
     </div>
-    <el-row style="margin: 20px 0">
+    <el-row class="clue-user" style="margin: 20px 0">
       <el-form>
         <el-col :span="6" style="border:1px solid #E4E6ED;margin-right:20px">
           <div class="add-user">
@@ -47,15 +70,22 @@
               </div>
             </div>
         </el-col>
-        <el-col :span="8" style="margin-top: 20px">
+        <el-col :span="9" style="margin-top: 20px">
           <el-form-item label="唯一线索ID：" class="add-icon">
             {{clueUser.uniqueId}}
+          </el-form-item>
+          <el-form-item label="客户属性" class="add-icon">
+            {{clueUser.custAttr}}
+            潜客
           </el-form-item>
           <el-form-item label="意向车型:" prop="carType" class="add-icon">
             {{clueUser.intentCarBrand}}&nbsp;/&nbsp;{{clueUser.intentCarModel}}&nbsp;/&nbsp;{{clueUser.intentCarStyle}}
           </el-form-item>
           <el-form-item label="来源渠道:" prop="fromChannel" class="add-icon">
               {{clueUser.firstChannelName}}&nbsp;/&nbsp;{{clueUser.secondChannelName}}
+          </el-form-item>
+          <el-form-item label="活动名称:" class="add-icon">
+              {{clueUser.activityName }}
           </el-form-item>
           <el-form-item label="经销商名称:" class="add-icon">
               {{clueUser.dealerName}}
@@ -67,7 +97,7 @@
             {{clueUser.createTime}}
           </el-form-item>
         </el-col>
-        <el-col :span="10"></el-col>
+        <el-col :span="9"></el-col>
       </el-form>
     </el-row>
     <div v-if="clean">
@@ -79,6 +109,28 @@
         <li><span>清洗派发时间：</span><span>{{clueUser.distributeTime}}</span></li>
         <li><span>预计成交时间：</span><span>{{clueUser.clean.estTranDay}}</span></li>
       </ul>
+    </div>
+    <div>
+       <p class="subtitle">意向信息</p>
+       <ul class="cleaning">
+        <li><span>意向级别：</span><span>{{clueUser.intentionLevel}}</span></li>
+        <li><span>购车预算：</span><span>{{clueUser.purchaseBudget}}万</span></li>
+        <li><span>购车用途：</span><span>{{clueUser.purchasePurpose}}</span></li>
+        <li><span>购车类型：</span><span>{{clueUser. purchaseType}}</span></li>
+        <li><span>竞品车型：</span><span>{{clueUser.compModel}}</span></li>
+        <li><span>购车关注点：</span><span>{{clueUser.purchaseFocus}}</span></li>
+        <!-- <li><span>配置：</span><span>{{clueUser.config}}</span></li>
+        <li><span>外观颜色：</span><span>{{clueUser.exteriorColor}}</span></li>
+        <li><span>购车用途：</span><span>{{clueUser.purchasePurpose}}</span></li>
+        <li><span>竞品类型：</span><span>{{clueUser.compModel}}</span></li> -->
+      </ul>
+      <!-- <ul class="cleaning" style="margin-top: 10px"> -->
+        <!-- <li><span>购车预算：</span><span>{{clueUser.purchaseBudget}}万元</span></li> -->
+        <!-- <li><span>动力：</span><span>{{clueUser.power}}</span></li>
+        <li><span>内饰颜色：</span><span>{{clueUser.interiorColor}}</span></li>
+        <li><span>购车类型：</span><span>{{clueUser. purchaseType}}</span></li>
+        <li><span>购车关注点：</span><span>{{clueUser.purchaseFocus}}</span></li> -->
+      <!-- </ul> -->
     </div>
     <div style="margin-top: 20px">
       <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
@@ -146,6 +198,7 @@
             <el-table-column label="意向车型" prop="intentCarStyle" ></el-table-column>
             <el-table-column label="一级渠道" prop="firstChannelName"></el-table-column>
             <el-table-column label="二级渠道" prop="secondChannelName"></el-table-column>
+            <el-table-column label="活动名称" prop="activityName"></el-table-column>
             <el-table-column label="经销商" prop="dealerName"></el-table-column>
             <el-table-column label="销售顾问" prop="salesmanName"></el-table-column>
             <el-table-column label="创建时间" prop="createTime" width="105px" :formatter="dateFormat"></el-table-column>
@@ -167,18 +220,22 @@
 </template>
 
 <script>
-import {onlyClueDetail} from '../../../service/api/index'
+import {onlyClueDetail,compilations,followList} from '../../../service/api/index'
 import {parseTime} from '../../../utils/index'
+import qs from 'qs'
 export default {
   data(){
     return {
-      time:'20210208',
+      userInfo:{},
+      time:'',
       id:'',
+      uniqueId:'',
       activeName:'5',
       onlyClueUser:{
-        clueStatus:1
       },
-      clueUser:{},
+      clueUser:{
+        clean:{}
+      },
       followHistory:[],  //跟进历史
       compilations:[],   //归集历史
       drivingRecord:[],  //试驾记录
@@ -187,44 +244,73 @@ export default {
       clean:true,
       page:{
         pageNum:1,
-        pageSize:5,
+        pageSize:10,
         total:0
       },
       pageL:{
         pageNum:1,
-        pageSize:5
+        pageSize:10
       }
     }
   },
   created () {
+    let that=this;
+    this.userInfo = this.$store.getters.userInfo || {};
     this.id=sessionStorage.getItem('id');
-    console.log(this.id)
-    this.getDetail()
+    this.getDetail();
+    setTimeout(function(){
+      that.compilationsList();
+      that.getFollowList()
+    },1500)
+
   },
   methods: {
      handleSizeChange(val) {
       this.pageL.pageSize = val
-      
+      this.compilationsList()
     },
     handleCurrentChange(val) {
-      console.log(val)
       this.pageL.pageNum = val
-      
+      this.compilationsList()
     },
     handleClick(tab) {
-     // console.log(tab.name);
+
+    },
+    compilationsList(){
+      let id=sessionStorage.getItem('uniqueId');
+      let data={
+        uniqueId:id,
+        ...this.pageL
+      }
+      compilations(this.userInfo.userId,qs.stringify(data)).then(res=>{
+        if(res.code==0){
+          this.compilations=res.data.content;
+          this.page.total=res.data.totalElements;
+        }
+      })
+    },
+    getFollowList(){
+
+      let data={
+        uniqueId:this.id,
+        ...this.pageL
+      }
+
+      followList(this.userInfo.userId,qs.stringify(data)).then(res=>{
+        if(res.code==0){
+          this.followHistory=res.data.content;
+          this.page.total=res.data.totalElements;
+        }
+      })
     },
     getDetail(){
       onlyClueDetail(this.id).then(res=>{
-        console.log(res.data);
         if(res.code==0){
           this.clueUser=res.data;
-          this.compilations=res.data.originals;
-          this.page.total=res.data.originals.length;
+          sessionStorage.setItem('uniqueId',res.data.uniqueId)
           this.clueUser.createTime=parseTime(res.data.createTime);
           this.clueUser.distributeTime=parseTime(res.data.distributeTime);
           this.clueUser.assignTime=parseTime(res.data.assignTime);
-         // this.clueUser.clean.distributeTime=parseTime(res.data.clean.distributeTime);
           let sex=res.data.sex;
           let status=res.data.clueStatus;
           switch(status){
@@ -237,8 +323,28 @@ export default {
             case '已分配':
               this.onlyClueUser.clueStatus=2;
             break;
+            case '已跟进':
+              this.onlyClueUser.clueStatus=3;
+            break;
+            case '已到店':
+              this.onlyClueUser.clueStatus=4;
+            break;
+            case '已试驾':
+              this.onlyClueUser.clueStatus=5;
+            break;
+            case '已下订':
+              this.onlyClueUser.clueStatus=6;
+            break;
+            case '已交车':
+              this.onlyClueUser.clueStatus=7;
+            break;
+            case '战败/流失':
+              this.onlyClueUser.clueStatus=8;
+            break;
+            case '无效':
+              this.onlyClueUser.clueStatus=9;
+            break;
           }
-
           switch(sex){
             case '男':
               this.sex=1
@@ -315,7 +421,7 @@ export default {
     color:#A3A6B4;
     margin-right:40px;
   }
-  
+
 /* end--------------- */
   .atg-header{
     padding-left: 0;
@@ -335,9 +441,19 @@ export default {
   .green{
     background: #00C456
   }
+  .shibai{
+    background: #666
+  }
+  .invalid{
+    background: #999
+  }
   /* 信息详情 */
   /deep/ .el-form-item{
     margin-bottom: 0
+  }
+  /deep/ .clue-user .el-col-9 .el-form-item__label{
+    width: 100px;
+    text-align: left;
   }
   .user-title{
     height: 100px;
@@ -368,7 +484,7 @@ export default {
   .add-icon{
     padding-left: 70px;
     background: url('../../../assets/images/clueManage/line.png') no-repeat left center;
-    
+
   }
   .sex-icon,.dizhi-icon,.remark-icon{
     padding-left: 30px

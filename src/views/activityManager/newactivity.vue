@@ -11,38 +11,55 @@
         <el-input v-model="ruleForm.activityName" placeholder="请输入活动名称" class="inputwidth"></el-input>
     </el-form-item>
 
-    <el-form-item label="活动时间" prop="activityDate" required>
-        <el-date-picker size="small" v-model="ruleForm.activityDate" type="datetimerange" range-separator="至"
+    <el-form-item label="活动时间" prop="activityDate">
+        <el-date-picker style="width: 280px;" size="small" v-model="ruleForm.activityDate" ref="addForm" type="daterange" range-separator="至"
           start-placeholder="开始日期" end-placeholder="结束日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd">
         </el-date-picker>
     </el-form-item>
-    <el-form-item label="详情头图">
-      <upload-img-com  @setImgs='setImgsFun' @setImgslength="setImgsFun" :filelist='imageUrl.imageUrla' imgid=1></upload-img-com>
+    <el-form-item label="详情头图"  prop="uploadimga" >
+      <upload-img-com  @setImgs='setImgsFun'  @setImgslength="setImgsFun" :filelist='imageUrl.imageUrla' imgid=1></upload-img-com>
     </el-form-item>
     <el-form-item label="运营位图片" prop="uploadimgb">
          <upload-img-com  @setImgs='setImgsFun' @setImgslength="setImgsFun" :filelist='imageUrl.imageUrlb' imgid=2></upload-img-com> 
     </el-form-item>
     <el-form-item label="主推车系" prop="pushCarseries">
-      <el-autocomplete
+      <!-- <el-autocomplete
         v-model="ruleForm.pushCarseries.value"
         :fetch-suggestions="querySearchAsync"
         @select="handleSelect"
         placeholder="请选择主推车系"
-      ></el-autocomplete>
+      ></el-autocomplete> -->
+        <el-select
+        v-model="ruleForm.pushCarseries"
+        multiple
+        filterable
+        remote
+        reserve-keyword
+        placeholder="请输入关键词"
+        :remote-method="remoteMethod"
+        style="width: 280px;"
+        :loading="loading">
+        <el-option
+          v-for="item in carModelList"
+          :key="item.id"
+          :label="item.value"
+          :value="item">
+        </el-option>
+      </el-select>
     </el-form-item>
     <el-form-item label="执行渠道" prop="impChannel">
-      <el-cascader placeholder="请选择来源渠道" clearable ref="fromChannel" v-model="ruleForm.impChannel"  :options="channelList"  :props="setKesLabel"></el-cascader>
+      <el-cascader placeholder="请选择来源渠道" style="width: 280px;" clearable ref="fromChannel" v-model="ruleForm.impChannel"  :options="channelList"  :props="setKesLabel"></el-cascader>
     </el-form-item>
     <el-form-item label="活动区域" prop="address" class="dizhi-icon">
         <el-cascader placeholder="请选择省市区" clearable style="width: 280px;"  :options="area" ref="area" v-model="ruleForm.address" :props="{value:'label'}" @change="selectCity"></el-cascader>
         <el-input v-model="ruleForm.detAddress" placeholder="请输入详细地址" style="margin-left:35px" class="inputwidth"></el-input>
     </el-form-item>
 
-    <el-form-item label="活动内容" >
+    <el-form-item label="活动内容" class="elfromitem1"  style="height: 160px;">
          <quill-editor 
             v-model="ruleForm.desc"
             ref="myQuillEditor" 
-            style="width: 595px;"
+            style="width: 596px;height: 115px"
             :options="editorOption" 
         >
         </quill-editor>
@@ -51,10 +68,12 @@
         <el-input
         type="textarea"
         :rows="2"
-        style="width: 280px"
+        style="width: 595px;height: 100px;padding-bottom: -15px;"
         placeholder="请输入活动要求"
+        maxlength="500"
         v-model="ruleForm.remarks">
         </el-input>
+        <div class="remark-icon-num">{{ruleForm.remarks?ruleForm.remarks.length : 0}}/500</div>
     </el-form-item> 
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
         <el-tab-pane label="属性信息" name="first">
@@ -128,8 +147,8 @@
                 <el-form-item label="报名截止时间" prop="signupOffDate">
                     <el-date-picker
                     v-model="ruleForm.signupOffDate"
-                    type="date"
-                    format="yyyy-MM-dd" value-format="yyyy-MM-dd"
+                    type="datetime"
+                    format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm"
                     placeholder="选择日期">
                   </el-date-picker>
 
@@ -144,7 +163,7 @@
                     <el-input v-model="ruleForm.shareDesc" placeholder="请输入分享描述" class="inputwidth"></el-input>
                 </el-form-item>
 
-                <el-form-item label="运营位图片" prop="uploadimgb">
+                <el-form-item label="分享图标" >
                   <upload-img-com  @setImgs='setImgsFun' @setImgslength="setImgsFun" :filelist='imageUrl.imageUrlc' imgid=3></upload-img-com> 
                 </el-form-item>
 
@@ -345,10 +364,11 @@ import qs from 'qs'
           activityDate: [],
           uploadimga:'',
           uploadimgb:'',
-          pushCarseries:{
-            id:'',
-            value:''
-          },
+          // pushCarseries:{
+          //   id:'',
+          //   value:''
+          // },
+          pushCarseries:[],
           impChannel:[],
           address:[],
           detAddress:'',
@@ -374,6 +394,8 @@ import qs from 'qs'
          shareIcon:'',
      
       },
+      carModelList:[],  //主推车系
+      carModelData:[],//主推车系
         rules: {
           activityName: [
             { required: true, message: '请输入活动名称', trigger: 'blur' },
@@ -382,7 +404,7 @@ import qs from 'qs'
           activityDate:[{ required: true, message: '请选择活动日期', trigger: 'blur' }],
           // uploadimga: [{ required: true, message: '该项不能为空', trigger: 'blur' }],
           // uploadimgb: [{ required: true, message: '该项不能为空', trigger: 'blur' }],
-          // impChannel: [{ required: true, message: '该项不能为空', trigger: 'blur' }],
+          // imageUrl: [{ required: true, message: '该项不能为空', trigger: 'blur' }],
 
           broadHeading:[{ required: true, message: '该项不能为空', trigger: 'blur' }],
           intentStyle:[{ required: true, message: '该项不能为空', trigger: 'blur' }],
@@ -397,23 +419,41 @@ import qs from 'qs'
        timeout1:null,
        activityId:'',//活动ID
        ruleFormEcho:[],//回显的数据
+       routerStatus:''
 
      }
    },
    created () {
       this.activityId=sessionStorage.getItem('activityId');
+      this.routerStatus=this.$route.params.activityStatus
       // this.activityId='ACT000012'
       this.getActivityInfo()
+       this.carModelListAsync()
       this.userInfo = this.$store.getters.userInfo || {};
    },
   components: {
     quillEditor,uploadImgCom
   },
    mounted () {
-     sessionStorage.setItem('activityId','');
+     console.log(this.userInfo,"this.userInfothis.userInfothis.userInfo");
      this.searchCriteria();//渠道树结构
    },
    methods:{
+      remoteMethod(query) {
+        if (query !== '') {
+          this.loading = true;
+          setTimeout(() => {
+            this.loading = false;
+            this.carModelList = this.carModelData.filter(item => {
+              if (item.value.indexOf(query)>-1) {
+                return item
+              }
+            });
+          }, 200);
+        } else {
+          this.carModelList = this.carModelData;
+        }
+      },
      selectCity(){
        console.log(this.ruleForm.address)
      },
@@ -424,9 +464,11 @@ import qs from 'qs'
         switch (data.imgid) {
           case '1':
             this.imageUrl.imageUrla.push(data.imgurl)
+            this.ruleForm.uploadimga='1'
             break;
           case '2':
             this.imageUrl.imageUrlb.push(data.imgurl)
+             this.ruleForm.uploadimgb='2'
             break;
           case '3':
             this.imageUrl.imageUrlc.push(data.imgurl)
@@ -449,10 +491,47 @@ import qs from 'qs'
       console.log(this.imageUrl,"setImgsFun图片数据处理");
 
      },
-
+    // 取消按钮
+    resetForm(){
+      this.$router.replace('marketing')
+    },
     //提交表单   创建活动按钮,createActivity,
     submitForm(formName,type){
       // this.imageUrl.imageUrla
+      let pushCarseriesid=''
+      let pushCarseriesval=''
+      for (let i = 0; i < this.ruleForm.pushCarseries.length; i++) {
+        pushCarseriesid+= this.ruleForm.pushCarseries[i].id+','
+        pushCarseriesval+=this.ruleForm.pushCarseries[i].value+','
+      }
+       pushCarseriesid = pushCarseriesid.substring(0, pushCarseriesid.lastIndexOf(','));
+       pushCarseriesval = pushCarseriesval.substring(0, pushCarseriesval.lastIndexOf(','));
+      //  console.log(this.ruleForm.signupOffDate,this.ruleForm.activityDate,"this.userInfo.ownerDeptIdthis.userInfo.ownerDeptId");
+
+        if (this.ruleForm.activityDate) {
+          var timestamp2 = (new Date()).valueOf();
+          let time2=new Date(this.ruleForm.activityDate[0])
+          time2.getTime()
+          if (timestamp2>time2) {
+            this.$message.error('活动开始时间不能小于当前时间');
+            return 
+          }
+        }
+       if (this.ruleForm.signupOffDate) {
+         let time1=new Date(this.ruleForm.signupOffDate.split(' ')[0])
+        
+         let time2=new Date(this.ruleForm.activityDate[0])
+         let time3=new Date(this.ruleForm.activityDate[1])
+          time1.getTime()
+          time2.getTime()
+          time3.getTime()
+        if (time1>time3 || time1<time2) {
+          this.$message.error('不能超过活动范围');
+          return 
+        }
+
+
+       }
          let data={
           activityName:this.ruleForm.activityName || '',
           startTime:this.ruleForm.activityDate[0] || '',
@@ -463,8 +542,8 @@ import qs from 'qs'
           operationImg1:this.imageUrl.imageUrlb[0] || '',
           operationImg2:this.imageUrl.imageUrlb[1] || '',
           operationImg3:this.imageUrl.imageUrlb[2] || '',
-          modelIds:this.ruleForm.pushCarseries.id || '',
-          modelNames:this.ruleForm.pushCarseries.value || '',
+          modelIds:pushCarseriesid || '',
+          modelNames:pushCarseriesval || '',
           firstChannelId:this.ruleForm.impChannel[0] || '',
           secondChannelId:this.ruleForm.impChannel[1] || '',
           activityProvince:this.ruleForm.address[0] || '',
@@ -493,12 +572,21 @@ import qs from 'qs'
           shareImg2:this.imageUrl.imageUrlc[1] || '',
           shareImg3:this.imageUrl.imageUrlc[2] || '',
           createrId:this.userInfo.userId || '',
-          owner:this.userInfo.owner || '',
-          ownerDeptId:this.userInfo.ownerDeptId || '',
-          activityStatus:type,
+
+          dealerId:this.userInfo.dealerId || '',
+          owner:this.userInfo.userId || '',
+          ownerDeptId:this.userInfo.userDeptId,
+          activityStatus:this.routerStatus=='' || this.routerStatus==undefined?type:this.routerStatus,
+
           }
+          this.ruleForm.uploadimga=this.imageUrl.imageUrla
+          this.ruleForm.uploadimgb=this.imageUrl.imageUrlb
+          console.log(this.userInfo,"-----------用户数据");
+          console.log(data,"-------------提交表单数据");
           this.$refs[formName].validate(async (valid) => {
+
           if (valid) {
+
             if (this.activityId) {
               data.activityId=this.activityId
               data.updaterId=this.userInfo.userId || ''
@@ -517,6 +605,8 @@ import qs from 'qs'
                }
 
                this.$router.replace('marketing')
+             }else{
+                this.$message.error(res.errMsg);
              }
             }else{
              let res= await createActivity(data)
@@ -534,6 +624,8 @@ import qs from 'qs'
                }
 
                this.$router.replace('marketing')
+             }else{
+               this.$message.error(res.errMsg);
              }
             }
           } else {
@@ -541,14 +633,17 @@ import qs from 'qs'
             return false;
           }
         });
-
-        console.log(data,"ruleFormruleForm提交表单");
+        
+        
+        
+        // console.log(this.ruleForm.pushCarseries,"this.ruleForm.pushCarseriesthis.ruleForm.pushCarseries");
+        // console.log(data,"ruleFormruleForm提交表单");
 
     },
     //活动大类活动类型数据处理
     activityStatusFun(data){
       // this.activitytype
-      console.log(this.ruleForm.broadHeading,"data 活动大类活动类型数据处理");
+      // console.log(this.ruleForm.broadHeading,"data 活动大类活动类型数据处理");
       this.activityStatus.forEach(v => {
         if (v.label==this.ruleForm.broadHeading) {
         this.activitytype=v.children
@@ -566,26 +661,22 @@ import qs from 'qs'
       let res= await clueList(this.userInfo.userDeptId)
       this.channelList=res.data.channels  
     },
-    //主推车系
-    async querySearchAsync(queryString, cb) {
-      clearTimeout(this.timeout1);
-      this.timeout1 = setTimeout(() => {
-        getSelectCarModel({ modelName: queryString }).then((res) => {
-          let results = "";
-          if (res.code == 0) {
-            results = res.data.map((item) => {
-              return {
-                value: item.modelName,
-                id: item.modelId,
-              };
-            });
-          }
-          cb(results);
+
+    async carModelListAsync(data) {
+     let res=await getSelectCarModel({ modelName: data })
+     if(res.code==0){
+       this.carModelData = res.data.map((item) => {
+          return {
+            value:item.modelName,
+            id: item.modelId,
+          };
         });
-      }, 1000 * Math.random());
+        this.carModelList=this.carModelData
+     }
     },
     //修改  获取的数据
     async getActivityInfo(){
+      if (!this.activityId) return
       let res= await getActivityInfo({activityId:this.activityId })
 
       if (res.code==0) {
@@ -593,6 +684,12 @@ import qs from 'qs'
         this.ruleForm.activityName=res.data.activityName
         this.ruleForm.pushCarseries.id=res.data.modelIds
         this.ruleForm.pushCarseries.value=res.data.modelNames
+        if (res.data.modelIds) {
+          for (let i = 0; i < res.data.modelIds.split(",").length; i++) {
+            this.ruleForm.pushCarseries.push({id:res.data.modelIds.split(",")[i],value:res.data.modelNames.split(",")[i]})
+          }
+        }
+
         this.ruleForm.activityDate=[res.data.startTime.split('T')[0],res.data.endTime.split('T')[0]]
         this.ruleForm.impChannel=[res.data.firstChannelId,res.data.secondChannelId]
         this.ruleForm.address = [res.data.activityProvince, res.data.activityCity, res.data.activityArea]
@@ -693,7 +790,7 @@ import qs from 'qs'
     margin: 0 8px 8px 0;
     display: inline-block;
 }
-/deep/ .el-textarea__inner { resize: none; }
+/deep/ .el-textarea__inner { resize: none;height: 100px; }
   .inputwidth{
       width: 280px;
   }
@@ -702,6 +799,22 @@ import qs from 'qs'
   }
   /deep/ .el-tabs--card > .el-tabs__header .el-tabs__nav {
       border-bottom: 1px solid #E4E7ED;
+  }
+  /deep/ .el-autocomplete{
+    width:217px;
+  }
+  /deep/ .ql-toolbar.ql-snow{
+    display: flex;
+  }
+  .remark-icon{
+    /* margin-top: 80px; */
+    position: relative;
+
+  }
+ .remark-icon-num{
+     position: absolute; 
+     left: 520px;
+    bottom: -30px;
   }
  .elfromi >>> .el-form-item__error {
 

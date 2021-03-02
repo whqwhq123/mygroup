@@ -33,7 +33,7 @@
     <el-dialog
       title="修改密码"
       :visible.sync="changeNormalPassword"
-      width="23%"
+      width="450px"
       append-to-body
       :close-on-click-modal="false"
       :show-close="false"
@@ -106,8 +106,8 @@ export default {
   },
   created() {
     this.userInfo = this.$store.getters.userInfo || {};
-  //  console.log(this.userInfo)
     this.changeNormalPassword=this.userInfo.defaultPassword==1?true:false;
+   
   },
   methods: {
     changeStatus(){
@@ -122,32 +122,42 @@ export default {
           let obj = {}
           obj['password'] = this.form['newPassword']
           console.log(obj)
+         
           if(this.form.newPassword!=this.form.alignNewPassword){
-              this.$notify({
+            this.$notify({
               title: '错误',
               message: '新密码和确认新密码填写不一致',
               type: 'error'
             });
           }else{
-            this.submit_loading = true
-            //  this.$store.dispatch('user/changeNormalPssword', obj)
-            defaultPassword(obj).then((res) => {
-              console.log(res)
-                if (res.code==0) {
-                  this.$notify({
-                    title: '成功',
-                    message: '密码修改成功',
-                    type: 'success'
-                  });
-                  this.$router.push({name:'login'})
-                  this.submit_loading = false
-                }else{
-                  this.$notify.error({
-                    title:'提示',
-                    message: res.errMsg
-                  });
-                }
-            })
+            if(this.form['newPassword']=='123456'){
+              this.$notify({
+                title: '错误',
+                message: '新密码不能与默认密码重复',
+                type: 'error'
+              });
+            }else{
+              this.submit_loading = true;
+              //this.$store.dispatch('user/changeNormalPssword', obj)
+              defaultPassword(obj).then((res) => {
+                console.log(res)
+                  if (res.code==0) {
+                    this.$notify({
+                      title: '成功',
+                      message: '密码修改成功',
+                      type: 'success'
+                    });
+                    this.$router.push({name:'login'})
+                    this.submit_loading = false
+                  }else{
+                    this.$notify.error({
+                      title:'提示',
+                      message: res.errMsg
+                    });
+                    this.submit_loading = false
+                  }
+              })
+            }
           }
         }
       });

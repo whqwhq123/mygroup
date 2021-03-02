@@ -1,10 +1,10 @@
 <template>
   <div class="page_body">
     <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="一级渠道管理" name="primary">
+        <el-tab-pane label="一级渠道管理" name="primary" v-if="get_role_function('100500110')">
             <primaryChannel v-if="activeName == 'primary'"/>
         </el-tab-pane>
-        <el-tab-pane label="二级渠道管理" name="secondary">
+        <el-tab-pane label="二级渠道管理" name="secondary" v-if="get_role_function('100500160')">
           <secondaryChannel  v-if="activeName == 'secondary'"/>
         </el-tab-pane>
     </el-tabs>
@@ -14,12 +14,14 @@
 <script>
 import primaryChannel from './components/primaryChannel'
 import secondaryChannel from './components/secondaryChannel'
+import { get_role_function} from '@/utils/index'
 export default {
   name: 'channel',
   components: {  },
   data() {
     return {
-     activeName: 'primary'
+     activeName: 'primary',
+     get_role_function
     }
   },
   computed: {

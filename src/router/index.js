@@ -14,7 +14,7 @@ export const constantRoutes = [{
     meta: {
       title: '数据平台登录'
     }
-  }, 
+  },
   {
     path: '/',
     component: Layout,
@@ -120,7 +120,7 @@ export const asyncRoutes = [{
       //   }
       // }
     ]
-  }, 
+  },
   {
     path: '/clueManage',
     component: Layout,
@@ -211,7 +211,7 @@ export const asyncRoutes = [{
             component: () => import('@/views/clueManage/rulesConfig/hostsRules'),
             name: 'hostsRules',
             meta: {
-              title: '主机厂规则配置',
+              title: '集团配置',
               icon: 'enterprise'
             }
           },
@@ -220,12 +220,34 @@ export const asyncRoutes = [{
             component: () => import('@/views/clueManage/rulesConfig/dealersRules'),
             name: 'dealersRules',
             meta: {
-              title: '经销商规则配置',
+              title: '经销商配置',
               icon: 'enterprise'
             }
           }
         ]
       }
+    ]
+  },
+  {
+    path: '/mallOperation',
+    component: Layout,
+    redirect: '/mallOperation/goodsManager',
+    alwaysShow: true,
+    name: 'mallOperation',
+    meta: {
+      title: '商城运营',
+      requireAuth: true
+    },
+    children: [
+      {
+        path: 'goodsManager',
+        component: () => import('@/views/mallOperation/goodsManager'),
+        name: 'goodsManager',
+        meta: {
+          title: '商品管理',
+          icon: 'el-icon-s-open'
+        }
+      },
     ]
   },
   {
@@ -278,7 +300,7 @@ export const asyncRoutes = [{
       },
     ]
   }
-  
+
   // { path: '*', redirect: '/404', hidden: true }
 ]
 

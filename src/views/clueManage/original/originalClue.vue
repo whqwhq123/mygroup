@@ -16,6 +16,16 @@
       <el-form-item label="来源渠道" prop="fromChannel">
         <el-cascader placeholder="请选择来源渠道" clearable ref="fromChannel" v-model="fromChannel"  :options="ChannesList"  :props="setKesLabel"></el-cascader>
       </el-form-item>
+      <el-form-item label="活动名称:" class="add-icon">
+          <el-select v-model="searchData.activityId" clearable placeholder="请选择活动">
+            <el-option
+              v-for="item in marketActity"
+              :key="item.name"
+              :label="item.activityName"
+              :value="item.activityId">
+            </el-option>
+          </el-select>
+        </el-form-item>
       <el-form-item label="创建时间" prop="creatTime">
         <el-date-picker size="small" v-model="creatTime" type="datetimerange" range-separator="至"
           start-placeholder="开始日期" end-placeholder="结束日期" format="yyyy/MM/dd HH:mm:ss" value-format="yyyy/MM/dd HH:mm:ss">
@@ -48,6 +58,7 @@
       <el-table-column label="意向车型" prop="intentCarStyle" width="110px"></el-table-column>
       <el-table-column label="一级渠道" prop="firstChannelName"></el-table-column>
       <el-table-column label="二级渠道" prop="secondChannelName"></el-table-column>
+      <el-table-column label="活动名称" prop="activityName"></el-table-column>
       <el-table-column label="创建时间" prop="createTime" width="110px" :formatter="dateFormat"></el-table-column>
       <el-table-column label="操作" width="180">
         <template slot-scope="scope">
@@ -70,7 +81,7 @@
 </template>
 
 <script>
-import {clueList,clueSearch,getCarMakeModelStyle,clueExport} from '../../../service/api/index'
+import {clueList,clueSearch,getCarMakeModelStyle,clueExport,getActivityData} from '../../../service/api/index'
 import {operateFile,parseTimeNoS,get_role_function} from '../../../utils/index'
 import qs from 'qs'
  export default {
@@ -88,7 +99,8 @@ import qs from 'qs'
         firstChannelIds:'',
         secondChannelIds:'',
         startTime:'',
-        endTime:''
+        endTime:'',
+        activityId:''
       },
       creatTime:'',
       fromChannel:'',
@@ -101,6 +113,8 @@ import qs from 'qs'
         pageNum:1,
         pageSize:10,
       },
+      marketActity:[
+      ],
       carTypeData:[],
       ChannesList:[],   //渠道
       culeList_table:[],
@@ -123,7 +137,9 @@ import qs from 'qs'
      this.userInfo = this.$store.getters.userInfo || {};
      this.getCuleList();
      this.getCarMake();
+     this.getActivityList();
      this.searchCriteria()
+    // console.log(this.userInfo)
    },
    methods:{
       handleSizeChange(val) {
@@ -172,6 +188,14 @@ import qs from 'qs'
         }
         return parseTimeNoS(date)
       },
+      getActivityList(){
+        getActivityData().then(res=>{
+          console.log(res)
+          if(res.code==0){
+            this.marketActity=res.data
+          }
+        })
+      },
       getCuleList(){   //列表
         this.searchData.startTime = this.creatTime == undefined ? '' : this.creatTime[0]
         this.searchData.endTime = this.creatTime == undefined ? '' : this.creatTime[1]
@@ -183,7 +207,7 @@ import qs from 'qs'
        
         console.log(this.searchData)
         
-        clueSearch(this.userInfo.userDeptId,qs.stringify(this.pageL),qs.stringify(this.searchData)).then(res=>{
+        clueSearch(this.userInfo.userId,qs.stringify(this.pageL),qs.stringify(this.searchData)).then(res=>{
          if(res.code == 0){
            this.culeList_table=res.data.content;
            this.page.total=res.data.totalElements;
@@ -254,7 +278,7 @@ import qs from 'qs'
 
       exportCule(){
         //console.log(this.searchData)
-        clueExport(this.userInfo.userDeptId,qs.stringify(this.pageL),qs.stringify(this.searchData)).then(res=>{
+        clueExport(this.userInfo.userId,qs.stringify(this.pageL),qs.stringify(this.searchData)).then(res=>{
             this.listLoading = false
             operateFile(res, '线索列表')  
         }).catch((res) => {

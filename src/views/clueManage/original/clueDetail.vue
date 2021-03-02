@@ -42,6 +42,9 @@
           <el-form-item label="来源渠道:" prop="fromChannel" class="add-icon">
               {{clueUser.firstChannelName}}&nbsp;/&nbsp;{{clueUser.secondChannelName}}
           </el-form-item>
+          <el-form-item label="活动名称:" class="add-icon">
+              {{clueUser.activityName}}
+          </el-form-item>
           <el-form-item label="经销商名称:" class="add-icon">
               {{clueUser.dealerName}}
           </el-form-item>

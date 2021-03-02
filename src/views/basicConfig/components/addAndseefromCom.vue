@@ -77,10 +77,10 @@
             :options="roleOptionsdata"
             :props="roleProps"
             clearable
-            @change="roleIdsC($event,roleOptionsdata)"
+            @change="roleIdsC($event,roleOptionsdata,editForm.roleIdsArr)"
           ></el-cascader>
         </el-form-item>
-        <el-form-item label="负责品牌" prop="ucUserBrands" v-if="isShowbrand">
+        <el-form-item label="负责品牌" prop="ucUserBrands" v-if="isShowbrand && isShowbrandb">
             <el-input
               placeholder="请选择"
               v-model="editForm.brandStr"
@@ -255,7 +255,7 @@ export default {
         deptIds: "",
         depNameArr: [],
         ucUserBrands: "",
-        roleIdsArr: ''
+        roleIdsArr: []
       },
       rules: {
         userName: [{ required: true, message: "请输入姓名", trigger: "blur" }],
@@ -277,6 +277,8 @@ export default {
       },
       isroleshow:true,
       isShowbrand:false,
+      isShowbrandb:false,
+
     };
   },
   components: {
@@ -326,6 +328,7 @@ export default {
       },
       this.isroleshow=true
       this.isShowbrand=false
+      
   },
   methods: {
     get_department_list() {
@@ -370,9 +373,16 @@ export default {
     },
 
     async getDetails() {
-      // getUserInfo({ userId: this.userId }).then(res => {
+      // getUserInfo({ userId: this.userId }).then(res => {   this.isShowbrandb=true
         let res = await getUserInfo({ userId: this.userId })
         if (res.code == 0) {
+         
+          if (res.data.deptLevel==30 || res.data.deptLevel==40) {
+            this.isShowbrandb=true
+            //  console.log(res.data.deptLevel,"this.isShowbrandb=true");
+          }else{
+            this.isShowbrandb=false
+          }
           let roleIdsArr = [];
           let roleIds = [];
           res.data.ucRoleUsers.forEach(item => {
@@ -385,6 +395,7 @@ export default {
             deptIds.push(item.deptId);
             depNameArr.push(item.deptName);
           });
+        
           this.editForm = {
             ...res.data,
             entryTimeStr: parseTime(new Date(res.data.editTime).getTime()),
@@ -394,7 +405,9 @@ export default {
             deptIds: deptIds.join(),
             depNameArr: depNameArr.join()
           };
-          console.log(this.editForm.roleIdsArr,"this.editForm.roleIdsArrthis.editForm.roleIdsArr");
+            if (this.editForm.roleIdsArr.length) {
+            this.isShowbrand=true
+          }
           if (this.editForm.userDeptIdName!='') {
             this.isroleshow=false
           }
@@ -404,6 +417,7 @@ export default {
 
           this.brandClick(res.data.ucUserBrands);
           //  ++this.isroleId
+          
           console.log(res,this.editForm,'修改数据回显');
           this.$forceUpdate();
         }
@@ -443,8 +457,6 @@ export default {
    async departmentClickData(data){
      console.log(data.deptLevel,this.roleOptions,"data,data,data,data,dtaa");
       // await this.get_role_list()
-      console.log('3')
-      
        this.roleOptionsdata=[]
       // （20厂商，30集团，40大区，50经销商，60二级经销商，70部门）'
       switch (data.deptLevel) {  
@@ -452,9 +464,11 @@ export default {
           this.roleOptionsdata=this.roleOptions
         break;
         case 30:
+          // this.isShowbrandb=false
           this.roleOptionsdata=[this.roleOptions[0],this.roleOptions[this.roleOptions.length-1]]
         break;
         case 40:
+          //  this.isShowbrandb=true
            this.roleOptionsdata=[this.roleOptions[1],this.roleOptions[this.roleOptions.length-1]]
         break;
         case 50:
@@ -468,7 +482,6 @@ export default {
         break;
       
       }
-     
        this.isroleshow=false;
 
     },
@@ -487,30 +500,50 @@ export default {
 
     
 
-    roleIdsC(e,data) {
-      if (!e.length) {
+    roleIdsC(e,data,data1) {
+      // console.log(e,data,"editForm.roleIdsArreditForm.roleIdsArr----  this.isShowbrandb=true");
+
+      if (e.length) {
+
+        // this.isShowbrandb=true
+        // this.isShowbrand=true
+      
+      data.forEach(v => {
+
+          for (let i = 0; i < v.rootRoles.length; i++) {
+            e.forEach(v1 => {
+              
+              if(v1[1]==v.rootRoles[i].roleId){
+                
+                if (v.roleType=='5') {
+                  if (this.isShowbrand) return
+                  this.isShowbrand=true
+                  this.isShowbrandb=true
+                }else{
+                  this.isShowbrand=false
+                  this.isShowbrandb=false
+                }
+              }
+            });  
+          }
+      });
+
+
+
+
+
+
+
+
+
+
+
+
+
+      }else{
         this.isShowbrand=false
       }
-      
-      // data.forEach(v => {
-      //   if(v.rootRoles){
-      //     for (let i = 0; i < v.rootRoles.length; i++) {
-      //       e.forEach(v1 => {
-              
-      //         if(v1[1]==v.rootRoles[i].roleId){
-                
-      //           if (v.roleType==5) {
-      //             if (this.isShowbrand) return
-      //             this.isShowbrand=true
-      //           }else{
-      //             this.isShowbrand=false
-      //           }
-      //         }
-      //       });
-            
-      //     }
-      //   }
-      // });
+
 
       this.editForm.roleIds = this.editForm.roleIdsArr.map(item => {
         return item[1];
@@ -639,6 +672,10 @@ export default {
   position: absolute;
   bottom: -18px;
   left: 0;
+}
+/deep/ .el-dialog__body{
+  height: 500px;
+  overflow: auto;
 }
 
 .radio_box {

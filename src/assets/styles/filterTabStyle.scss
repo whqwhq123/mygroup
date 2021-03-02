@@ -31,7 +31,6 @@
 }
 
 .filter-container {
-  margin: 5px 0 20px 0;
 
   .filter-item-input {
     width: 174px;
@@ -51,16 +50,13 @@
 }
 
 .filter-tab {
-  width: 100%;
-  position: relative;
-  overflow: hidden;
 
 
 
   .expBtn {
     float: right;
     color: #3B86FF;
-    font-size: 16px;
+    font-size: 14px;
     margin-left: 20px;
   }
 }

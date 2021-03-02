@@ -4,7 +4,7 @@
       <span class="title">唯一线索清洗列表</span>
     </el-header>
     <el-form inline class="atg-search" :model="form_clueClear" ref="form_clueClear">
-      <el-form-item  prop="originalId">
+      <el-form-item  prop="uniqueId">
         <el-input size="small" placeholder="请输入唯一线索ID" v-model="form_clueClear.uniqueId"></el-input>
       </el-form-item>
       <el-form-item  prop="customerName">
@@ -27,7 +27,7 @@
          <el-cascader v-model="form_clueClear.intentCarStyle" clearable ref="carType" placeholder="请选择意向车型" :options="carTypeData" :props="carTypeLabel"></el-cascader>
       </el-form-item>
       <el-form-item prop="fromChannel">
-        <el-cascader placeholder="请选择来源渠道" clearable ref="fromChannel" v-model="fromChannel" :options="ChannesList" :props="setKesLabel"></el-cascader>
+        <el-cascader placeholder="请选择来源渠道" style="height: 32px;" clearable ref="fromChannel" v-model="fromChannel" :options="ChannesList" :props="setKesLabel"></el-cascader>
       </el-form-item>
       <el-form-item  class="add-icon">
         <el-select v-model="form_clueClear.dealerId" placeholder="请选择经销商名称" clearable>
@@ -39,12 +39,27 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item  prop="creatTime">
+      <el-form-item class="add-icon">
+          <el-select v-model="form_clueClear.activityId" clearable placeholder="请选择活动">
+            <el-option
+              v-for="item in marketActity"
+              :key="item.name"
+              :label="item.activityName"
+              :value="item.activityId">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      <el-form-item  prop="creatTime" label="创建时间：">
         <el-date-picker size="small" v-model="creatTime" type="datetimerange" range-separator="至"
           start-placeholder="开始日期" end-placeholder="结束日期" format="yyyy/MM/dd HH:mm:ss" value-format="yyyy/MM/dd HH:mm:ss">
         </el-date-picker>
       </el-form-item>
-      <el-form-item  prop="assignTime">
+      <el-form-item  prop="distributeTime" label="派发时间：" v-if="get_role_function('200300120')">
+        <el-date-picker size="small" v-model="distributeTime" type="datetimerange" range-separator="至"
+          start-placeholder="开始日期" end-placeholder="结束日期" format="yyyy/MM/dd HH:mm:ss" value-format="yyyy/MM/dd HH:mm:ss">
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item  prop="assignTime" label="分配时间：" v-if="get_role_function('200300130')">
         <el-date-picker size="small" v-model="assignTime" type="datetimerange" range-separator="至"
           start-placeholder="开始日期" end-placeholder="结束日期" format="yyyy/MM/dd HH:mm:ss" value-format="yyyy/MM/dd HH:mm:ss">
         </el-date-picker>
@@ -60,18 +75,20 @@
        <el-button type="text" style="font-size: 14px;color:#3B86FF" @click="delivering('assgin')" v-if="get_role_function('200300130')"><svg-icon icon-class="fenpei" />人工分配
        </el-button>
     </div>
-    <el-table :data="culeList_table" align="center" height="520"  class="table" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column label="唯一线索ID" prop="uniqueId" ></el-table-column>
-      <el-table-column label="线索状态" prop="clueStatus"></el-table-column>
-      <el-table-column label="客户名称" prop="customerName"></el-table-column>
-      <el-table-column label="客户ID" prop="customerId" ></el-table-column>
-      <el-table-column label="意向车型" prop="intentCarStyle" ></el-table-column>
-      <el-table-column label="渠道来源" prop="firstChannelName"></el-table-column>
-      <el-table-column label="经销商" prop="dealerName"></el-table-column>
-      <el-table-column label="创建时间" prop="createTime" width="105px" :formatter="dateFormat"></el-table-column>
-      <el-table-column label="派发时间" prop="distributeTime" width="105px" :formatter="dateFormat"></el-table-column>
-      <el-table-column label="操作">
+    <el-table :data="culeList_table" align="center" height="520"  class="table" @selection-change="handleSelectionChange" :span-method="arraySpanMethod">
+      <el-table-column type="selection" align="center" width="55" :selectable="checkSelect"></el-table-column>
+      <el-table-column label="唯一线索ID" align="center" prop="uniqueId" width="125"></el-table-column>
+      <el-table-column label="线索状态" align="center" prop="clueStatus"></el-table-column>
+      <el-table-column label="客户名称" align="center" prop="customerName"></el-table-column>
+      <el-table-column label="客户ID" align="center" prop="customerId" width="125"></el-table-column>
+      <el-table-column label="意向车型" align="center" prop="catBMS" width="220"></el-table-column>
+      <el-table-column label="渠道来源" align="center" prop="ChannelName" width="220"></el-table-column>
+      <el-table-column label="经销商" align="center" prop="dealerName" width="125"></el-table-column>
+      <el-table-column label="活动名称" align="center" prop="activityName" width="125"></el-table-column>
+      <el-table-column label="创建时间" align="center" prop="createTime" width="105px" :formatter="dateFormat"></el-table-column>
+      <el-table-column label="派发时间" align="center" v-if="get_role_function('200300120')" prop="distributeTime" width="105px" :formatter="dateFormat"></el-table-column>
+      <el-table-column label="分配时间" align="center" v-if="get_role_function('200300130')" prop="assignTime" width="105px" :formatter="dateFormat"></el-table-column>
+      <el-table-column label="操作" align="center" fixed="right">
         <template slot-scope="scope">
           <el-button type="text" @click="Detail(scope.row.id)" style="color:#008DF8;cursor: pointer;">查看详情</el-button>
         </template>
@@ -97,7 +114,7 @@
       custom-class="visible"
       >
       <el-form :model="delivery" ref="delivery" :rules="deliveryRules">
-        <el-form-item v-if="get_role_function('200300120')" label="经销商" prop="dealerId">
+        <el-form-item label="经销商" prop="dealerId">
           <el-select v-model="delivery.dealerId" placeholder="请选择经销商">
            <el-option
               v-for="item in dealerName"
@@ -122,7 +139,7 @@
       custom-class="visible"
       >
       <el-form ref="assgin" :model="assgin" :rules="assginRules">
-        <el-form-item v-if="get_role_function('200300120')" label="销售顾问" prop="salesmanId">
+        <el-form-item label="销售顾问" prop="salesmanId">
           <el-select v-model="assgin.salesmanId" placeholder="请选择销售顾问">
             <el-option
               v-for="item in salesmanName"
@@ -142,7 +159,7 @@
 </template>
 
 <script>
-import {getCarMakeModelStyle,onlyClueChannel,getDealerData,onlyClueList,distributeAssign,assginSalemansData} from '../../../service/api/index'
+import {getCarMakeModelStyle,onlyClueChannel,getDealerData,onlyClueList,distributeAssign,assginSalemansData,getActivityData} from '../../../service/api/index'
 import {parseTimeNoS,get_role_function} from '../../../utils/index'
 import qs from 'qs'
  export default {
@@ -154,26 +171,29 @@ import qs from 'qs'
        userTag:'group',
        cleanDeliveryVisible:false,
        cleanAssignVisible:false,
+       marketActity:[],
        form_clueClear:{
          customerName:'',
          mobile:'',
          uniqueId:'',
          customerId:'',
          clueStatus:'',
-         intentCarBrands:'',
-         intentCarModels:'',
+      //   intentCarBrands:'',
+      //   intentCarModels:'',
          intentCarStyle:'',
          firstChannelIds:'',
+         activityId:'',
          secondChannelIds:'',
          startTime:'',
          dealerId:'',
          endTime:'',
-         assignStartTime:'',
-         assignEndTime:'',
+         distributeStartTime:'',
+         distributeEndTime:'',
          clueStatus:''
        },
        check_table:[],
        creatTime:'',
+       distributeTime:'',
        assignTime:'',
        fromChannel:'',
        cleaningData:[],
@@ -198,12 +218,45 @@ import qs from 'qs'
          {
            type:'assigned',
            label:'已分配'
+         },
+         {
+           type:'followed',
+           label:'已跟进'
+         },
+         {
+           type:'arrived',
+           label:'已到店'
+         },
+         {
+           type:'driven',
+           label:'已试驾'
+         },
+         {
+           type:'ordered',
+           label:'已下订'
+         },
+         {
+           type:'deal',
+           label:'已成交'
+         },
+         {
+           type:'delivery',
+           label:'已交车'
+         },
+         {
+           type:'defeated',
+           label:'战败/流失'
+         },
+         {
+           type:'invalid',
+           label:'无效'
          }
        ],
        carType:[],
        ChannesList:[],   //渠道
        culeList_table:[],
        setKesLabel:{
+      //  multiple: true,
         value:'channelId',
         label:'channelName',
         children:'children'
@@ -217,6 +270,9 @@ import qs from 'qs'
        dealerName:[],
        noCleanArr:[],
        assignArr:[],
+       deliveryData:[],
+       assginData:[],
+       tableSelect:'',
        caozuoDealerName:'',
        salesmanId:150,
        delivery:{
@@ -241,7 +297,8 @@ import qs from 'qs'
    created () {
     this.userInfo = this.$store.getters.userInfo || {};
     this.dataInit();
-    this.getCuleList()
+    this.getCuleList();
+    this.SalemansData();
    },
    methods:{
     dataInit(){
@@ -257,7 +314,7 @@ import qs from 'qs'
       })
       onlyClueChannel(this.userInfo.userDeptId).then(res=>{  //渠道
         if(res.code==0){
-          this.ChannesList=res.data.channels
+          this.ChannesList=res.data.channels;
         }else{
           this.$notify.error({
             title:'错误',
@@ -276,6 +333,14 @@ import qs from 'qs'
           })
         }
       })
+      
+      getActivityData().then(res=>{
+        console.log(res)
+        if(res.code==0){
+          this.marketActity=res.data
+        }
+      })
+
     },
     handleSizeChange(val) {
       this.pageL.pageSize = val;
@@ -297,13 +362,25 @@ import qs from 'qs'
       this.fromChannel=[];
       this.creatTime='';
       this.assignTime='';
+      this.distributeTime='';
       this.$refs.fromChannel.$refs.panel.activePath = []
       this.$refs.carType.$refs.panel.activePath = []
       this.getCuleList();
     },
     handleSelectionChange(val){
-      console.log(val)
+    //  console.log(val)
       this.check_table = val;
+    },
+    arraySpanMethod1({ row, column, rowIndex, columnIndex }) {
+     // console.log(rowIndex)
+    //  console.log(columnIndex);
+      if (rowIndex % 2 === 0) {
+        if (columnIndex === 0) {
+          return [1, 2];
+        } else if (columnIndex === 1) {
+          return [0, 0];
+        }
+      }
     },
     dateFormat:function(row, column) {
       var date = row[column.property];
@@ -313,81 +390,139 @@ import qs from 'qs'
       return parseTimeNoS(date)
     },
     SalemansData(){
-        assginSalemansData(this.salesmanId).then(res=>{
-          console.log(res)
-          if(res.code==0){
-            this.salesmanName=res.data;
-          }else{
-            this.$notify.error({
-              message:res.errMsg
-            })
-          }
-        })
-      },
+      let data={
+        roleId:this.salesmanId,
+        userDeptId:this.userInfo.userDeptId
+      }
+      assginSalemansData(data).then(res=>{
+       // console.log(res)
+        if(res.code==0){
+          this.salesmanName=res.data;
+        }else{
+          this.$notify.error({
+            message:res.errMsg
+          })
+        }
+      })
+    },
+    checkSelect (row,index) {
+      let isChecked = false;
+      if (row.clueStatus == '已分配') { 
+        isChecked = false
+      } else {
+        isChecked = true
+      }
+      return isChecked
+    },
+    filterData(data,status){
+      if(status=='新建'){
+        this.deliveryData=data.filter(item=>item.clueStatus==status);
+        if(this.deliveryData.length==0 && this.assginData.length==0){
+          this.$notify.error({
+            title: '提示',
+            message: '请选择新建的数据进行派发！'
+          });
+        }
+      }
+      if(status=='已派发'){
+        this.assginData=data.filter(item=>item.clueStatus==status);
+        if(this.deliveryData.length==0 && this.assginData.length==0){
+          this.$notify.error({
+            title: '提示',
+            message: '请选择已派发的数据进行分配！'
+          });
+        }
+      }
+    },
     delivering(flag){  //清洗派发
-      console.log(this.check_table)
       let that=this;
       that.cleaningData=[];
       if(that.check_table.length>0){
-        
-        that.check_table.forEach(function(item){ 
-                that.cleaningData.push(item);
-                console.log(that.cleaningData)
-              if(flag=='delivery'){
-                  that.cleaningData.forEach(function(waitClean){
-                  if(waitClean.clueStatus=='新建'){
-                    that.noCleanArr.push(waitClean.id);
-                    if(that.noCleanArr.length>0){
-                      that.cleanDeliveryVisible=true;
-                    }
-                  }else{
-                    that.$notify.error({
-                      title: '提示',
-                      message: '请选择新建的数据进行派发！'
-                    });
-                  }
-                })
-              }
-              if(flag=='assgin'){
-                that.cleaningData.forEach(function(waitClean){
-                console.log(waitClean.clueStatus)
-                if(waitClean.clueStatus!='新建' && waitClean.clueStatus=='已派发' && waitClean.clueStatus!='已分配'){
-                  that.noCleanArr.push(waitClean.id);
-                  if(that.noCleanArr.length>0){
-                    that.cleanAssignVisible=true;
-                  }
-                }else{
-                  that.$notify.error({
-                    title: '提示',
-                    message: '请选择已派发的数据进行分配！'
-                  });
+        if(flag=='delivery'){
+          console.log(that.check_table)
+          that.filterData(that.check_table,'新建');
+        //  debugger
+          if(that.check_table.length>this.deliveryData.length){
+            this.$notify.error({
+              title: '提示',
+              message: '只能选中新建的数据状态进行派发'
+            });
+          }
+          else{
+            that.deliveryData.forEach(function(waitClean){
+              if(waitClean.clueStatus=='新建'){
+                that.noCleanArr.push(waitClean.id);
+                if(that.noCleanArr.length>0){
+                  that.cleanDeliveryVisible=true;
                 }
-              })
-            } 
-        })
+              }
+            })
+          }
+        }
+        if(flag=='assgin'){
+          that.filterData(that.check_table,'已派发');
+          if(that.check_table.length>this.assginData.length){
+            this.$notify.error({
+              title: '提示',
+              message: '只能选中已派发的数据进行分配'
+            });
+          }else{
+            that.assginData.forEach(function(waitClean){
+              if(waitClean.clueStatus=='已派发'){
+                that.noCleanArr.push(waitClean.id);
+                if(that.noCleanArr.length>0){
+                  that.cleanAssignVisible=true;
+                //  that.SalemansData();
+                }
+              }
+            })
+          }
+        } 
       }else{
         that.$notify.error({
           title: '提示',
-          message: '请选中至少一条新建的数据！'
+          message: '没有选中的数据！'
         });
       }
     },
+    changeChannels(value){  //级联多选操作
+      console.log(value)
+     
+    },
     getCuleList(){   //列表
-      
+      // console.log(this.form_clueClear.intentCarStyles)
       this.form_clueClear.createStartTime = this.creatTime == undefined ? '' : this.creatTime[0]
       this.form_clueClear.createEndTime = this.creatTime == undefined ? '' : this.creatTime[1]
+      this.form_clueClear.distributeStartTime = this.distributeTime == undefined ? '' : this.distributeTime[0]
+      this.form_clueClear.distributeEndTime = this.distributeTime == undefined ? '' : this.distributeTime[1]
       this.form_clueClear.assignStartTime = this.assignTime == undefined ? '' : this.assignTime[0]
       this.form_clueClear.assignEndTime = this.assignTime == undefined ? '' : this.assignTime[1]
       this.form_clueClear.firstChannelIds=this.fromChannel==undefined?'':this.fromChannel[0]
       this.form_clueClear.secondChannelIds=this.fromChannel==undefined?'':this.fromChannel[1]
-      this.form_clueClear.intentCarBrands=this.form_clueClear.intentCarStyle==undefined?'':this.form_clueClear.intentCarStyle[0];
-      this.form_clueClear.intentCarModels=this.form_clueClear.intentCarStyle==undefined?'':this.form_clueClear.intentCarStyle[1];
+    //  this.form_clueClear.intentCarBrands=this.form_clueClear.intentCarStyle==undefined?'':this.form_clueClear.intentCarStyle[0];
+    //  this.form_clueClear.intentCarModels=this.form_clueClear.intentCarStyle==undefined?'':this.form_clueClear.intentCarStyle[1];
       this.form_clueClear.intentCarStyle=this.form_clueClear.intentCarStyle==undefined?'':this.form_clueClear.intentCarStyle[2];
-      console.log(this.form_clueClear)
-      onlyClueList(this.userInfo.userDeptId,qs.stringify(this.pageL),qs.stringify(this.form_clueClear)).then(res=>{
-        console.log(res)
+
+      onlyClueList(this.userInfo.userId,qs.stringify(this.pageL),qs.stringify(this.form_clueClear)).then(res=>{
+        // console.log(res)
        if(res.code == 0){
+
          this.culeList_table=res.data.content;
+         //合并单元格-行
+         this.culeList_table=this.culeList_table.map(v=>{
+           if (v.intentCarBrand && v.intentCarModel && v.intentCarStyle) {
+              v.catBMS=v.intentCarBrand+'/'+v.intentCarModel+'/'+v.intentCarStyle
+           }else{
+             v.catBMS=''
+           }
+          if (v.firstChannelName && v.secondChannelName) {
+            v.ChannelName=v.firstChannelName+'/'+v.secondChannelName
+          }else{
+            v.ChannelName=''
+          }
+          return v
+         })
+        //  console.log(this.culeList_table,"-----------------this.culeList_table 表格数据");
          this.page.total=res.data.totalElements;
        }else{
           this.$notify({
@@ -418,11 +553,12 @@ import qs from 'qs'
           if (valid) {
             postData={
               userId:this.userInfo.userId,
+              deptId:this.userInfo.userDeptId,
               salesmanId:this.assgin.salesmanId,
-              ids:this.assignArr.toString()
+              ids:this.noCleanArr.toString()
             }
+            
            distributeAssign(postData).then(res=>{
-          // console.log(res)
             if(res.code==0){
               this.cleanAssignVisible=false;
               this.$notify({
@@ -448,11 +584,12 @@ import qs from 'qs'
             if (valid) {
               postData={
                 userId:this.userInfo.userId,
+                deptId:this.userInfo.userDeptId,
                 dealerId:this.delivery.dealerId,
                 ids:this.noCleanArr.toString()
               }
               distributeAssign(postData).then(res=>{
-              // console.log(res)
+
                 if(res.code==0){
                   this.cleanDeliveryVisible = false;
                   
@@ -487,10 +624,7 @@ import qs from 'qs'
   .table{
     border:1px solid #F5F6FA;
   }
-  /deep/ .el-input__inner{
-    height: 32px;
-    line-height:32px;
-  }
+
   /deep/ .el-table th{
     background: #F5F6FA 
   }
@@ -514,6 +648,10 @@ import qs from 'qs'
     background: none;
     border: 1px solid #E7E9F0;
     border-radius: 3px;
+  }
+  /deep/ .el-input__inner{
+    height: 32px;
+    line-height:32px;
   }
   .dialog-footer{
     background: #F5F6FA;

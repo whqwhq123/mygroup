@@ -3,7 +3,7 @@
     <!--  -->
     <div class="hiddendiv">
       <el-scrollbar class="boxscroll">  
-      <el-tree :data="treedata" default-expand-all @node-click="nodeclickFun">
+      <el-tree :data="treedata" default-expand-all :expand-on-click-node="false" @node-click="nodeclickFun">
         <div
           :class="[
             'custom-tree-node',
@@ -37,6 +37,7 @@
                   : 'department_icon'
               "
               class="treeicon"
+              @click.stop="node.expanded=!node.expanded"
             />
             <span
               >{{ data.deptName
@@ -127,7 +128,6 @@ export default {
     
   },
   methods: {
-
     //左边树形结构选中
     nodeclickFun(e) {
       if (e.deptUseStatus == 2) return;

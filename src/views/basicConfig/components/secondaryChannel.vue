@@ -41,8 +41,8 @@
         <el-radio-button label="inForce">生效中</el-radio-button>
         <el-radio-button label="deactivated">已停用</el-radio-button>
       </el-radio-group>
-      <el-button class="expBtn" type="text" @click="exportTab"><svg-icon icon-class="export_icon"/>导出列表</el-button>
-      <el-button class="expBtn" type="text" @click="addChannel"><svg-icon icon-class="add_icon" />新增渠道</el-button>
+      <el-button class="expBtn" v-if="get_role_function('100500180')" type="text" @click="exportTab"><svg-icon icon-class="export_icon"/>导出列表</el-button>
+      <el-button class="expBtn" v-if="get_role_function('100500170')" type="text" @click="addChannel"><svg-icon icon-class="add_icon" />新增渠道</el-button>
     </div>
 
     <el-table
@@ -86,7 +86,7 @@
       />
       <el-table-column label="清洗属性" width="200" align="center">
         <template slot-scope="scope">
-          <el-select
+          <el-select v-if="get_role_function('100500210')"
             v-model="scope.row.cleanProp"
             class="filter-item-input"
             filterable
@@ -116,9 +116,9 @@
         min-width="120px"
       >
         <template slot-scope="scope">
-          <el-button type="text" size="mini" v-if="scope.row.enabled" @click="upStatus(scope.row, false)">停用</el-button>
+          <el-button type="text" size="mini" v-if="scope.row.enabled && get_role_function('100500190')" @click="upStatus(scope.row, false)">停用</el-button>
           <el-button type="text" size="mini" v-else @click="upStatus(scope.row, true)">启用</el-button>
-          <el-button type="text" size="mini" @click="toEdit(scope.row)">修改</el-button>
+          <el-button type="text" size="mini" v-if="get_role_function('100500200')" @click="toEdit(scope.row)">修改</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -192,13 +192,14 @@
 <script>
 import Pagination from "@/components/Pagination";
 import { getSecond, getFirst, getChannelId, addChannel, updateChannel, updateStatus, expSecond } from "@/service/api/index";
-import { operateFile } from '@/utils/index';
+import { operateFile,get_role_function } from '@/utils/index';
 export default {
   name: "secondaryChannel",
   data() {
     return {
       listLoading: false,
       userInfo: {},
+      get_role_function,
       listQuery: {
         name: "",
         pageNum: 1,
@@ -268,7 +269,7 @@ export default {
     getListReq() {
       let data = {
         ...this.listQuery,
-        deptId: this.userInfo.userDeptId
+        userId: this.userInfo.userId
       };
 
       if (this.tabPosition == "all") delete data.enabled;
@@ -286,7 +287,7 @@ export default {
         name: "",
         pageNum: 1,
         pageSize: 100000,
-        deptId: this.userInfo.userDeptId
+        userId: this.userInfo.userId
       }).then(res => {
         if (res.code == "0") {
           let channelList = res.data.content.filter(item => {

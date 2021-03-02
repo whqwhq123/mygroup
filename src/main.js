@@ -12,7 +12,9 @@ import './icons'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios'
-
+//vue 实现复制粘贴功能
+import VueClipboards from 'vue-clipboards';
+Vue.use(VueClipboards)
 Vue.use(ElementUI);
 
 // 引入Echarts

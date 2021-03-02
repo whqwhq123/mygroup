@@ -175,6 +175,7 @@ export default {
                     title:'提示',
                     message: res.errMsg
                   });
+                  this.submit_loading = false
                 }
               })
           }

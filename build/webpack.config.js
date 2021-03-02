@@ -51,8 +51,7 @@ module.exports = {
         use: [{
           loader: 'happypack/loader?id=happyBabel'
         }],
-        exclude: /node_modules/,
-        // /node_modules\/(?!(vue-echarts)\/).*/,
+        exclude: /node_modules\/(?!(vue-echarts)\/).*/,
       },
       {
         test: /\.vue$/,

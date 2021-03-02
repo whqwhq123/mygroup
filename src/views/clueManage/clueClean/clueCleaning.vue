@@ -7,6 +7,9 @@
       <el-form-item  prop="uniqueId">
         <el-input size="small" placeholder="请输入唯一线索ID" v-model="form_clueClear.uniqueId"></el-input>
       </el-form-item>
+      <el-form-item  prop="uniqueId">
+        <el-input size="small" placeholder="请输入客户ID" v-model="form_clueClear.customerId"></el-input>
+      </el-form-item>
       <el-form-item prop="cleanStatus">
         <el-select size="small" v-model="form_clueClear.cleanStatus" placeholder="请选择清洗状态" clearable>
           <el-option v-for="item in cleanStatusData" :key="item.value" :label="item.name" :value="item.value">
@@ -48,8 +51,13 @@
           start-placeholder="开始日期" end-placeholder="结束日期" format="yyyy/MM/dd HH:mm:ss" value-format="yyyy/MM/dd HH:mm:ss">
         </el-date-picker>
       </el-form-item>
-      <el-form-item  prop="deliveryTime">
-        <el-date-picker size="small" v-model="deliveryTime" type="datetimerange" range-separator="至"
+      <el-form-item label="派发时间"  prop="distributeTime" v-if="get_role_function('200200120')">
+        <el-date-picker size="small" v-model="distributeTime" type="datetimerange" range-separator="至"
+          start-placeholder="开始日期" end-placeholder="结束日期" format="yyyy/MM/dd HH:mm:ss" value-format="yyyy/MM/dd HH:mm:ss">
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item  prop="assignTime" label="分配时间：" v-if="get_role_function('200200130')">
+        <el-date-picker size="small" v-model="assignTime" type="datetimerange" range-separator="至"
           start-placeholder="开始日期" end-placeholder="结束日期" format="yyyy/MM/dd HH:mm:ss" value-format="yyyy/MM/dd HH:mm:ss">
         </el-date-picker>
       </el-form-item>
@@ -61,19 +69,19 @@
     <div>
        <el-button type="text" style="font-size: 14px;color:#3B86FF" v-if="get_role_function('200200120')" @click="delivering('delivery')"><svg-icon icon-class="cleaning" />清洗派发
        </el-button>
-       <el-button type="text" style="font-size: 14px;color:#3B86FF" @click="delivering('assgin')"><svg-icon icon-class="cleaning" />清洗分配
+       <el-button type="text" style="font-size: 14px;color:#3B86FF" v-if="get_role_function('200200130')" @click="delivering('assgin')"><svg-icon icon-class="cleaning" />清洗分配
        </el-button>
     </div>
     <el-table :data="culeList_table"  align="center" height="520" class="table" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55"></el-table-column>
+      <el-table-column type="selection" width="55" :selectable="checkSelect"></el-table-column>
       <el-table-column label="唯一线索ID" prop="uniqueId"></el-table-column>
       <el-table-column label="清洗状态" prop="cleanStatus"></el-table-column>
       <el-table-column label="线索状态" prop="clueStatus"></el-table-column>
       <el-table-column label="客户名称" prop="customerName"></el-table-column>
       <el-table-column label="客户ID" prop="customerId"></el-table-column>
-      <el-table-column label="手机号码" prop="mobile"></el-table-column>
-      <el-table-column label="座机号码" prop="telephone"></el-table-column>
-      <el-table-column label="意向品牌" prop="intentCarBrand"></el-table-column>
+      <!-- <el-table-column label="手机号码" prop="mobile"></el-table-column>
+      <el-table-column label="座机号码" prop="telephone"></el-table-column> -->
+      <el-table-column label="意向品牌" prop="intentCarBrand"></el-table-column> 
       <el-table-column label="意向车系" prop="intentCarModel"></el-table-column>
       <el-table-column label="意向车型" prop="intentCarStyle"></el-table-column>
       <el-table-column label="一级渠道" prop="firstChannelName"></el-table-column>
@@ -170,6 +178,7 @@ import qs from 'qs'
          customerName:'',
          mobile:'',
          uniqueId:'',
+         customerId:'',
          cleanStatus:'',
          clueStatus:'',
          dealerId:'',
@@ -205,11 +214,47 @@ import qs from 'qs'
          {
            type:'assigned',
            label:'已分配'
+         },
+         {
+           type:'followed',
+           label:'已跟进'
+         },
+         {
+           type:'arrived',
+           label:'已到店'
+         },
+         {
+           type:'driven',
+           label:'已试驾'
+         },
+         {
+           type:'ordered',
+           label:'已下订'
+         },
+         {
+           type:'deal',
+           label:'已成交'
+         },
+         {
+           type:'delivery',
+           label:'已交车'
+         },
+         {
+           type:'defeated',
+           label:'战败/流失'
+         },
+         {
+           type:'invalid',
+           label:'无效'
          }
        ],
        check_table:[],
+       waitCleanData:[],
+       deliveryData:[],
+       assginData:[],
        creatTime:'',
        deliveryTime:'',
+       assignTime:'',
        fromChannel:'',
        page:{
          pageNum:1,
@@ -236,7 +281,7 @@ import qs from 'qs'
         children:'list'
        },
        dealerName:[],
-      DCCId:152,
+      salesmanId:150,
       caozuoDealerName:'',
        delivery:{
          dealerId:''
@@ -262,7 +307,8 @@ import qs from 'qs'
     this.userInfo = this.$store.getters.userInfo || {};
    // console.log(this.userInfo)
     this.dataInit()
-    this.getCuleList()
+    this.getCuleList();
+    this.SalemansData();
    },
    methods:{
       dataInit(){
@@ -314,10 +360,18 @@ import qs from 'qs'
         this.getCuleList();
       },
       handleSelectionChange(val){
-      //  console.log(val)
+        console.log(val)
 				this.check_table = val;
-        
 			},
+      checkSelect (row,index) {
+        let isChecked = true;
+        if (row.cleanStatus == '待清洗') { 
+          isChecked = true
+        } else {
+          isChecked = false
+        }
+      return isChecked
+      },
       getChannel(){
         cleanClueData(this.userInfo.userDeptId).then(res=>{
          // console.log(res)
@@ -331,8 +385,129 @@ import qs from 'qs'
           }
         })
       },
+      filterData(data,status){
+        if(status=='新建'){
+          this.deliveryData=data.filter(item=>item.clueStatus==status);
+          if(this.deliveryData.length==0 && this.assginData.length==0){
+            this.$notify.error({
+              title: '提示',
+              message: '请选择新建的数据进行派发！'
+            });
+          }
+        }
+        if(status=='已派发'){
+          this.assginData=data.filter(item=>item.clueStatus==status);
+          console.log(this.assginData)
+          if(this.deliveryData.length==0 && this.assginData.length==0){
+            this.$notify.error({
+              title: '提示',
+              message: '请选择已派发的数据进行分配！'
+            });
+          }
+        }
+      },
       delivering(flag){  //清洗派发
-      console.log(this.check_table)
+        let that=this;
+        that.cleaningData=[];
+        if(that.check_table.length>0){
+          if(flag=='delivery'){
+            console.log(that.check_table)
+            that.filterData(that.check_table,'新建');
+          //  debugger
+            if(that.check_table.length>this.deliveryData.length){
+              this.$notify.error({
+                title: '提示',
+                message: '只能选中新建的数据状态进行派发'
+              });
+            }
+            else{
+              that.deliveryData.forEach(function(waitClean){
+                if(waitClean.clueStatus=='新建'){
+                  that.noCleanArr.push(waitClean.id);
+                  if(that.noCleanArr.length>0){
+                    that.cleanDeliveryVisible=true;
+                  }
+                }
+              })
+            }
+          }
+          if(flag=='assgin'){
+            that.filterData(that.check_table,'已派发');
+            if(that.check_table.length>this.assginData.length){
+              this.$notify.error({
+                title: '提示',
+                message: '只能选中已派发的数据进行分配'
+              });
+            }else{
+              that.assginData.forEach(function(waitClean){
+                if(waitClean.clueStatus=='已派发'){
+                  that.noCleanArr.push(waitClean.id);
+                  if(that.noCleanArr.length>0){
+                    that.cleanAssignVisible=true;
+                   // that.SalemansData()
+                  }
+                }
+              })
+            }
+          } 
+        }else{
+          that.$notify.error({
+            title: '提示',
+            message: '请选择待清洗的数据！'
+          });
+        }
+      },
+      delivering2(flag){  //清洗派发
+        let that=this;
+        that.cleaningData=[];
+        if(that.check_table.length>0){
+          
+          that.check_table.forEach(function(item){ 
+                 that.cleaningData.push(item);
+                 console.log(that.cleaningData)
+               //  debugger;
+                if(flag=='delivery'){
+                    that.cleaningData.forEach(function(waitClean){
+                    if(waitClean.clueStatus=='新建'){
+                      that.noCleanArr.push(waitClean.id);
+                      if(that.noCleanArr.length>0){
+                        that.cleanDeliveryVisible=true;
+                      }
+                    }else{
+                      that.$notify.error({
+                        title: '提示',
+                        message: '请选择新建的数据进行派发！'
+                      });
+                    }
+                  })
+                }
+                if(flag=='assgin'){
+                  that.cleaningData.forEach(function(waitClean){
+                    console.log(waitClean.clueStatus)
+                    if(waitClean.clueStatus!='新建' && waitClean.clueStatus=='已派发' && waitClean.clueStatus!='已分配'){
+                      that.noCleanArr.push(waitClean.id);
+                      if(that.noCleanArr.length>0){
+                        that.cleanAssignVisible=true;
+                      }
+                    }else{
+                      that.$notify.error({
+                        title: '提示',
+                        message: '请选择已派发的数据进行分配！'
+                      });
+                    }
+                })
+              } 
+              
+          })
+        }else{
+          that.$notify.error({
+            title: '提示',
+            message: '请选中至少一条待清洗里的数据！'
+          });
+        }
+      },
+      delivering1(flag){  //清洗派发
+        console.log(this.check_table)
         let that=this;
         that.cleaningData=[];
         if(that.check_table.length>0){
@@ -389,7 +564,11 @@ import qs from 'qs'
         }
       },
       SalemansData(){
-        assginSalemansData(this.DCCId).then(res=>{
+        let data={
+          roleId:this.salesmanId,
+          userDeptId:this.userInfo.userDeptId
+        }
+        assginSalemansData(data).then(res=>{
           console.log(res)
           if(res.code==0){
             this.salesmanName=res.data;
@@ -408,6 +587,7 @@ import qs from 'qs'
             if (valid) {
               postData={
                 userId:this.userInfo.userId,
+                deptId:this.userInfo.userDeptId,
                 salesmanId:this.assgin.salesmanId,
                 ids:this.noCleanArr.toString()
               }
@@ -437,10 +617,12 @@ import qs from 'qs'
             if (valid) {
               postData={
                 userId:this.userInfo.userId,
+                deptId:this.userInfo.userDeptId,
                 dealerId:this.delivery.dealerId,
                 ids:this.noCleanArr.toString()
               }
               cleanDistribute(postData).then(res=>{
+                console.log(res)
                 if(res.code==0){
                   this.cleanDeliveryVisible = false;
                   this.$notify({
@@ -475,15 +657,16 @@ import qs from 'qs'
         this.form_clueClear.createEndTime = this.creatTime == undefined ? '' : this.creatTime[1]
         this.form_clueClear.distributeStartTime = this.deliveryTime == undefined ? '' : this.deliveryTime[0]
         this.form_clueClear.distributeEndTime = this.deliveryTime == undefined ? '' : this.deliveryTime[1]
+        this.form_clueClear.assignStartTime = this.assignTime == undefined ? '' : this.assignTime[0]
+        this.form_clueClear.assignEndTime = this.assignTime == undefined ? '' : this.assignTime[1]
         this.form_clueClear.firstChannelIds=this.fromChannel==undefined?'':this.fromChannel[0]
         this.form_clueClear.secondChannelIds=this.fromChannel==undefined?'':this.fromChannel[1]
         this.form_clueClear.intentCarBrands=this.form_clueClear.intentCarStyles==undefined?'':this.form_clueClear.intentCarStyles[0];
         this.form_clueClear.intentCarModels=this.form_clueClear.intentCarStyles==undefined?'':this.form_clueClear.intentCarStyles[1];
         this.form_clueClear.intentCarStyles=this.form_clueClear.intentCarStyles==undefined?'':this.form_clueClear.intentCarStyles[2];
-        console.log(this.form_clueClear)
-        cleanClueList(this.userInfo.userDeptId,qs.stringify(this.pageL),qs.stringify(this.form_clueClear)).then(res=>{
-          console.log(res)
+        cleanClueList(this.userInfo.userId,qs.stringify(this.pageL),qs.stringify(this.form_clueClear)).then(res=>{
          if(res.code == 0){
+           console.log(res.data.content,"-----------------列表数据");
            this.culeList_table=res.data.content;
            this.page.total=res.data.totalElements;
          }else{

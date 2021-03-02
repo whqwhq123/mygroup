@@ -1,22 +1,22 @@
 <template>
   <div class="app-container" v-if="get_role_function('100200130')">
-    <div class="filter-container">
-      <el-input v-model="listQuery.nameOrCode" placeholder="请输入姓名/工号" class="filter-item-input" clearable
-        @keyup.enter.native="handleFilter"  />
-      <el-input v-model="listQuery.userPhone" placeholder="请输入手机号" class="filter-item-input" maxlength="11" clearable
-        @keyup.enter.native="handleFilter" />
-      <el-cascader class="filter-item-input cascaderStyle" v-model="listQuery.roleId" placeholder="请选择角色" :options="roleOptions"
-        :props="props" clearable></el-cascader>
-      <el-button v-waves class="filter-item-btn" type="primary" @click="handleFilter()">搜索</el-button>
+    <div class="filter-content-box">
+      <div class="filter-container">
+        <el-input v-model="listQuery.nameOrCode" placeholder="请输入姓名/工号" class="filter-item-input" clearable
+          @keyup.enter.native="handleFilter"  />
+        <el-input v-model="listQuery.userPhone" placeholder="请输入手机号" class="filter-item-input" maxlength="11" clearable
+          @keyup.enter.native="handleFilter" />
+        <el-cascader class="filter-item-input cascaderStyle" v-model="listQuery.roleId" placeholder="请选择角色" :options="roleOptions"
+          :props="props" clearable></el-cascader>
+        <el-button v-waves class="filter-item-btn" type="primary" @click="handleFilter()">搜索</el-button>
+      </div>
+      <div class="filter-tab">
+        <el-button class="expBtn" type="text" v-if="get_role_function('100200150')" @click="download_excel()">
+          <svg-icon icon-class="export_icon"  />导出列表</el-button>
+        <el-button class="expBtn" type="text" @click="addPersonnel({},'1')" v-if="get_role_function('100200110')">
+          <svg-icon icon-class="add_icon" />添加人员</el-button>
+      </div>
     </div>
-
-    <div class="filter-tab">
-      <el-button class="expBtn" type="text" v-if="get_role_function('100200150')" @click="download_excel()">
-        <svg-icon icon-class="export_icon"  />导出列表</el-button>
-      <el-button class="expBtn" type="text" @click="addPersonnel({},'1')" v-if="get_role_function('100200110')">
-        <svg-icon icon-class="add_icon" />添加人员</el-button>
-    </div>
-
     <el-table v-loading="listLoading" :data="listTable" border fit highlight-current-row height="605" style="width: 100%">
       <el-table-column label="序号" type="index" width="120" align="center" />
       <el-table-column label="员工姓名/工号" align="left" width="200">
@@ -86,7 +86,7 @@
     <el-dialog
       title="密码重置"
       :visible.sync="resetPasswordDialog"
-      width="30%"
+      width="570px"
       append-to-body
       custom-class="reset-dialog"
       :before-close="handleClose">
@@ -368,7 +368,7 @@
       },
       corfimChange(){
         let user={
-          userId:this.user.userId,
+          userId:this.userInfo.userId,
           userPassword:this.user.newPassword
         }
         organizeResetPassword(user).then(res=>{
@@ -392,18 +392,29 @@
 <style lang="scss" scoped>
   @import "@/assets/styles/filterTabStyle.scss";
   @import "@/assets/styles/tableStyle.scss";
-
+  .filter-content-box{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  @media screen and (max-width:1495px) {
+    .filter-tab{
+      width:100%;
+    }
+  }
   .app-container {
     padding: 10px;
     box-sizing: border-box;
     position: relative;
 
-    .filter-tab {
+    /* .filter-tab {
       width: auto;
       position: absolute;
       top: 15px;
       right: 10px;
-    }
+    } */
 
     .leader_express {
       width: 70px;

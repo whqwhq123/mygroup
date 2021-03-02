@@ -14,8 +14,8 @@
         :http-request="uploadSectionFile">
         <i class="el-icon-plus"></i>
         <div slot="tip" class="el-upload__tip">上传图片</div>
-        <div slot="tip" class="el-upload__tip">推荐尺寸：750x484像素</div>
-        <div slot="tip" class="el-upload__tip">图片格式：.jpg、png、gif，大小5M以内,最多上传</div>
+        <div slot="tip" class="el-upload__tip">推荐尺寸：{{imgid=='1'?'750x484像素':imgid=='1'?'630x200像素':'630x200像素'}}</div>
+        <div slot="tip" class="el-upload__tip">图片格式：.jpg、png、gif，大小5M以内,最多上传{{imgid=='3'?1:3}}张</div>
     </el-upload>
 </template>
 
@@ -118,6 +118,7 @@ import {LoginApplication} from "api/index.js";
                 formData = new FormData();
                 formData.append(that.upload_name, file);
                 let res= await LoginApplication()
+                console.log(res,'resresresress');
                 if (res.code == 0) {
                 let OSS = require("ali-oss");
                 let sts = new OSS({
@@ -137,10 +138,10 @@ import {LoginApplication} from "api/index.js";
                 this.$emit('setImgs',imgsdata)
      
                 } else {
-                this.$notify.error({
-                    title: '错误',
-                    message: res.data.message
-                });
+                    this.$notify.error({
+                        title: '错误',
+                        message: res.errMsg
+                    });
                 } 
             },
         }
@@ -148,5 +149,7 @@ import {LoginApplication} from "api/index.js";
 </script>
 
 <style lang="scss" scoped>
-
+/deep/.el-upload__tip{
+    margin-top: 0px;
+}
 </style>

@@ -163,7 +163,7 @@
   }
 
   /deep/.login_form .el-form-item__content {
-    width: 620px;
+    width: 65%;
     margin: 0 auto;
   }
 
@@ -171,7 +171,7 @@
     line-height: 68px;
     height: 70px;
     padding: 0;
-    width: 620px;
+    width: 100%;
     font-size: 26px;
   }
 

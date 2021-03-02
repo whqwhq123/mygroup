@@ -11,22 +11,22 @@
             </div>
           </el-form-item>
           <el-form-item prop="userPhone">
-            <el-input v-model="forgot.userPhone"  placeholder="请输入手机号"></el-input>
+            <el-input v-model="forgot.userPhone" maxlength="11" placeholder="请输入手机号"></el-input>
           </el-form-item>
           <el-form-item class="input-group" prop="verificationCode">
             <div class="verification">
-              <el-input  type="text" placeholder="请填写验证码" class="yzm" v-model="forgot.verificationCode">
+              <el-input  type="text" placeholder="请填写验证码" maxlength="4" show-word-limit class="yzm" v-model="forgot.verificationCode">
               </el-input>
               <el-button type="primary" class="clickYzm" @click.stop="sendCode" :disabled="isclick">{{verificationText}}</el-button>
             </div>
           </el-form-item>
           <el-form-item prop="userPassword">
             <div class="password-status" v-if="openEye">
-              <el-input type="text" v-model="forgot.userPassword" placeholder="设置密码(6~20个字符)"></el-input>
+              <el-input type="text" v-model="forgot.userPassword" maxlength="20" show-word-limit placeholder="设置密码(6~20个字符)"></el-input>
               <svg-icon icon-class="open_eye" @click="changeStatus" />
             </div>
             <div class="password-status" v-else>
-              <el-input type="password" v-model="forgot.userPassword" placeholder="设置密码(6~20个字符)"></el-input>
+              <el-input type="password" v-model="forgot.userPassword" maxlength="20" show-word-limit placeholder="设置密码(6~20个字符)"></el-input>
               <svg-icon icon-class="close_eye" @click="changeStatus" />
             </div>
           </el-form-item>
@@ -106,6 +106,10 @@
             required: true,
             message: '请输入密码',
             trigger: 'blur'
+          },
+          {
+            pattern:/^[\x21-\x7E]{6,20}$/,
+            message:'请输入6-20位的字符'
           }]
         },
         submit_loading: false
@@ -160,19 +164,19 @@
             obj['userPassword'] = this.forgot['userPassword']
             obj['verificationCode'] = this.forgot['verificationCode']
             this.submit_loading = true;
-           // console.log(obj)
+          //  console.log(obj)
             confirmChangePassword(obj).then((res) => {
-               // console.log(res)
+            //    console.log(res)
                if(res.code==0){
                  this.$refs.forgot.resetFields();
                  this.resetPasswordVisible=true;
                  this.submit_loading = false;
-
                }else{
                   this.$notify.error({
                     title: '错误',
                     message: res.errMsg,
                   });
+                  this.submit_loading = false;
                }
                
               })
@@ -241,7 +245,7 @@
   }
 
   /deep/.login_form .el-form-item__content {
-    width: 620px;
+    width: 65%;
     margin: 0 auto;
   }
 
@@ -249,7 +253,7 @@
     line-height: 68px;
     height: 70px;
     padding: 0;
-    width: 620px;
+    width: 100%;
     font-size: 26px;
   }
 

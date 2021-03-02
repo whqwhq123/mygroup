@@ -63,10 +63,16 @@ $bgColor: #43425d;
   // width: 260px;
   width: 13.5%;
   min-height: 100%;
+  overflow-y: auto;
   background: $bgColor;
   position: fixed;
   top: 70px;
   left: 0;
+  bottom: 0;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
   // z-index: 999;
 }
 </style>
